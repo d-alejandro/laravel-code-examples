@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Exceptions;
+
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+use Log;
+use Route;
+use Throwable;
+
+class Handler extends ExceptionHandler
+{
+    /**
+     * A list of the exception types that are not reported.
+     *
+     * @var array
+     */
+    protected $dontReport = [
+        //
+    ];
+
+    /**
+     * A list of the inputs that are never flashed for validation exceptions.
+     *
+     * @var array
+     */
+    protected $dontFlash = [
+        'current_password',
+        'password',
+        'password_confirmation',
+    ];
+
+    /**
+     * Register the exception handling callbacks for the application.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->reportable(function (Throwable $e) {
+            //
+        });
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param Throwable $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws Throwable
+     */
+    public function render($request, Throwable $e)
+    {
+        if (!($e instanceof ValidationException)) {
+            $this->addToLog($e->getMessage());
+        }
+
+        if ($e instanceof SystemException) {
+            return response([
+                'message' => 'Something went wrong.',
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        if ($e instanceof BaseException) {
+            return response([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        return parent::render($request, $e);
+    }
+
+    private function addToLog(string $message): void
+    {
+        Log::debug("{$message} \n", [
+            '__url__' => request()->url(),
+            '__route_name__' => Route::currentRouteName(),
+            '__request__' => print_r(request()->all(), true),
+        ]);
+    }
+}
