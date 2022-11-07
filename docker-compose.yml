@@ -7,7 +7,7 @@ services:
       - ./:/var/www/backend
       - ./docker/nginx:/etc/nginx/conf.d
     ports:
-      - "80:80"
+      - "${APP_URL_PORT}:80"
     depends_on:
       - php-fpm
 
@@ -24,7 +24,8 @@ services:
     working_dir: /var/www/backend
     environment:
       XDEBUG_CONFIG: 'client_host=${XDEBUG_CLIENT_HOST} client_port=${XDEBUG_CLIENT_PORT}'
-      PHP_IDE_CONFIG: 'serverName=DockerLaravel9'
+      XDEBUG_MODE: '${XDEBUG_MODE:-off}'
+      PHP_IDE_CONFIG: 'serverName=${PHP_IDE_SERVER_NAME}'
       DB_PORT: ${DB_PORT}
       DB_HOST: ${DB_HOST}
     depends_on:
@@ -41,4 +42,4 @@ services:
     volumes:
       - ./storage/docker/mysql:/var/lib/mysql
     ports:
-      - "33061:3306"
+      - "${IDE_DB_PORT}:3306"

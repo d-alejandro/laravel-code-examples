@@ -11,6 +11,7 @@ RUN apt-get update && \
     curl \
     git \
     zip \
+    mc \
     unzip \
     nano \
     postgresql-client \
@@ -36,15 +37,13 @@ RUN apt-get update && \
     docker-php-ext-install gd && \
     pecl install xdebug-3.1.5 && \
     docker-php-ext-enable xdebug && \
-    echo "xdebug.mode=debug,coverage" >> /usr/local/etc/php/conf.d/xdebug.ini && \
-    echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/xdebug.ini && \
+    echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+    useradd -G www-data,root -u $uid -d /home/$user $user && \
+    mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
 WORKDIR /var/www/backend
