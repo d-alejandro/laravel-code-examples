@@ -6,7 +6,7 @@
 - Code coverage
 - CRUD
 - Design Patterns
-- Docker
+- Docker Compose
 - DTO
 - Feature tests
 - Laravel 9
@@ -39,9 +39,10 @@ cp .env.example .env
 ```
 4. Run following commands:
 
-- `docker-compose build`
+- `docker-compose build --no-cache`
 - `docker-compose up -d`
 - `docker-compose exec php-fpm composer install`
+- `docker-compose exec php-fpm php artisan key:generate`
 - `docker-compose exec php-fpm php artisan migrate`
 
 ### Run unit tests
