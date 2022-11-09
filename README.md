@@ -45,12 +45,19 @@ cp .env.example .env
 - `docker-compose exec php-fpm php artisan key:generate`
 - `docker-compose exec php-fpm php artisan migrate`
 
-### Run unit tests
+## Testing
+
+To run the unit tests:
 ```
 docker-compose exec php-fpm php artisan test --testsuite=Unit
 ```
 
-### PHP Unit Testing Coverage
+To run the feature tests:
+```
+docker-compose exec php-fpm php artisan test --testsuite=Feature
+```
+
+To run the test coverage:
 ```
 docker-compose exec php-fpm ./vendor/bin/phpunit --coverage-html ./storage/reports/coverage
 ```
