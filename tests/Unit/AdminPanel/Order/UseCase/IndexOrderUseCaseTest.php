@@ -9,6 +9,7 @@ use App\Enums\SortType;
 use App\Repositories\AdminPanel\Order\Interfaces\OrderSearchRepositoryInterface;
 use App\UseCases\AdminPanel\Order\Exceptions\OrderSearchException;
 use App\UseCases\AdminPanel\Order\IndexOrderUseCase;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -69,5 +70,21 @@ class IndexOrderUseCaseTest extends TestCase
         $response = $this->indexOrderUseCase->execute($indexOrderRequestDTO);
 
         $this->assertEquals($expectedResponse, $response);
+    }
+
+    /**
+     * @dataProvider getDataProvider
+     */
+    public function testFailedOrdersLoaderRepositoryCall(IndexOrderRequestDTO $indexOrderRequestDTO): void
+    {
+        $this->orderSearchRepositoryMock
+            ->shouldReceive('make')
+            ->once()
+            ->andThrow(new Exception());
+
+        $this->expectException(OrderSearchException::class);
+        $this->expectExceptionMessage('An error occurred while loading orders.');
+
+        $this->indexOrderUseCase->execute($indexOrderRequestDTO);
     }
 }
