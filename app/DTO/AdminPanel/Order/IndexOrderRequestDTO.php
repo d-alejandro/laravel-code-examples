@@ -2,12 +2,14 @@
 
 namespace App\DTO\AdminPanel\Order;
 
+use App\DTO\AdminPanel\IndexPaginationRequestDTO;
 use App\Enums\OrderStatus;
 use Carbon\Carbon;
 
 class IndexOrderRequestDTO
 {
     public function __construct(
+        public readonly IndexPaginationRequestDTO $indexPaginationRequestDTO,
         public readonly ?Carbon      $rentalDate = null,
         public readonly ?string      $transportName = null,
         public readonly ?string      $agencyName = null,
