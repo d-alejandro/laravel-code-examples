@@ -2,9 +2,12 @@
 
 namespace Tests\Unit\AdminPanel\Order\UseCase;
 
+use App\DTO\AdminPanel\IndexPaginationRequestDTO;
 use App\DTO\AdminPanel\Order\IndexOrderRequestDTO;
 use App\DTO\AdminPanel\Order\IndexOrderResponseDTO;
+use App\Enums\SortType;
 use App\Repositories\AdminPanel\Order\Interfaces\OrderSearchRepositoryInterface;
+use App\UseCases\AdminPanel\Order\Exceptions\OrderSearchException;
 use App\UseCases\AdminPanel\Order\IndexOrderUseCase;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery;
@@ -26,16 +29,32 @@ class IndexOrderUseCaseTest extends TestCase
 
     public function getDataProvider(): array
     {
+        $testIntegerValue = 1;
+
+        $indexPaginationRequestDTO = new IndexPaginationRequestDTO(
+            $testIntegerValue,
+            $testIntegerValue,
+            'testField',
+            SortType::Asc
+        );
+        $indexOrderRequestDTO = new IndexOrderRequestDTO($indexPaginationRequestDTO);
+
+        $indexOrderResponseDTO = new IndexOrderResponseDTO(
+            new Collection(['testColumn' => 'testValue']),
+            $testIntegerValue
+        );
+
         return [
             'single' => [
-                'indexOrderRequestDTO' => new IndexOrderRequestDTO([]),
-                'expectedResponse' => new IndexOrderResponseDTO(new Collection(['testColumn' => 'testValue']), 1),
+                'indexOrderRequestDTO' => $indexOrderRequestDTO,
+                'expectedResponse' => $indexOrderResponseDTO,
             ],
         ];
     }
 
     /**
      * @dataProvider getDataProvider
+     * @throws OrderSearchException
      */
     public function testSuccessfulIndexOrderUseCaseExecution(
         IndexOrderRequestDTO  $indexOrderRequestDTO,
