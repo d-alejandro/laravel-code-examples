@@ -5,6 +5,7 @@
 - Back-end
 - Code coverage
 - CRUD
+- Dependency Injection
 - Design Patterns
 - Docker Compose
 - DTO
@@ -15,7 +16,7 @@
 - Mocking Objects
 - MySQL 8
 - Nginx
-- PHP 8.1
+- PHP 8.2
 - PHPUnit
 - RESTful API
 - SOLID
