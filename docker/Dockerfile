@@ -1,4 +1,4 @@
-FROM php:8.1.2-fpm
+FROM php:8.2.1-fpm
 
 ARG user
 ARG uid
@@ -35,7 +35,7 @@ RUN apt-get update && \
             --with-xpm \
             --with-freetype && \
     docker-php-ext-install gd && \
-    pecl install xdebug-3.1.5 && \
+    pecl install xdebug-3.2.0 && \
     docker-php-ext-enable xdebug && \
     echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
     apt-get clean && \
