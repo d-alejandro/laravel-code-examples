@@ -12,7 +12,7 @@ readonly class IndexOrderPaginationDTO
         public int             $end,
         public OrderSortColumn $orderSortColumn,
         public SortType        $sortType,
-        public array|null      $ids
+        public array|null      $ids = null
     ) {
     }
 }
