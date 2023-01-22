@@ -197,6 +197,7 @@ return [
         App\Providers\Bindings\UseCaseServiceProvider::class,
         App\Providers\Bindings\RepositoryServiceProvider::class,
         App\Providers\Bindings\PresenterServiceProvider::class,
+        App\Providers\Bindings\HelperServiceProvider::class,
     ],
 
     /*
