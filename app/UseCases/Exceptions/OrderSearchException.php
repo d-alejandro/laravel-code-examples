@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCases\AdminPanel\Order\Exceptions;
+namespace App\UseCases\Exceptions;
 
 use App\Exceptions\BaseException;
 

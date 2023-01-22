@@ -1,12 +1,12 @@
 <?php
 
-namespace App\UseCases\AdminPanel\Order;
+namespace App\UseCases;
 
-use App\DTO\AdminPanel\Order\IndexOrderRequestDTO;
-use App\DTO\AdminPanel\Order\IndexOrderResponseDTO;
-use App\Repositories\AdminPanel\Order\Interfaces\OrderSearchRepositoryInterface;
-use App\UseCases\AdminPanel\Order\Interfaces\IndexOrderUseCaseInterface;
-use App\UseCases\AdminPanel\Order\Exceptions\OrderSearchException;
+use App\DTO\IndexOrderRequestDTO;
+use App\DTO\IndexOrderResponseDTO;
+use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
+use App\UseCases\Exceptions\OrderSearchException;
+use App\UseCases\Interfaces\IndexOrderUseCaseInterface;
 use Throwable;
 
 class IndexOrderUseCase implements IndexOrderUseCaseInterface
