@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Presenter\AdminPanel\Order\Interfaces;
+namespace App\Presenter\Interfaces;
 
-use App\DTO\AdminPanel\Order\IndexOrderResponseDTO;
+use App\DTO\IndexOrderResponseDTO;
 
 interface IndexOrderPresenterInterface
 {

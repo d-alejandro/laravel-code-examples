@@ -2,8 +2,8 @@
 
 namespace App\Providers\Bindings;
 
-use App\UseCases\AdminPanel\Order\IndexOrderUseCase;
-use App\UseCases\AdminPanel\Order\Interfaces\IndexOrderUseCaseInterface;
+use App\UseCases\IndexOrderUseCase;
+use App\UseCases\Interfaces\IndexOrderUseCaseInterface;
 use Illuminate\Support\ServiceProvider;
 
 class UseCaseServiceProvider extends ServiceProvider
