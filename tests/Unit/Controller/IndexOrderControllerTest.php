@@ -42,12 +42,15 @@ class IndexOrderControllerTest extends TestCase
     {
         $indexOrderPaginationDTO = new IndexOrderPaginationDTO(0, 1, OrderSortColumn::Id, SortType::Asc);
 
+        $testData = ['testColumn' => 'testValue'];
+        $collection = new Collection($testData);
+
         return [
             'single' => [
                 'indexOrderRequestDTO' => new IndexOrderRequestDTO($indexOrderPaginationDTO),
-                'indexOrderResponseDTO' => new IndexOrderResponseDTO(new Collection(['testColumn' => 'testValue']), 1),
+                'indexOrderResponseDTO' => new IndexOrderResponseDTO($collection, 1),
                 'expectedData' => [
-                    (object)['testColumn' => 'testValue'],
+                    (object)$testData,
                 ],
             ],
         ];
@@ -69,6 +72,7 @@ class IndexOrderControllerTest extends TestCase
         $this->indexOrderUseCaseMock
             ->shouldReceive('execute')
             ->once()
+            ->with($indexOrderRequestDTO)
             ->andReturn($indexOrderResponseDTO);
 
         $this->indexOrderPresenterMock
