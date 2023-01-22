@@ -1,12 +1,16 @@
 <?php
 
-namespace Tests\Unit\AdminPanel\Order\Controller;
+namespace Tests\Unit\Controller;
 
-use App\DTO\AdminPanel\Order\IndexOrderResponseDTO;
-use App\Http\Controllers\Api\AdminPanel\Order\IndexOrderController;
-use App\Http\Requests\AdminPanel\Order\IndexOrderRequest;
-use App\Presenter\AdminPanel\Order\Interfaces\IndexOrderPresenterInterface;
-use App\UseCases\AdminPanel\Order\Interfaces\IndexOrderUseCaseInterface;
+use App\DTO\IndexOrderPaginationDTO;
+use App\DTO\IndexOrderRequestDTO;
+use App\DTO\IndexOrderResponseDTO;
+use App\Enums\OrderSortColumn;
+use App\Enums\SortType;
+use App\Http\Controllers\Api\IndexOrderController;
+use App\Http\Requests\IndexOrderRequest;
+use App\Presenter\Interfaces\IndexOrderPresenterInterface;
+use App\UseCases\Interfaces\IndexOrderUseCaseInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Mockery;
@@ -36,8 +40,11 @@ class IndexOrderControllerTest extends TestCase
 
     public function getDataProvider(): array
     {
+        $indexOrderPaginationDTO = new IndexOrderPaginationDTO(0, 1, OrderSortColumn::Id, SortType::Asc);
+
         return [
             'single' => [
+                'indexOrderRequestDTO' => new IndexOrderRequestDTO($indexOrderPaginationDTO),
                 'indexOrderResponseDTO' => new IndexOrderResponseDTO(new Collection(['testColumn' => 'testValue']), 1),
                 'expectedData' => [
                     (object)['testColumn' => 'testValue'],
@@ -50,13 +57,14 @@ class IndexOrderControllerTest extends TestCase
      * @dataProvider getDataProvider
      */
     public function testSuccessfulIndexOrderControllerExecution(
+        IndexOrderRequestDTO  $indexOrderRequestDTO,
         IndexOrderResponseDTO $indexOrderResponseDTO,
-        array $expectedData
+        array                 $expectedData
     ): void {
         $this->indexOrderRequestMock
-            ->shouldReceive('validated')
+            ->shouldReceive('getValidated')
             ->once()
-            ->andReturn([]);
+            ->andReturn($indexOrderRequestDTO);
 
         $this->indexOrderUseCaseMock
             ->shouldReceive('execute')
