@@ -20,10 +20,10 @@ class IndexOrderControllerTest extends TestCase
         return [
             'successful' => [
                 'request' => [
-                    '_start' => $firstPaginationItemNumber,
-                    '_end' => $lastPaginationItemNumber,
-                    '_sort' => OrderSortColumn::Id,
-                    '_order' => SortType::Desc,
+                    'start' => $firstPaginationItemNumber,
+                    'end' => $lastPaginationItemNumber,
+                    'sort_column' => OrderSortColumn::Id,
+                    'sort_type' => SortType::Desc,
                 ]
             ],
         ];
