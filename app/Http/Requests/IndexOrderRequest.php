@@ -7,11 +7,25 @@ use App\DTO\IndexOrderRequestDTO;
 use App\Enums\OrderSortColumn;
 use App\Enums\OrderStatus;
 use App\Enums\SortType;
+use App\Helpers\Interfaces\EnumValuesToStringConverterInterface;
 use App\Models\Order;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexOrderRequest extends FormRequest
 {
+    public function __construct(
+        private EnumValuesToStringConverterInterface $converter,
+        array                                        $query = [],
+        array                                        $request = [],
+        array                                        $attributes = [],
+        array                                        $cookies = [],
+        array                                        $files = [],
+        array                                        $server = [],
+        mixed                                        $content = null
+    ) {
+        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+    }
+
     public function authorize(): bool
     {
         return true;
@@ -22,32 +36,20 @@ class IndexOrderRequest extends FormRequest
         return [
             'start' => 'required|integer|min:0',
             'end' => 'required|integer|min:1',
-            'sort_column' => 'required|string|in:'
-                . $this->convertArrayToString($this->getSortTypes(OrderSortColumn::cases())),
-            'sort_type' => 'required|string|in:' . $this->convertArrayToString($this->getSortTypes(SortType::cases())),
+            'sort_column' => 'required|string|in:' . $this->converter->execute(OrderSortColumn::class),
+            'sort_type' => 'required|string|in:' . $this->converter->execute(SortType::class),
             'ids' => 'sometimes|required|array|exists:' . Order::TABLE_NAME . ',' . Order::COLUMN_ID,
             'ids.*' => 'required|integer|min:1',
             'rental_date' => 'sometimes|required|date',
             'is_confirmed' => 'sometimes|required|string|in:true,false',
             'is_checked' => 'sometimes|required|string|in:true,false',
-            'order_status' => 'sometimes|required|string|in:' .
-                $this->convertArrayToString($this->getSortTypes(OrderStatus::cases())),
+            'order_status' => 'sometimes|required|string|in:' . $this->converter->execute(OrderStatus::class),
             'user_name' => 'sometimes|required|string',
             'agency_name' => 'sometimes|required|string',
             'admin_note' => 'sometimes|required|string|in:true,false',
             'start_date' => 'sometimes|required|date',
             'end_date' => 'sometimes|required|date',
         ];
-    }
-
-    private function convertArrayToString(array $array): string
-    {
-        return implode(',', $array);
-    }
-
-    private function getSortTypes(array $enumCases): array
-    {
-        return array_column($enumCases, 'value');
     }
 
     public function getValidated(): IndexOrderRequestDTO
