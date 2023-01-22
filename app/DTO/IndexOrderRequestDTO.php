@@ -9,15 +9,15 @@ readonly class IndexOrderRequestDTO
 {
     public function __construct(
         public IndexOrderPaginationDTO $indexOrderPaginationDTO,
-        public ?Carbon                 $rentalDate = null,
-        public ?string                 $userName = null,
-        public ?string                 $agencyName = null,
-        public ?Carbon                 $startRentalDate = null,
-        public ?Carbon                 $endRentalDate = null,
-        public ?OrderStatus            $orderStatus = null,
-        public ?bool                   $isConfirmed = null,
-        public ?bool                   $isChecked = null,
-        public ?bool                   $hasAdminNote = null
+        public Carbon|null             $rentalDate,
+        public string|null             $userName,
+        public string|null             $agencyName,
+        public Carbon|null             $startRentalDate,
+        public Carbon|null             $endRentalDate,
+        public OrderStatus|null        $orderStatus,
+        public bool|null               $isConfirmed,
+        public bool|null               $isChecked,
+        public bool|null               $hasAdminNote
     ) {
     }
 }
