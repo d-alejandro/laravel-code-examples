@@ -40,7 +40,15 @@ class IndexOrderControllerTest extends TestCase
 
     public function getDataProvider(): array
     {
-        $indexOrderPaginationDTO = new IndexOrderPaginationDTO(0, 1, OrderSortColumn::Id, SortType::Asc);
+        $firstPaginationItemNumber = 0;
+        $lastPaginationItemNumber = 1;
+
+        $indexOrderPaginationDTO = new IndexOrderPaginationDTO(
+            $firstPaginationItemNumber,
+            $lastPaginationItemNumber,
+            OrderSortColumn::Id,
+            SortType::Asc
+        );
 
         $testData = ['testColumn' => 'testValue'];
         $collection = new Collection($testData);
