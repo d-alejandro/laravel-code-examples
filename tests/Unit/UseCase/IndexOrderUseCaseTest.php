@@ -1,14 +1,15 @@
 <?php
 
-namespace Tests\Unit\AdminPanel\Order\UseCase;
+namespace Tests\Unit\UseCase;
 
-use App\DTO\AdminPanel\IndexPaginationRequestDTO;
-use App\DTO\AdminPanel\Order\IndexOrderRequestDTO;
-use App\DTO\AdminPanel\Order\IndexOrderResponseDTO;
+use App\DTO\IndexOrderPaginationDTO;
+use App\DTO\IndexOrderRequestDTO;
+use App\DTO\IndexOrderResponseDTO;
+use App\Enums\OrderSortColumn;
 use App\Enums\SortType;
-use App\Repositories\AdminPanel\Order\Interfaces\OrderSearchRepositoryInterface;
-use App\UseCases\AdminPanel\Order\Exceptions\OrderSearchException;
-use App\UseCases\AdminPanel\Order\IndexOrderUseCase;
+use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
+use App\UseCases\Exceptions\OrderSearchException;
+use App\UseCases\IndexOrderUseCase;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery;
@@ -30,25 +31,28 @@ class IndexOrderUseCaseTest extends TestCase
 
     public function getDataProvider(): array
     {
-        $testIntegerValue = 1;
+        $firstPaginationItemNumber = 0;
+        $lastPaginationItemNumber = 1;
 
-        $indexPaginationRequestDTO = new IndexPaginationRequestDTO(
-            $testIntegerValue,
-            $testIntegerValue,
-            'testField',
+        $indexOrderPaginationDTO = new IndexOrderPaginationDTO(
+            $firstPaginationItemNumber,
+            $lastPaginationItemNumber,
+            OrderSortColumn::Id,
             SortType::Asc
         );
-        $indexOrderRequestDTO = new IndexOrderRequestDTO($indexPaginationRequestDTO);
+        $indexOrderRequestDTO = new IndexOrderRequestDTO($indexOrderPaginationDTO);
 
-        $indexOrderResponseDTO = new IndexOrderResponseDTO(
-            new Collection(['testColumn' => 'testValue']),
-            $testIntegerValue
-        );
+        $testData = ['testColumn' => 'testValue'];
+        $collection = new Collection($testData);
+
+        $totalRowCount = 1;
+
+        $indexOrderResponseDTO = new IndexOrderResponseDTO($collection, $totalRowCount);
 
         return [
             'single' => [
                 'indexOrderRequestDTO' => $indexOrderRequestDTO,
-                'expectedResponse' => $indexOrderResponseDTO,
+                'expectedIndexOrderResponseDTO' => $indexOrderResponseDTO,
             ],
         ];
     }
@@ -59,17 +63,17 @@ class IndexOrderUseCaseTest extends TestCase
      */
     public function testSuccessfulIndexOrderUseCaseExecution(
         IndexOrderRequestDTO  $indexOrderRequestDTO,
-        IndexOrderResponseDTO $expectedResponse
+        IndexOrderResponseDTO $expectedIndexOrderResponseDTO
     ): void {
         $this->orderSearchRepositoryMock
             ->shouldReceive('make')
             ->once()
             ->with($indexOrderRequestDTO)
-            ->andReturn($expectedResponse);
+            ->andReturn($expectedIndexOrderResponseDTO);
 
         $response = $this->indexOrderUseCase->execute($indexOrderRequestDTO);
 
-        $this->assertEquals($expectedResponse, $response);
+        $this->assertEquals($expectedIndexOrderResponseDTO, $response);
     }
 
     /**
