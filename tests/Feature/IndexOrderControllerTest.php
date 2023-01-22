@@ -1,7 +1,9 @@
 <?php
 
-namespace Tests\Feature\AdminPanel\Order;
+namespace Tests\Feature;
 
+use App\Enums\OrderSortColumn;
+use App\Enums\SortType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -12,13 +14,16 @@ class IndexOrderControllerTest extends TestCase
 
     public function getDataProviderSuccessful(): array
     {
+        $firstPaginationItemNumber = 0;
+        $lastPaginationItemNumber = 1;
+
         return [
             'successful' => [
                 'request' => [
-                    '_start' => 0,
-                    '_end' => 1,
-                    '_sort' => 'id',
-                    '_order' => 'desc',
+                    '_start' => $firstPaginationItemNumber,
+                    '_end' => $lastPaginationItemNumber,
+                    '_sort' => OrderSortColumn::Id,
+                    '_order' => SortType::Desc,
                 ]
             ],
         ];
