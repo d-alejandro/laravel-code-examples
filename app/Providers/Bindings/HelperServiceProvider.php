@@ -17,8 +17,8 @@ class HelperServiceProvider extends ServiceProvider
 
         $this->app->bind(
             RequestFilterHelperInterface::class,
-            function (Application $app, array $data): RequestFilterHelper {
-                return new RequestFilterHelper($data);
+            function (Application $app, array $params): RequestFilterHelper {
+                return new RequestFilterHelper($params['data']);
             }
         );
     }
