@@ -2,10 +2,10 @@
 
 namespace App\UseCases\Interfaces;
 
-use App\DTO\IndexOrderRequestDTO;
-use App\DTO\IndexOrderResponseDTO;
+use App\DTO\Interfaces\IndexOrderRequestDTOInterface;
+use App\DTO\Interfaces\IndexOrderResponseDTOInterface;
 
 interface IndexOrderUseCaseInterface
 {
-    public function execute(IndexOrderRequestDTO $indexOrderRequestDTO): IndexOrderResponseDTO;
+    public function execute(IndexOrderRequestDTOInterface $indexOrderRequestDTO): IndexOrderResponseDTOInterface;
 }

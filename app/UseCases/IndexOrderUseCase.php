@@ -2,8 +2,8 @@
 
 namespace App\UseCases;
 
-use App\DTO\IndexOrderRequestDTO;
 use App\DTO\IndexOrderResponseDTO;
+use App\DTO\Interfaces\IndexOrderRequestDTOInterface;
 use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
 use App\UseCases\Exceptions\OrderSearchException;
 use App\UseCases\Interfaces\IndexOrderUseCaseInterface;
@@ -19,7 +19,7 @@ class IndexOrderUseCase implements IndexOrderUseCaseInterface
     /**
      * @throws OrderSearchException
      */
-    public function execute(IndexOrderRequestDTO $indexOrderRequestDTO): IndexOrderResponseDTO
+    public function execute(IndexOrderRequestDTOInterface $indexOrderRequestDTO): IndexOrderResponseDTO
     {
         try {
             return $this->repository->make($indexOrderRequestDTO);
