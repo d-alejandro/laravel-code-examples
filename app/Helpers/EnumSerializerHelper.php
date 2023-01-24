@@ -5,7 +5,7 @@ namespace App\Helpers;
 use App\Helpers\Exceptions\EnumSerializerException;
 use App\Helpers\Interfaces\EnumSerializerHelperInterface;
 
-class EnumSerializerHelperHelper implements EnumSerializerHelperInterface
+class EnumSerializerHelper implements EnumSerializerHelperInterface
 {
     private const COLUMN_KEY_VALUE = 'value';
     private const SERIALIZE_SEPARATOR = ',';

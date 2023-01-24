@@ -15,6 +15,7 @@ use App\Http\Requests\Enums\IndexOrderRequestParamEnum;
 use App\Http\Requests\Enums\PaginationEnum;
 use App\Http\Requests\Interfaces\IndexOrderRequestInterface;
 use App\Models\Order;
+use App\Providers\Bindings\HelperServiceProvider;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterface
@@ -24,7 +25,7 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
      */
     public function rules(): array
     {
-        /* @var $serializer \App\Helpers\EnumSerializerHelperHelper */
+        /* @var $serializer \App\Helpers\EnumSerializerHelper */
         $serializer = resolve(EnumSerializerHelperInterface::class);
 
         return [
@@ -54,16 +55,22 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
      */
     public function getValidated(): IndexOrderRequestDTO
     {
-        $data = $this->validated();
+        $requestParams = $this->validated();
 
         /* @var $filter \App\Helpers\RequestFilterHelper */
-        $filter = resolve(RequestFilterHelperInterface::class, ['data' => $data]);
+        $filter = resolve(RequestFilterHelperInterface::class, [
+            HelperServiceProvider::PARAM_REQUEST_PARAMS => $requestParams,
+        ]);
 
         $indexOrderPaginationDTO = new IndexOrderPaginationDTO(
-            $data[PaginationEnum::Start->value],
-            $data[PaginationEnum::End->value],
-            OrderSortColumnEnum::from($data[PaginationEnum::SortColumn->value]),
-            SortTypeEnum::from($data[PaginationEnum::SortType->value]),
+            $requestParams[PaginationEnum::Start->value],
+            $requestParams[PaginationEnum::End->value],
+            OrderSortColumnEnum::from(
+                $requestParams[PaginationEnum::SortColumn->value]
+            ),
+            SortTypeEnum::from(
+                $requestParams[PaginationEnum::SortType->value]
+            ),
             $filter->checkRequestParam(PaginationEnum::Ids),
         );
 
@@ -74,7 +81,9 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
             $filter->checkRequestParam(IndexOrderRequestParamEnum::AgencyName),
             $filter->checkRequestParam(IndexOrderRequestParamEnum::StartDate),
             $filter->checkRequestParam(IndexOrderRequestParamEnum::EndDate),
-            OrderStatusEnum::tryFrom($filter->checkRequestParam(IndexOrderRequestParamEnum::Status)),
+            OrderStatusEnum::tryFrom(
+                $filter->checkRequestParam(IndexOrderRequestParamEnum::Status)
+            ),
             $filter->filterBooleanRequestParam(IndexOrderRequestParamEnum::IsConfirmed),
             $filter->filterBooleanRequestParam(IndexOrderRequestParamEnum::IsChecked),
             $filter->filterBooleanRequestParam(IndexOrderRequestParamEnum::AdminNote),
