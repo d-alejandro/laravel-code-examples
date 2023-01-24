@@ -2,10 +2,11 @@
 
 namespace App\DTO;
 
+use App\DTO\Interfaces\IndexOrderRequestDTOInterface;
 use App\Enums\OrderStatusEnum;
 use Carbon\Carbon;
 
-readonly class IndexOrderRequestDTO
+readonly class IndexOrderRequestDTO implements IndexOrderRequestDTOInterface
 {
     public function __construct(
         public IndexOrderPaginationDTO $paginationDTO,

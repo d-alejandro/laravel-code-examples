@@ -8,7 +8,7 @@ use App\DTO\IndexOrderResponseDTO;
 use App\Enums\OrderSortColumnEnum;
 use App\Enums\SortTypeEnum;
 use App\Http\Controllers\Api\IndexOrderController;
-use App\Http\Requests\IndexOrderRequest;
+use App\Http\Requests\Interfaces\IndexOrderRequestInterface;
 use App\Presenter\Interfaces\IndexOrderPresenterInterface;
 use App\UseCases\Interfaces\IndexOrderUseCaseInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -21,7 +21,7 @@ class IndexOrderControllerTest extends TestCase
     private IndexOrderUseCaseInterface $indexOrderUseCaseMock;
     private IndexOrderPresenterInterface $indexOrderPresenterMock;
     private IndexOrderController $indexOrderController;
-    private IndexOrderRequest $indexOrderRequestMock;
+    private IndexOrderRequestInterface $indexOrderRequestMock;
 
     protected function setUp(): void
     {
@@ -35,7 +35,7 @@ class IndexOrderControllerTest extends TestCase
             $this->indexOrderPresenterMock
         );
 
-        $this->indexOrderRequestMock = Mockery::mock(IndexOrderRequest::class);
+        $this->indexOrderRequestMock = Mockery::mock(IndexOrderRequestInterface::class);
     }
 
     public function getDataProvider(): array
