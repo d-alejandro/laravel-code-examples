@@ -2,7 +2,7 @@
 
 namespace App\Helpers\Interfaces;
 
-interface BooleanFilterInterface
+interface BooleanFilterHelperInterface
 {
     public function execute(string $value): bool;
 }

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\OrderStatus;
+use App\Enums\OrderStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -37,7 +37,7 @@ final class Order extends Model
     ];
 
     protected $attributes = [
-        self::COLUMN_STATUS => OrderStatus::Waiting,
+        self::COLUMN_STATUS => OrderStatusEnum::Waiting,
         self::COLUMN_IS_CHECKED => false,
         self::COLUMN_IS_CONFIRMED => false,
     ];

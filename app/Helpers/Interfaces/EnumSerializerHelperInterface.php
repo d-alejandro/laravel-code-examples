@@ -2,7 +2,7 @@
 
 namespace App\Helpers\Interfaces;
 
-interface EnumSerializerInterface
+interface EnumSerializerHelperInterface
 {
     public function execute(string $enum): string;
 }

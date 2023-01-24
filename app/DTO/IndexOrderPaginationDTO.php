@@ -2,17 +2,17 @@
 
 namespace App\DTO;
 
-use App\Enums\OrderSortColumn;
-use App\Enums\SortType;
+use App\Enums\OrderSortColumnEnum;
+use App\Enums\SortTypeEnum;
 
 readonly class IndexOrderPaginationDTO
 {
     public function __construct(
-        public int             $start,
-        public int             $end,
-        public OrderSortColumn $orderSortColumn,
-        public SortType        $sortType,
-        public array|null      $ids = null
+        public int                 $start,
+        public int                 $end,
+        public OrderSortColumnEnum $sortColumn,
+        public SortTypeEnum        $sortType,
+        public array|null          $ids = null
     ) {
     }
 }

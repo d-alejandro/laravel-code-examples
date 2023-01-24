@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum SortType: string
+enum SortTypeEnum: string
 {
     case Asc = 'asc';
     case Desc = 'desc';

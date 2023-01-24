@@ -3,9 +3,9 @@
 namespace App\Helpers;
 
 use App\Helpers\Exceptions\EnumSerializerException;
-use App\Helpers\Interfaces\EnumSerializerInterface;
+use App\Helpers\Interfaces\EnumSerializerHelperInterface;
 
-class EnumSerializer implements EnumSerializerInterface
+class EnumSerializerHelperHelper implements EnumSerializerHelperInterface
 {
     private const COLUMN_KEY_VALUE = 'value';
     private const SERIALIZE_SEPARATOR = ',';

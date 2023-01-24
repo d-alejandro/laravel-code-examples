@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Enums\OrderSortColumn;
-use App\Enums\SortType;
+use App\Enums\OrderSortColumnEnum;
+use App\Enums\SortTypeEnum;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -22,8 +22,8 @@ class IndexOrderControllerTest extends TestCase
                 'request' => [
                     'start' => $firstPaginationItemNumber,
                     'end' => $lastPaginationItemNumber,
-                    'sort_column' => OrderSortColumn::Id,
-                    'sort_type' => SortType::Desc,
+                    'sort_column' => OrderSortColumnEnum::Id,
+                    'sort_type' => SortTypeEnum::Desc,
                 ]
             ],
         ];

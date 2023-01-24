@@ -3,9 +3,9 @@
 namespace App\Helpers;
 
 use App\Helpers\Exceptions\BooleanFilterException;
-use App\Helpers\Interfaces\BooleanFilterInterface;
+use App\Helpers\Interfaces\BooleanFilterHelperInterface;
 
-class BooleanFilter implements BooleanFilterInterface
+class BooleanFilterHelperHelper implements BooleanFilterHelperInterface
 {
     /**
      * @throws BooleanFilterException

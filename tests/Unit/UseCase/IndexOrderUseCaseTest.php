@@ -5,8 +5,8 @@ namespace Tests\Unit\UseCase;
 use App\DTO\IndexOrderPaginationDTO;
 use App\DTO\IndexOrderRequestDTO;
 use App\DTO\IndexOrderResponseDTO;
-use App\Enums\OrderSortColumn;
-use App\Enums\SortType;
+use App\Enums\OrderSortColumnEnum;
+use App\Enums\SortTypeEnum;
 use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
 use App\UseCases\Exceptions\OrderSearchException;
 use App\UseCases\IndexOrderUseCase;
@@ -37,8 +37,8 @@ class IndexOrderUseCaseTest extends TestCase
         $indexOrderPaginationDTO = new IndexOrderPaginationDTO(
             $firstPaginationItemNumber,
             $lastPaginationItemNumber,
-            OrderSortColumn::Id,
-            SortType::Asc
+            OrderSortColumnEnum::Id,
+            SortTypeEnum::Asc
         );
         $indexOrderRequestDTO = new IndexOrderRequestDTO($indexOrderPaginationDTO);
 

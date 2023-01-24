@@ -10,8 +10,8 @@ use App\UseCases\Interfaces\IndexOrderUseCaseInterface;
 final class IndexOrderController extends Controller
 {
     public function __construct(
-        private IndexOrderUseCaseInterface $indexOrderUseCase,
-        private IndexOrderPresenterInterface $indexOrderPresenter
+        private IndexOrderUseCaseInterface   $useCase,
+        private IndexOrderPresenterInterface $presenter
     ) {
     }
 
@@ -19,8 +19,8 @@ final class IndexOrderController extends Controller
     {
         $indexOrderRequestDTO = $request->getValidated();
 
-        $indexOrderResponseDTO = $this->indexOrderUseCase->execute($indexOrderRequestDTO);
+        $indexOrderResponseDTO = $this->useCase->execute($indexOrderRequestDTO);
 
-        return $this->indexOrderPresenter->present($indexOrderResponseDTO);
+        return $this->presenter->present($indexOrderResponseDTO);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum OrderSortColumn: string
+enum OrderSortColumnEnum: string
 {
     case Id = 'id';
     case RentalDate = 'rental_date';
