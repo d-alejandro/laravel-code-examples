@@ -7,20 +7,18 @@ use App\DTO\IndexOrderRequestDTO;
 use App\Enums\OrderSortColumnEnum;
 use App\Enums\OrderStatusEnum;
 use App\Enums\SortTypeEnum;
+use App\Helpers\Exceptions\BooleanFilterException;
 use App\Helpers\Exceptions\EnumSerializerException;
 use App\Helpers\Interfaces\EnumSerializerHelperInterface;
-use App\Helpers\Interfaces\BooleanFilterHelperInterface;
+use App\Helpers\Interfaces\RequestFilterHelperInterface;
+use App\Http\Requests\Enums\IndexOrderRequestParamEnum;
+use App\Http\Requests\Enums\PaginationEnum;
 use App\Http\Requests\Interfaces\IndexOrderRequestInterface;
-use App\Http\Requests\QueryParams\IndexOrderQueryParam;
-use App\Http\Requests\QueryParams\Pagination;
 use App\Models\Order;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterface
 {
-    private BooleanFilterHelperInterface $filter;
-    private array $data;
-
     /**
      * @throws EnumSerializerException
      */
@@ -30,61 +28,56 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
         $serializer = resolve(EnumSerializerHelperInterface::class);
 
         return [
-            Pagination::START => 'required|integer|min:0',
-            Pagination::END => 'required|integer|min:1',
-            Pagination::SORT_COLUMN => 'required|string|in:' . $serializer->execute(OrderSortColumnEnum::class),
-            Pagination::SORT_TYPE => 'required|string|in:' . $serializer->execute(SortTypeEnum::class),
-            Pagination::IDS => 'sometimes|required|array|exists:' . Order::TABLE_NAME . ',' . Order::COLUMN_ID,
-            Pagination::IDS . '.*' => 'required|integer|min:1',
-            Order::COLUMN_RENTAL_DATE => 'sometimes|required|date',
-            Order::COLUMN_IS_CONFIRMED => 'sometimes|required|string|in:true,false',
-            Order::COLUMN_IS_CHECKED => 'sometimes|required|string|in:true,false',
-            Order::COLUMN_STATUS => 'sometimes|required|string|in:' . $serializer->execute(OrderStatusEnum::class),
-            Order::COLUMN_USER_NAME => 'sometimes|required|string',
-            IndexOrderQueryParam::AGENCY_NAME => 'sometimes|required|string',
-            Order::COLUMN_ADMIN_NOTE => 'sometimes|required|string|in:true,false',
-            IndexOrderQueryParam::START_DATE => 'sometimes|required|date',
-            IndexOrderQueryParam::END_DATE => 'sometimes|required|date',
+            PaginationEnum::Start->value => 'required|integer|min:0',
+            PaginationEnum::End->value => 'required|integer|min:1',
+            PaginationEnum::SortColumn->value =>
+                'required|string|in:' . $serializer->execute(OrderSortColumnEnum::class),
+            PaginationEnum::SortType->value => 'required|string|in:' . $serializer->execute(SortTypeEnum::class),
+            PaginationEnum::Ids->value =>
+                'sometimes|required|array|exists:' . Order::TABLE_NAME . ',' . Order::COLUMN_ID,
+            PaginationEnum::Ids->value . '.*' => 'required|integer|min:1',
+            IndexOrderRequestParamEnum::RentalDate->value => 'sometimes|required|date',
+            IndexOrderRequestParamEnum::IsConfirmed->value => 'sometimes|required|string|in:true,false',
+            IndexOrderRequestParamEnum::IsChecked->value => 'sometimes|required|string|in:true,false',
+            IndexOrderRequestParamEnum::Status->value =>
+                'sometimes|required|string|in:' . $serializer->execute(OrderStatusEnum::class),
+            IndexOrderRequestParamEnum::UserName->value => 'sometimes|required|string',
+            IndexOrderRequestParamEnum::AgencyName->value => 'sometimes|required|string',
+            IndexOrderRequestParamEnum::AdminNote->value => 'sometimes|required|string|in:true,false',
+            IndexOrderRequestParamEnum::StartDate->value => 'sometimes|required|date',
+            IndexOrderRequestParamEnum::EndDate->value => 'sometimes|required|date',
         ];
     }
 
+    /**
+     * @throws BooleanFilterException
+     */
     public function getValidated(): IndexOrderRequestDTO
     {
-        $this->filter = resolve(BooleanFilterHelperInterface::class);
+        $data = $this->validated();
 
-        $this->data = $this->validated();
+        /* @var $filter \App\Helpers\RequestFilterHelper */
+        $filter = resolve(RequestFilterHelperInterface::class, ['data' => $data]);
 
         $indexOrderPaginationDTO = new IndexOrderPaginationDTO(
-            $this->data[Pagination::START],
-            $this->data[Pagination::END],
-            OrderSortColumnEnum::from($this->data[Pagination::SORT_COLUMN]),
-            SortTypeEnum::from($this->data[Pagination::SORT_TYPE]),
-            $this->checkValue(Pagination::IDS),
+            $data[PaginationEnum::Start->value],
+            $data[PaginationEnum::End->value],
+            OrderSortColumnEnum::from($data[PaginationEnum::SortColumn->value]),
+            SortTypeEnum::from($data[PaginationEnum::SortType->value]),
+            $filter->checkRequestParam(PaginationEnum::Ids),
         );
 
         return new IndexOrderRequestDTO(
             $indexOrderPaginationDTO,
-            $this->checkValue(Order::COLUMN_RENTAL_DATE),
-            $this->checkValue(Order::COLUMN_USER_NAME),
-            $this->checkValue(IndexOrderQueryParam::AGENCY_NAME),
-            $this->checkValue(IndexOrderQueryParam::START_DATE),
-            $this->checkValue(IndexOrderQueryParam::END_DATE),
-            OrderStatusEnum::tryFrom($this->checkValue(Order::COLUMN_STATUS)),
-            $this->filterValue(Order::COLUMN_IS_CONFIRMED),
-            $this->filterValue(Order::COLUMN_IS_CHECKED),
-            $this->filterValue(Order::COLUMN_ADMIN_NOTE),
+            $filter->checkRequestParam(IndexOrderRequestParamEnum::RentalDate),
+            $filter->checkRequestParam(IndexOrderRequestParamEnum::UserName),
+            $filter->checkRequestParam(IndexOrderRequestParamEnum::AgencyName),
+            $filter->checkRequestParam(IndexOrderRequestParamEnum::StartDate),
+            $filter->checkRequestParam(IndexOrderRequestParamEnum::EndDate),
+            OrderStatusEnum::tryFrom($filter->checkRequestParam(IndexOrderRequestParamEnum::Status)),
+            $filter->filterBooleanRequestParam(IndexOrderRequestParamEnum::IsConfirmed),
+            $filter->filterBooleanRequestParam(IndexOrderRequestParamEnum::IsChecked),
+            $filter->filterBooleanRequestParam(IndexOrderRequestParamEnum::AdminNote),
         );
-    }
-
-    private function checkValue(string $queryParam): mixed
-    {
-        return $this->data[$queryParam] ?? null;
-    }
-
-    private function filterValue(string $queryParam): bool|null
-    {
-        return isset($this->data[$queryParam])
-            ? $this->filter->execute($this->data[$queryParam])
-            : null;
     }
 }
