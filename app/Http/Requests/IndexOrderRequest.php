@@ -10,20 +10,16 @@ use App\Enums\SortTypeEnum;
 use App\Helpers\Exceptions\EnumSerializerException;
 use App\Helpers\Interfaces\EnumSerializerHelperInterface;
 use App\Helpers\Interfaces\BooleanFilterHelperInterface;
+use App\Http\Requests\Interfaces\IndexOrderRequestInterface;
 use App\Http\Requests\QueryParams\IndexOrderQueryParam;
 use App\Http\Requests\QueryParams\Pagination;
 use App\Models\Order;
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndexOrderRequest extends FormRequest
+class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterface
 {
     private BooleanFilterHelperInterface $filter;
     private array $data;
-
-    public function authorize(): bool
-    {
-        return true;
-    }
 
     /**
      * @throws EnumSerializerException

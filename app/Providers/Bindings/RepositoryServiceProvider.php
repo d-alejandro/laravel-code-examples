@@ -12,9 +12,4 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(OrderSearchRepositoryInterface::class, OrderSearchRepository::class);
     }
-
-    public function boot(): void
-    {
-        //
-    }
 }

@@ -12,9 +12,4 @@ class PresenterServiceProvider extends ServiceProvider
     {
         $this->app->bind(IndexOrderPresenterInterface::class, IndexOrderPresenter::class);
     }
-
-    public function boot(): void
-    {
-        //
-    }
 }

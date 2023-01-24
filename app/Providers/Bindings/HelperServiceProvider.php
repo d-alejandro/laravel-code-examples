@@ -15,9 +15,4 @@ class HelperServiceProvider extends ServiceProvider
         $this->app->bind(EnumSerializerHelperInterface::class, EnumSerializerHelperHelper::class);
         $this->app->bind(BooleanFilterHelperInterface::class, BooleanFilterHelperHelper::class);
     }
-
-    public function boot(): void
-    {
-        //
-    }
 }

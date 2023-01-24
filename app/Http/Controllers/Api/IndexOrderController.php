@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\IndexOrderRequest;
+use App\Http\Requests\Interfaces\IndexOrderRequestInterface;
 use App\Presenter\Interfaces\IndexOrderPresenterInterface;
 use App\UseCases\Interfaces\IndexOrderUseCaseInterface;
 
@@ -15,12 +15,12 @@ final class IndexOrderController extends Controller
     ) {
     }
 
-    public function __invoke(IndexOrderRequest $request): mixed
+    public function __invoke(IndexOrderRequestInterface $request): mixed
     {
-        $indexOrderRequestDTO = $request->getValidated();
+        $requestDTO = $request->getValidated();
 
-        $indexOrderResponseDTO = $this->useCase->execute($indexOrderRequestDTO);
+        $responseDTO = $this->useCase->execute($requestDTO);
 
-        return $this->presenter->present($indexOrderResponseDTO);
+        return $this->presenter->present($responseDTO);
     }
 }

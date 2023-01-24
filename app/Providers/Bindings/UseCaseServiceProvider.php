@@ -12,9 +12,4 @@ class UseCaseServiceProvider extends ServiceProvider
     {
         $this->app->bind(IndexOrderUseCaseInterface::class, IndexOrderUseCase::class);
     }
-
-    public function boot(): void
-    {
-        //
-    }
 }
