@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
-use App\DTO\IndexOrderRequestDTO;
 use App\DTO\IndexOrderResponseDTO;
+use App\DTO\Interfaces\IndexOrderRequestDTOInterface;
 use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
 
 class OrderSearchRepository implements OrderSearchRepositoryInterface
 {
-    public function make(IndexOrderRequestDTO $indexOrderRequestDTO): IndexOrderResponseDTO
+    public function make(IndexOrderRequestDTOInterface $indexOrderRequestDTO): IndexOrderResponseDTO
     {
 
     }
