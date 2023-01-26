@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Presenter\Interfaces;
+namespace App\Presenters\Interfaces;
 
 use App\DTO\IndexOrderResponseDTO;
 

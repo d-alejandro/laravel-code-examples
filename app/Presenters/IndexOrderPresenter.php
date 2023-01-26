@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Presenter;
+namespace App\Presenters;
 
 use App\DTO\IndexOrderResponseDTO;
-use App\Presenter\Interfaces\IndexOrderPresenterInterface;
+use App\Presenters\Interfaces\IndexOrderPresenterInterface;
 
 class IndexOrderPresenter implements IndexOrderPresenterInterface
 {

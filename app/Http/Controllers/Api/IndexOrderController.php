@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Interfaces\IndexOrderRequestInterface;
-use App\Presenter\Interfaces\IndexOrderPresenterInterface;
+use App\Presenters\Interfaces\IndexOrderPresenterInterface;
 use App\UseCases\Interfaces\IndexOrderUseCaseInterface;
 
 final class IndexOrderController extends Controller

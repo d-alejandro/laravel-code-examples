@@ -9,7 +9,7 @@ use App\Enums\OrderSortColumnEnum;
 use App\Enums\SortTypeEnum;
 use App\Http\Controllers\Api\IndexOrderController;
 use App\Http\Requests\Interfaces\IndexOrderRequestInterface;
-use App\Presenter\Interfaces\IndexOrderPresenterInterface;
+use App\Presenters\Interfaces\IndexOrderPresenterInterface;
 use App\UseCases\Interfaces\IndexOrderUseCaseInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
