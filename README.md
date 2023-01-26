@@ -3,13 +3,16 @@
 ## Topics
 
 - Back-end
+- Clean Architecture
 - Code coverage
 - CRUD
 - Dependency Injection
 - Design Patterns
 - Docker Compose
 - DTO
+- Enums
 - Feature tests
+- Interfaces
 - Laravel 9
 - Linux
 - Makefile
@@ -18,10 +21,13 @@
 - Nginx
 - PHP 8.2
 - PHPUnit
+- Presenters
+- Repository Pattern (with criteria queries)
 - RESTful API
 - SOLID
 - SQL
 - Unit tests
+- Use Cases
 - Xdebug
 
 ## Installation
