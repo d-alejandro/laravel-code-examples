@@ -46,4 +46,8 @@ final class Order extends Model
         self::COLUMN_RENTAL_DATE,
         self::COLUMN_CONFIRMED_AT,
     ];
+
+    protected $casts = [
+        self::COLUMN_STATUS => OrderStatusEnum::class,
+    ];
 }
