@@ -5,7 +5,7 @@ namespace App\UseCases;
 use App\DTO\Interfaces\IndexOrderRequestDTOInterface;
 use App\DTO\Interfaces\IndexOrderResponseDTOInterface;
 use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
-use App\UseCases\Exceptions\OrderSearchException;
+use App\UseCases\Exceptions\OrderSearchUseCasesException;
 use App\UseCases\Interfaces\IndexOrderUseCaseInterface;
 use Throwable;
 
@@ -17,14 +17,14 @@ class IndexOrderUseCase implements IndexOrderUseCaseInterface
     }
 
     /**
-     * @throws OrderSearchException
+     * @throws OrderSearchUseCasesException
      */
     public function execute(IndexOrderRequestDTOInterface $indexOrderRequestDTO): IndexOrderResponseDTOInterface
     {
         try {
             return $this->repository->make($indexOrderRequestDTO);
         } catch (Throwable $exception) {
-            throw new OrderSearchException('An error occurred while loading orders.', previous: $exception);
+            throw new OrderSearchUseCasesException('An error occurred while loading orders.', previous: $exception);
         }
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Providers\Bindings;
 
-use App\Helpers\EnumSerializerHelper;
-use App\Helpers\Interfaces\EnumSerializerHelperInterface;
+use App\Helpers\EnumHelper;
+use App\Helpers\Interfaces\EnumHelperInterface;
 use App\Helpers\Interfaces\RequestFilterHelperInterface;
 use App\Helpers\RequestFilterHelper;
 use Illuminate\Foundation\Application;
@@ -15,7 +15,7 @@ class HelperServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this->app->bind(EnumSerializerHelperInterface::class, EnumSerializerHelper::class);
+        $this->app->bind(EnumHelperInterface::class, EnumHelper::class);
 
         $this->app->bind(
             RequestFilterHelperInterface::class,

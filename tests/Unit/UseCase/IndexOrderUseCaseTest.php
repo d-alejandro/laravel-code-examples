@@ -8,7 +8,7 @@ use App\DTO\IndexOrderResponseDTO;
 use App\Enums\OrderSortColumnEnum;
 use App\Enums\SortTypeEnum;
 use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
-use App\UseCases\Exceptions\OrderSearchException;
+use App\UseCases\Exceptions\OrderSearchUseCasesException;
 use App\UseCases\IndexOrderUseCase;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -59,7 +59,7 @@ class IndexOrderUseCaseTest extends TestCase
 
     /**
      * @dataProvider getDataProvider
-     * @throws OrderSearchException
+     * @throws OrderSearchUseCasesException
      */
     public function testSuccessfulIndexOrderUseCaseExecution(
         IndexOrderRequestDTO  $indexOrderRequestDTO,
@@ -86,7 +86,7 @@ class IndexOrderUseCaseTest extends TestCase
             ->once()
             ->andThrow(new Exception());
 
-        $this->expectException(OrderSearchException::class);
+        $this->expectException(OrderSearchUseCasesException::class);
         $this->expectExceptionMessage('An error occurred while loading orders.');
 
         $this->indexOrderUseCase->execute($indexOrderRequestDTO);

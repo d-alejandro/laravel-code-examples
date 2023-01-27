@@ -3,7 +3,7 @@
 namespace App\Helpers;
 
 use App\Enums\Interfaces\RequestParamEnumInterface;
-use App\Helpers\Exceptions\BooleanFilterException;
+use App\Helpers\Exceptions\BooleanFilterHelperException;
 use App\Helpers\Interfaces\RequestFilterHelperInterface;
 
 class RequestFilterHelper implements RequestFilterHelperInterface
@@ -20,7 +20,7 @@ class RequestFilterHelper implements RequestFilterHelperInterface
     }
 
     /**
-     * @throws BooleanFilterException
+     * @throws BooleanFilterHelperException
      */
     public function filterBooleanRequestParam(RequestParamEnumInterface $requestParam): bool|null
     {
@@ -31,14 +31,14 @@ class RequestFilterHelper implements RequestFilterHelperInterface
     }
 
     /**
-     * @throws BooleanFilterException
+     * @throws BooleanFilterHelperException
      */
     private function filterBooleanValue(string $value): bool
     {
         return match ($value) {
             'true' => true,
             'false' => false,
-            default => throw new BooleanFilterException(
+            default => throw new BooleanFilterHelperException(
                 'The param value must be able to be cast as a boolean.'
             ),
         };

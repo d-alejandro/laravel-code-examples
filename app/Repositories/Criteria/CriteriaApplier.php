@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Criteria;
 
-use App\Repositories\Criteria\Exceptions\ClassExistenceException;
+use App\Repositories\Criteria\Exceptions\ClassExistenceRepositoryException;
 use App\Repositories\Criteria\Interfaces\CriteriaApplierInterface;
 use App\Repositories\Criteria\Interfaces\CriterionInterface;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,7 +17,7 @@ class CriteriaApplier implements CriteriaApplierInterface
     private array $criteria = [];
 
     /**
-     * @throws ClassExistenceException
+     * @throws ClassExistenceRepositoryException
      */
     public function __construct(string $eloquentModel)
     {
@@ -43,12 +43,12 @@ class CriteriaApplier implements CriteriaApplierInterface
     }
 
     /**
-     * @throws ClassExistenceException
+     * @throws ClassExistenceRepositoryException
      */
     private function checkClassExistence(string $eloquentModel): void
     {
         if (!class_exists($eloquentModel)) {
-            throw new ClassExistenceException("Class '$eloquentModel' not found.");
+            throw new ClassExistenceRepositoryException("Class '$eloquentModel' not found.");
         }
     }
 }

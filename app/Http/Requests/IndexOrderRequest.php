@@ -7,9 +7,9 @@ use App\DTO\IndexOrderRequestDTO;
 use App\Enums\OrderSortColumnEnum;
 use App\Enums\OrderStatusEnum;
 use App\Enums\SortTypeEnum;
-use App\Helpers\Exceptions\BooleanFilterException;
-use App\Helpers\Exceptions\EnumSerializerException;
-use App\Helpers\Interfaces\EnumSerializerHelperInterface;
+use App\Helpers\Exceptions\BooleanFilterHelperException;
+use App\Helpers\Exceptions\EnumHelperException;
+use App\Helpers\Interfaces\EnumHelperInterface;
 use App\Helpers\Interfaces\RequestFilterHelperInterface;
 use App\Http\Requests\Enums\IndexOrderRequestParamEnum;
 use App\Http\Requests\Enums\PaginationEnum;
@@ -21,19 +21,20 @@ use Illuminate\Foundation\Http\FormRequest;
 class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterface
 {
     /**
-     * @throws EnumSerializerException
+     * @throws EnumHelperException
      */
     public function rules(): array
     {
-        /* @var $serializer \App\Helpers\EnumSerializerHelper */
-        $serializer = resolve(EnumSerializerHelperInterface::class);
+        /* @var $enumHelper \App\Helpers\EnumHelper */
+        $enumHelper = resolve(EnumHelperInterface::class);
 
         return [
             PaginationEnum::Start->value => 'required|integer|min:0',
             PaginationEnum::End->value => 'required|integer|min:1',
             PaginationEnum::SortColumn->value =>
-                'required|string|in:' . $serializer->execute(OrderSortColumnEnum::class),
-            PaginationEnum::SortType->value => 'required|string|in:' . $serializer->execute(SortTypeEnum::class),
+                'required|string|in:' . $enumHelper->serialize(OrderSortColumnEnum::class),
+            PaginationEnum::SortType->value =>
+                'required|string|in:' . $enumHelper->serialize(SortTypeEnum::class),
             PaginationEnum::Ids->value =>
                 'sometimes|required|array|exists:' . Order::TABLE_NAME . ',' . Order::COLUMN_ID,
             PaginationEnum::Ids->value . '.*' => 'required|integer|min:1',
@@ -41,7 +42,7 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
             IndexOrderRequestParamEnum::IsConfirmed->value => 'sometimes|required|string|in:true,false',
             IndexOrderRequestParamEnum::IsChecked->value => 'sometimes|required|string|in:true,false',
             IndexOrderRequestParamEnum::Status->value =>
-                'sometimes|required|string|in:' . $serializer->execute(OrderStatusEnum::class),
+                'sometimes|required|string|in:' . $enumHelper->serialize(OrderStatusEnum::class),
             IndexOrderRequestParamEnum::UserName->value => 'sometimes|required|string',
             IndexOrderRequestParamEnum::AgencyName->value => 'sometimes|required|string',
             IndexOrderRequestParamEnum::AdminNote->value => 'sometimes|required|string|in:true,false',
@@ -51,7 +52,7 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
     }
 
     /**
-     * @throws BooleanFilterException
+     * @throws BooleanFilterHelperException
      */
     public function getValidated(): IndexOrderRequestDTO
     {
