@@ -15,7 +15,6 @@ class RequestFilterHelper implements RequestFilterHelperInterface
 
     public function checkRequestParam(RequestParamEnumInterface $requestParam): mixed
     {
-        /* @var $requestParam \UnitEnum */
         return $this->requestParams[$requestParam->value] ?? null;
     }
 
@@ -24,7 +23,6 @@ class RequestFilterHelper implements RequestFilterHelperInterface
      */
     public function filterBooleanRequestParam(RequestParamEnumInterface $requestParam): bool|null
     {
-        /* @var $requestParam \UnitEnum */
         return isset($this->requestParams[$requestParam->value])
             ? $this->filterBooleanValue($this->requestParams[$requestParam->value])
             : null;

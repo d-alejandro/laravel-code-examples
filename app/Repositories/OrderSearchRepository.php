@@ -19,13 +19,13 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
 
     public function make(IndexOrderRequestDTOInterface $indexOrderRequestDTO): IndexOrderResponseDTO
     {
-        $whereEqualCriterion = new WhereEqualCriterion(
-            Order::TABLE_NAME,
-            OrderColumn::IsConfirmed->value,
-            $indexOrderRequestDTO->isConfirmed
+        $this->criteriaApplier->addCriterion(
+            new WhereEqualCriterion(
+                Order::TABLE_NAME,
+                OrderColumn::IsConfirmed,
+                $indexOrderRequestDTO->isConfirmed
+            )
         );
-
-        $this->criteriaApplier->addCriterion($whereEqualCriterion);
 
         $collection = $this->criteriaApplier->get();
 

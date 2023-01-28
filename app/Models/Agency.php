@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Enums\AgencyEnum;
+use App\Models\Enums\AgencyColumn;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,6 +14,6 @@ final class Agency extends Model
     public const TABLE_NAME = 'agencies';
 
     protected $guarded = [
-        AgencyEnum::Id->value,
+        AgencyColumn::Id->value,
     ];
 }

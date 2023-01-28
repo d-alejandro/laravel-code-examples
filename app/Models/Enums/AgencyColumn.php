@@ -2,7 +2,9 @@
 
 namespace App\Models\Enums;
 
-enum AgencyEnum: string
+use App\Enums\Interfaces\ModelColumnInterface;
+
+enum AgencyColumn: string implements ModelColumnInterface
 {
     case Id = 'id';
     case Name = 'name';

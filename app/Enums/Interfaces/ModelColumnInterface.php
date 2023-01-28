@@ -4,6 +4,6 @@ namespace App\Enums\Interfaces;
 
 use StringBackedEnum;
 
-interface RequestParamEnumInterface extends StringBackedEnum
+interface ModelColumnInterface extends StringBackedEnum
 {
 }

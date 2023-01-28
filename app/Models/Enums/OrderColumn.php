@@ -2,7 +2,9 @@
 
 namespace App\Models\Enums;
 
-enum OrderColumn: string
+use App\Enums\Interfaces\ModelColumnInterface;
+
+enum OrderColumn: string implements ModelColumnInterface
 {
     case Id = 'id';
     case AgencyId = 'agency_id';
