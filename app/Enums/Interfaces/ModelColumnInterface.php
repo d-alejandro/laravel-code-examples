@@ -2,8 +2,8 @@
 
 namespace App\Enums\Interfaces;
 
-use StringBackedEnum;
+use BackedEnum;
 
-interface ModelColumnInterface extends StringBackedEnum
+interface ModelColumnInterface extends BackedEnum
 {
 }

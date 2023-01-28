@@ -2,8 +2,8 @@
 
 namespace App\Enums\Interfaces;
 
-use StringBackedEnum;
+use BackedEnum;
 
-interface RequestParamEnumInterface extends StringBackedEnum
+interface RequestParamEnumInterface extends BackedEnum
 {
 }
