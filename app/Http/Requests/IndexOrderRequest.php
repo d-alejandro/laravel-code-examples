@@ -14,6 +14,7 @@ use App\Helpers\Interfaces\RequestFilterHelperInterface;
 use App\Http\Requests\Enums\IndexOrderRequestParamEnum;
 use App\Http\Requests\Enums\PaginationEnum;
 use App\Http\Requests\Interfaces\IndexOrderRequestInterface;
+use App\Models\Enums\OrderColumn;
 use App\Models\Order;
 use App\Providers\Bindings\HelperServiceProvider;
 use Illuminate\Foundation\Http\FormRequest;
@@ -36,7 +37,7 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
             PaginationEnum::SortType->value =>
                 'required|string|in:' . $enumHelper->serialize(SortTypeEnum::class),
             PaginationEnum::Ids->value =>
-                'sometimes|required|array|exists:' . Order::TABLE_NAME . ',' . Order::COLUMN_ID,
+                'sometimes|required|array|exists:' . Order::TABLE_NAME . ',' . OrderColumn::Id->value,
             PaginationEnum::Ids->value . '.*' => 'required|integer|min:1',
             IndexOrderRequestParamEnum::RentalDate->value => 'sometimes|required|date',
             IndexOrderRequestParamEnum::IsConfirmed->value => 'sometimes|required|string|in:true,false',

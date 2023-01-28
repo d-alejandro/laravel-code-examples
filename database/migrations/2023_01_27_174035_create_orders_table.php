@@ -3,6 +3,7 @@
 use App\Enums\OrderStatusEnum;
 use App\Helpers\Interfaces\EnumHelperInterface;
 use App\Models\Agency;
+use App\Models\Enums\OrderColumn;
 use App\Models\Order;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,26 +20,26 @@ return new class extends Migration
 
         Schema::create(Order::TABLE_NAME, function (Blueprint $table) use ($helper) {
             $table->id()->from(self::AUTO_INCREMENT_ID_START);
-            $table->foreignId(Order::COLUMN_AGENCY_ID)
+            $table->foreignId(OrderColumn::AgencyId->value)
                 ->constrained(Agency::TABLE_NAME)
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->enum(
-                Order::COLUMN_STATUS,
+                OrderColumn::Status->value,
                 $helper->getValues(OrderStatusEnum::class)
             )
                 ->default(OrderStatusEnum::Waiting->value);
-            $table->boolean(Order::COLUMN_IS_CHECKED)->default(false);
-            $table->boolean(Order::COLUMN_IS_CONFIRMED)->default(false);
-            $table->timestamp(Order::COLUMN_RENTAL_DATE)->nullable();
-            $table->integer(Order::COLUMN_GUESTS_COUNT);
-            $table->integer(Order::COLUMN_TRANSPORT_COUNT);
-            $table->string(Order::COLUMN_USER_NAME)->nullable();
-            $table->string(Order::COLUMN_EMAIL);
-            $table->string(Order::COLUMN_PHONE);
-            $table->text(Order::COLUMN_NOTE)->nullable();
-            $table->text(Order::COLUMN_ADMIN_NOTE)->nullable();
-            $table->timestamp(Order::COLUMN_CONFIRMED_AT)->nullable();
+            $table->boolean(OrderColumn::IsChecked->value)->default(false);
+            $table->boolean(OrderColumn::IsConfirmed->value)->default(false);
+            $table->timestamp(OrderColumn::RentalDate->value)->nullable();
+            $table->integer(OrderColumn::GuestsCount->value);
+            $table->integer(OrderColumn::TransportCount->value);
+            $table->string(OrderColumn::UserName->value)->nullable();
+            $table->string(OrderColumn::Email->value);
+            $table->string(OrderColumn::Phone->value);
+            $table->text(OrderColumn::Note->value)->nullable();
+            $table->text(OrderColumn::AdminNote->value)->nullable();
+            $table->timestamp(OrderColumn::ConfirmedAt->value)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

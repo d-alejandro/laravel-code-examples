@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\DTO\IndexOrderResponseDTO;
 use App\DTO\Interfaces\IndexOrderRequestDTOInterface;
+use App\Models\Enums\OrderColumn;
 use App\Models\Order;
 use App\Repositories\Criteria\Interfaces\CriteriaApplierInterface;
 use App\Repositories\Criteria\WhereEqualCriterion;
@@ -20,7 +21,7 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
     {
         $whereEqualCriterion = new WhereEqualCriterion(
             Order::TABLE_NAME,
-            Order::COLUMN_IS_CONFIRMED,
+            OrderColumn::IsConfirmed->value,
             $indexOrderRequestDTO->isConfirmed
         );
 

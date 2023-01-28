@@ -3,17 +3,16 @@
 namespace App\Http\Requests\Enums;
 
 use App\Enums\Interfaces\RequestParamEnumInterface;
-use App\Models\Order;
 
 enum IndexOrderRequestParamEnum: string implements RequestParamEnumInterface
 {
-    case RentalDate = Order::COLUMN_RENTAL_DATE;
-    case IsConfirmed = Order::COLUMN_IS_CONFIRMED;
-    case IsChecked = Order::COLUMN_IS_CHECKED;
-    case Status = Order::COLUMN_STATUS;
-    case UserName = Order::COLUMN_USER_NAME;
+    case RentalDate = 'rental_date';
+    case IsConfirmed = 'is_confirmed';
+    case IsChecked = 'is_checked';
+    case Status = 'status';
+    case UserName = 'user_name';
     case AgencyName = 'agency_name';
-    case AdminNote = Order::COLUMN_ADMIN_NOTE;
+    case AdminNote = 'admin_note';
     case StartDate = 'start_date';
     case EndDate = 'end_date';
 }
