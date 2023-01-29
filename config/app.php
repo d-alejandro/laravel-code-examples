@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => env('TIMEZONE', 'Europe/Moscow'),
+    'timezone' => 'Europe/Moscow',
 
     /*
     |--------------------------------------------------------------------------
