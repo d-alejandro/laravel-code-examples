@@ -10,5 +10,5 @@ enum PaginationEnum: string implements RequestParamEnumInterface
     case End = 'end';
     case SortColumn = 'sort_column';
     case SortType = 'sort_type';
-    case Ids = 'ids';
+    case Ids = 'id';
 }

@@ -10,6 +10,7 @@ use App\Repositories\Criteria\Interfaces\CriteriaApplierInterface;
 use App\Repositories\Criteria\PaginationCriterion;
 use App\Repositories\Criteria\WhenCriterion;
 use App\Repositories\Criteria\WhereEqualCriterion;
+use App\Repositories\Criteria\WhereInIdsCriterion;
 use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
 
 class OrderSearchRepository implements OrderSearchRepositoryInterface
@@ -41,6 +42,16 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
                 $indexOrderRequestDTO->paginationDTO->sortType,
                 $indexOrderRequestDTO->paginationDTO->start,
                 $indexOrderRequestDTO->paginationDTO->end
+            )
+        );
+
+        $this->criteriaApplier->addCriterion(
+            new WhenCriterion(
+                $indexOrderRequestDTO->paginationDTO->ids,
+                new WhereInIdsCriterion(
+                    Order::TABLE_NAME,
+                    $indexOrderRequestDTO->paginationDTO->ids,
+                )
             )
         );
 
