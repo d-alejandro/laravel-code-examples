@@ -2,9 +2,9 @@
 
 namespace App\Presenters\Interfaces;
 
-use App\DTO\IndexOrderResponseDTO;
+use App\DTO\Interfaces\IndexOrderResponseDTOInterface;
 
 interface IndexOrderPresenterInterface
 {
-    public function present(IndexOrderResponseDTO $indexOrderResponseDTO): mixed;
+    public function present(IndexOrderResponseDTOInterface $indexOrderResponseDTO): mixed;
 }
