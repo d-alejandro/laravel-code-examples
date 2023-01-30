@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\DTO\IndexOrderPaginationDTO;
+use App\DTO\IndexPaginationDTO;
 use App\DTO\IndexOrderRequestDTO;
 use App\Enums\OrderStatusEnum;
 use App\Enums\SortTypeEnum;
@@ -63,7 +63,7 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
             HelperServiceProvider::PARAM_REQUEST_PARAMS => $requestParams,
         ]);
 
-        $indexOrderPaginationDTO = new IndexOrderPaginationDTO(
+        $indexOrderPaginationDTO = new IndexPaginationDTO(
             $requestParams[PaginationEnum::Start->value],
             $requestParams[PaginationEnum::End->value],
             OrderColumn::from(

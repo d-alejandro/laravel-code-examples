@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\UseCase;
 
-use App\DTO\IndexOrderPaginationDTO;
+use App\DTO\IndexPaginationDTO;
 use App\DTO\IndexOrderRequestDTO;
 use App\DTO\IndexOrderResponseDTO;
 use App\Enums\SortTypeEnum;
@@ -34,7 +34,7 @@ class IndexOrderUseCaseTest extends TestCase
         $firstPaginationItemNumber = 0;
         $lastPaginationItemNumber = 1;
 
-        $indexOrderPaginationDTO = new IndexOrderPaginationDTO(
+        $indexOrderPaginationDTO = new IndexPaginationDTO(
             $firstPaginationItemNumber,
             $lastPaginationItemNumber,
             OrderColumn::Id,
