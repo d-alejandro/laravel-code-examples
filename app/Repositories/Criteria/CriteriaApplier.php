@@ -29,9 +29,8 @@ class CriteriaApplier implements CriteriaApplierInterface
 
     public function __call(string $name, array $arguments): mixed
     {
-        /* @var $criterion CriterionInterface */
         foreach ($this->criteria as $criterion) {
-            $criterion->apply($this->builder);
+            $this->applyCriterion($criterion);
         }
 
         return $this->builder->{$name}(...$arguments);
@@ -50,5 +49,10 @@ class CriteriaApplier implements CriteriaApplierInterface
         if (!class_exists($eloquentModel)) {
             throw new ClassExistenceRepositoryException("Class '$eloquentModel' not found.");
         }
+    }
+
+    private function applyCriterion(CriterionInterface $criterion): void
+    {
+        $criterion->apply($this->builder);
     }
 }
