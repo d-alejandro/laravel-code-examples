@@ -7,6 +7,8 @@ use App\DTO\Interfaces\IndexOrderRequestDTOInterface;
 use App\Models\Enums\OrderColumn;
 use App\Models\Order;
 use App\Repositories\Criteria\Interfaces\CriteriaApplierInterface;
+use App\Repositories\Criteria\PaginationCriterion;
+use App\Repositories\Criteria\WhenCriterion;
 use App\Repositories\Criteria\WhereEqualCriterion;
 use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
 
@@ -20,15 +22,30 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
     public function make(IndexOrderRequestDTOInterface $indexOrderRequestDTO): IndexOrderResponseDTO
     {
         $this->criteriaApplier->addCriterion(
-            new WhereEqualCriterion(
+            new WhenCriterion(
+                $indexOrderRequestDTO->isConfirmed,
+                new WhereEqualCriterion(
+                    Order::TABLE_NAME,
+                    OrderColumn::IsConfirmed,
+                    $indexOrderRequestDTO->isConfirmed
+                )
+            )
+        );
+
+        $count = $this->criteriaApplier->count();
+
+        $this->criteriaApplier->addCriterion(
+            new PaginationCriterion(
                 Order::TABLE_NAME,
-                OrderColumn::IsConfirmed,
-                $indexOrderRequestDTO->isConfirmed
+                $indexOrderRequestDTO->paginationDTO->sortColumn,
+                $indexOrderRequestDTO->paginationDTO->sortType,
+                $indexOrderRequestDTO->paginationDTO->start,
+                $indexOrderRequestDTO->paginationDTO->end
             )
         );
 
         $collection = $this->criteriaApplier->get();
 
-        return new IndexOrderResponseDTO($collection, 1);
+        return new IndexOrderResponseDTO($collection, $count);
     }
 }

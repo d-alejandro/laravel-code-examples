@@ -2,7 +2,7 @@
 
 namespace App\Models\Enums;
 
-use App\Enums\Interfaces\ModelColumnInterface;
+use App\Models\Enums\Interfaces\ModelColumnInterface;
 
 enum OrderColumn: string implements ModelColumnInterface
 {

@@ -5,10 +5,10 @@ namespace Tests\Unit\Controller;
 use App\DTO\IndexOrderPaginationDTO;
 use App\DTO\IndexOrderRequestDTO;
 use App\DTO\IndexOrderResponseDTO;
-use App\Enums\OrderSortColumnEnum;
 use App\Enums\SortTypeEnum;
 use App\Http\Controllers\Api\IndexOrderController;
 use App\Http\Requests\Interfaces\IndexOrderRequestInterface;
+use App\Models\Enums\OrderColumn;
 use App\Presenters\Interfaces\IndexOrderPresenterInterface;
 use App\UseCases\Interfaces\IndexOrderUseCaseInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -46,7 +46,7 @@ class IndexOrderControllerTest extends TestCase
         $indexOrderPaginationDTO = new IndexOrderPaginationDTO(
             $firstPaginationItemNumber,
             $lastPaginationItemNumber,
-            OrderSortColumnEnum::Id,
+            OrderColumn::Id,
             SortTypeEnum::Asc
         );
 

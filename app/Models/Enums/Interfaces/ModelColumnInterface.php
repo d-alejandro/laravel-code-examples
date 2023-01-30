@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Interfaces;
+namespace App\Models\Enums\Interfaces;
 
 use BackedEnum;
 

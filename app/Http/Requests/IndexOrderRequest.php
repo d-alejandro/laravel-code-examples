@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\DTO\IndexOrderPaginationDTO;
 use App\DTO\IndexOrderRequestDTO;
-use App\Enums\OrderSortColumnEnum;
 use App\Enums\OrderStatusEnum;
 use App\Enums\SortTypeEnum;
 use App\Helpers\Exceptions\BooleanFilterHelperException;
@@ -33,7 +32,7 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
             PaginationEnum::Start->value => 'required|integer|min:0',
             PaginationEnum::End->value => 'required|integer|min:1',
             PaginationEnum::SortColumn->value =>
-                'required|string|in:' . $enumHelper->serialize(OrderSortColumnEnum::class),
+                'required|string|in:' . $enumHelper->serialize(OrderColumn::class),
             PaginationEnum::SortType->value =>
                 'required|string|in:' . $enumHelper->serialize(SortTypeEnum::class),
             PaginationEnum::Ids->value =>
@@ -67,7 +66,7 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
         $indexOrderPaginationDTO = new IndexOrderPaginationDTO(
             $requestParams[PaginationEnum::Start->value],
             $requestParams[PaginationEnum::End->value],
-            OrderSortColumnEnum::from(
+            OrderColumn::from(
                 $requestParams[PaginationEnum::SortColumn->value]
             ),
             SortTypeEnum::from(

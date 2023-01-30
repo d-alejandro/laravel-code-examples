@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @method \Illuminate\Database\Eloquent\Collection get(array|string $columns = ['*'])
+ * @method int count(string $columns = '*')
  */
 class CriteriaApplier implements CriteriaApplierInterface
 {

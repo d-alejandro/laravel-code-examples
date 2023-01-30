@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Criteria;
 
-use App\Enums\Interfaces\ModelColumnInterface;
+use App\Models\Enums\Interfaces\ModelColumnInterface;
 use App\Repositories\Criteria\Interfaces\CriterionInterface;
 use Illuminate\Contracts\Database\Query\Builder;
 
