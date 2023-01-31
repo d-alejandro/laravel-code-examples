@@ -66,12 +66,8 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
         $indexOrderPaginationDTO = new IndexPaginationDTO(
             $requestParams[PaginationEnum::Start->value],
             $requestParams[PaginationEnum::End->value],
-            OrderColumn::from(
-                $requestParams[PaginationEnum::SortColumn->value]
-            ),
-            SortTypeEnum::from(
-                $requestParams[PaginationEnum::SortType->value]
-            ),
+            OrderColumn::from($requestParams[PaginationEnum::SortColumn->value]),
+            SortTypeEnum::from($requestParams[PaginationEnum::SortType->value]),
             $filter->checkRequestParam(PaginationEnum::Ids),
         );
 
@@ -82,9 +78,7 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
             $filter->checkRequestParam(IndexOrderRequestParamEnum::AgencyName),
             $filter->checkRequestParam(IndexOrderRequestParamEnum::StartDate),
             $filter->checkRequestParam(IndexOrderRequestParamEnum::EndDate),
-            OrderStatusEnum::tryFrom(
-                $filter->checkRequestParam(IndexOrderRequestParamEnum::Status)
-            ),
+            OrderStatusEnum::tryFrom($filter->checkRequestParam(IndexOrderRequestParamEnum::Status)),
             $filter->filterBooleanRequestParam(IndexOrderRequestParamEnum::IsConfirmed),
             $filter->filterBooleanRequestParam(IndexOrderRequestParamEnum::IsChecked),
             $filter->filterBooleanRequestParam(IndexOrderRequestParamEnum::AdminNote),
