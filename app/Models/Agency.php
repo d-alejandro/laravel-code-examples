@@ -14,6 +14,7 @@ final class Agency extends Model
     use HasFactory, SoftDeletes;
 
     public const TABLE_NAME = 'agencies';
+    public const TABLE_ALIAS = 'agn';
 
     protected $guarded = [
         AgencyColumn::Id->value,

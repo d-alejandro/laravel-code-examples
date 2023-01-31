@@ -34,6 +34,8 @@ class CriteriaApplier implements CriteriaApplierInterface
             $this->applyCriterion($criterion);
         }
 
+        $this->criteria = [];
+
         return $this->builder->{$name}(...$arguments);
     }
 

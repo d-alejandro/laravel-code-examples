@@ -5,15 +5,19 @@ namespace App\Repositories;
 use App\DTO\IndexOrderResponseDTO;
 use App\DTO\IndexPaginationDTO;
 use App\DTO\Interfaces\IndexOrderRequestDTOInterface;
+use App\Models\Agency;
+use App\Models\Enums\AgencyColumn;
 use App\Models\Enums\OrderColumn;
 use App\Models\Order;
 use App\Repositories\Criteria\Interfaces\CriteriaApplierInterface;
+use App\Repositories\Criteria\JoinAndApplyCriterion;
 use App\Repositories\Criteria\PaginationCriterion;
 use App\Repositories\Criteria\SelectCriterion;
 use App\Repositories\Criteria\WhenCriterion;
 use App\Repositories\Criteria\WhereDateEqualCriterion;
 use App\Repositories\Criteria\WhereEqualCriterion;
 use App\Repositories\Criteria\WhereInIdsCriterion;
+use App\Repositories\Criteria\WhereLikeCenterCriterion;
 use App\Repositories\Criteria\WithCriterion;
 use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
 
@@ -37,6 +41,7 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
         $this->addWhereEqualIsCheckedCriterion();
         $this->addWhereEqualStatusCriterion();
         $this->addWhereLikeCenterCriterion();
+        $this->addJoinAndApplyWhereEqualCriterion();
 
         $count = $this->criteriaApplier->count();
 
@@ -111,10 +116,31 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
         $this->criteriaApplier->addCriterion(
             new WhenCriterion(
                 $this->requestDTO->userName,
-                new WhereDateEqualCriterion(
+                new WhereLikeCenterCriterion(
                     Order::TABLE_NAME,
                     OrderColumn::UserName,
                     $this->requestDTO->userName
+                )
+            )
+        );
+    }
+
+    private function addJoinAndApplyWhereEqualCriterion(): void
+    {
+        $this->criteriaApplier->addCriterion(
+            new WhenCriterion(
+                $this->requestDTO->agencyName,
+                new JoinAndApplyCriterion(
+                    Agency::TABLE_NAME,
+                    Agency::TABLE_ALIAS,
+                    AgencyColumn::Id,
+                    Order::TABLE_NAME,
+                    OrderColumn::AgencyId,
+                    new WhereEqualCriterion(
+                        Agency::TABLE_ALIAS,
+                        AgencyColumn::Name,
+                        $this->requestDTO->agencyName
+                    )
                 )
             )
         );
