@@ -18,6 +18,7 @@ use App\Repositories\Criteria\WhereDateEqualCriterion;
 use App\Repositories\Criteria\WhereEqualCriterion;
 use App\Repositories\Criteria\WhereInIdsCriterion;
 use App\Repositories\Criteria\WhereLikeCenterCriterion;
+use App\Repositories\Criteria\WhereNullCheckNotCriterion;
 use App\Repositories\Criteria\WithCriterion;
 use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
 
@@ -42,6 +43,7 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
         $this->addWhereEqualStatusCriterion();
         $this->addWhereLikeCenterCriterion();
         $this->addJoinAndApplyWhereEqualCriterion();
+        $this->addWhereNullCheckNotCriterion();
 
         $count = $this->criteriaApplier->count();
 
@@ -141,6 +143,20 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
                         AgencyColumn::Name,
                         $this->requestDTO->agencyName
                     )
+                )
+            )
+        );
+    }
+
+    private function addWhereNullCheckNotCriterion(): void
+    {
+        $this->criteriaApplier->addCriterion(
+            new WhenCriterion(
+                $this->requestDTO->hasAdminNote,
+                new WhereNullCheckNotCriterion(
+                    Order::TABLE_NAME,
+                    OrderColumn::AdminNote,
+                    $this->requestDTO->hasAdminNote
                 )
             )
         );
