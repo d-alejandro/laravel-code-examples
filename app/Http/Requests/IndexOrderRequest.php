@@ -6,8 +6,6 @@ use App\DTO\IndexPaginationDTO;
 use App\DTO\IndexOrderRequestDTO;
 use App\Enums\OrderStatusEnum;
 use App\Enums\SortTypeEnum;
-use App\Helpers\Exceptions\BooleanFilterHelperException;
-use App\Helpers\Exceptions\EnumHelperException;
 use App\Helpers\Interfaces\EnumHelperInterface;
 use App\Helpers\Interfaces\RequestFilterHelperInterface;
 use App\Http\Requests\Enums\IndexOrderRequestParamEnum;
@@ -21,7 +19,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterface
 {
     /**
-     * @throws EnumHelperException
+     * @throws \App\Helpers\Exceptions\EnumHelperException
      */
     public function rules(): array
     {
@@ -52,7 +50,7 @@ class IndexOrderRequest extends FormRequest implements IndexOrderRequestInterfac
     }
 
     /**
-     * @throws BooleanFilterHelperException
+     * @throws \App\Helpers\Exceptions\BooleanFilterHelperException
      */
     public function getValidated(): IndexOrderRequestDTO
     {
