@@ -129,7 +129,7 @@ class IndexOrderControllerTest extends TestCase
         IndexOrderResponseDTO $indexOrderResponseDTO
     ): void {
         $this->indexOrderRequestMock
-            ->shouldReceive('validated')
+            ->shouldReceive('getValidated')
             ->once()
             ->andReturn($indexOrderRequestDTO);
 
