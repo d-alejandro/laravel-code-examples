@@ -39,6 +39,13 @@ class IndexOrderControllerTest extends TestCase
         $this->indexOrderRequestMock = Mockery::mock(IndexOrderRequestInterface::class);
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        Mockery::close();
+    }
+
     public function getDataProvider(): array
     {
         $firstPaginationItemNumber = 0;
