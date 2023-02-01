@@ -3,24 +3,31 @@
 ## Topics
 
 - Back-end
+- Clean Architecture
 - Code coverage
 - CRUD
+- Dependency Injection
 - Design Patterns
 - Docker Compose
 - DTO
+- Enums
 - Feature tests
+- Interfaces
 - Laravel 9
 - Linux
 - Makefile
 - Mocking Objects
 - MySQL 8
 - Nginx
-- PHP 8.1
+- PHP 8.2
 - PHPUnit
+- Presenters
+- Repository Pattern (with criteria queries)
 - RESTful API
 - SOLID
 - SQL
 - Unit tests
+- Use Cases
 - Xdebug
 
 ## Installation
@@ -45,12 +52,19 @@ cp .env.example .env
 - `docker-compose exec php-fpm php artisan key:generate`
 - `docker-compose exec php-fpm php artisan migrate`
 
-### Run unit tests
+## Testing
+
+To run the unit tests:
 ```
 docker-compose exec php-fpm php artisan test --testsuite=Unit
 ```
 
-### PHP Unit Testing Coverage
+To run the feature tests:
+```
+docker-compose exec php-fpm php artisan test --testsuite=Feature
+```
+
+To run the test coverage:
 ```
 docker-compose exec php-fpm ./vendor/bin/phpunit --coverage-html ./storage/reports/coverage
 ```
