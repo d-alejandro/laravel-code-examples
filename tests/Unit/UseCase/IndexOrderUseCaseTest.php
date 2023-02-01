@@ -29,6 +29,13 @@ class IndexOrderUseCaseTest extends TestCase
         $this->indexOrderUseCase = new IndexOrderUseCase($this->orderSearchRepositoryMock);
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        Mockery::close();
+    }
+
     public function getDataProvider(): array
     {
         $firstPaginationItemNumber = 0;
