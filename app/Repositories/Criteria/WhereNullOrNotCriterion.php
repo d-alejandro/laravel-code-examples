@@ -6,7 +6,7 @@ use App\Models\Enums\Interfaces\ModelColumnInterface;
 use App\Repositories\Criteria\Interfaces\CriterionInterface;
 use Illuminate\Contracts\Database\Query\Builder;
 
-class WhereNullCheckNotCriterion implements CriterionInterface
+class WhereNullOrNotCriterion implements CriterionInterface
 {
     public function __construct(
         private string               $table,

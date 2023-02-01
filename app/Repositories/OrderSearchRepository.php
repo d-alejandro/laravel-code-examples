@@ -15,10 +15,11 @@ use App\Repositories\Criteria\PaginationCriterion;
 use App\Repositories\Criteria\SelectCriterion;
 use App\Repositories\Criteria\WhenCriterion;
 use App\Repositories\Criteria\WhereDateEqualCriterion;
+use App\Repositories\Criteria\WhereDateGreaterThanOrEqualCriterion;
 use App\Repositories\Criteria\WhereEqualCriterion;
 use App\Repositories\Criteria\WhereInIdsCriterion;
 use App\Repositories\Criteria\WhereLikeCenterCriterion;
-use App\Repositories\Criteria\WhereNullCheckNotCriterion;
+use App\Repositories\Criteria\WhereNullOrNotCriterion;
 use App\Repositories\Criteria\WithCriterion;
 use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
 
@@ -43,7 +44,9 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
         $this->addWhereEqualStatusCriterion();
         $this->addWhereLikeCenterCriterion();
         $this->addJoinAndApplyWhereEqualCriterion();
-        $this->addWhereNullCheckNotCriterion();
+        $this->addWhereNullOrNotCriterion();
+        $this->addWhereDateGreaterThanOrEqualCriterion();
+        $this->addWhereDateLessThanOrEqualCriterion();
 
         $count = $this->criteriaApplier->count();
 
@@ -148,15 +151,43 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
         );
     }
 
-    private function addWhereNullCheckNotCriterion(): void
+    private function addWhereNullOrNotCriterion(): void
     {
         $this->criteriaApplier->addCriterion(
             new WhenCriterion(
                 $this->requestDTO->hasAdminNote,
-                new WhereNullCheckNotCriterion(
+                new WhereNullOrNotCriterion(
                     Order::TABLE_NAME,
                     OrderColumn::AdminNote,
                     $this->requestDTO->hasAdminNote
+                )
+            )
+        );
+    }
+
+    private function addWhereDateGreaterThanOrEqualCriterion(): void
+    {
+        $this->criteriaApplier->addCriterion(
+            new WhenCriterion(
+                $this->requestDTO->startRentalDate,
+                new WhereDateGreaterThanOrEqualCriterion(
+                    Order::TABLE_NAME,
+                    OrderColumn::RentalDate,
+                    $this->requestDTO->startRentalDate
+                )
+            )
+        );
+    }
+
+    private function addWhereDateLessThanOrEqualCriterion(): void
+    {
+        $this->criteriaApplier->addCriterion(
+            new WhenCriterion(
+                $this->requestDTO->endRentalDate,
+                new WhereDateGreaterThanOrEqualCriterion(
+                    Order::TABLE_NAME,
+                    OrderColumn::RentalDate,
+                    $this->requestDTO->endRentalDate
                 )
             )
         );
