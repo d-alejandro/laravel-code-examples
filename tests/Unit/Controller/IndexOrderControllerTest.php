@@ -11,6 +11,7 @@ use App\Http\Requests\Interfaces\IndexOrderRequestInterface;
 use App\Models\Enums\OrderColumn;
 use App\Presenters\Interfaces\IndexOrderPresenterInterface;
 use App\UseCases\Interfaces\IndexOrderUseCaseInterface;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Mockery;
@@ -92,5 +93,60 @@ class IndexOrderControllerTest extends TestCase
         $response = $this->indexOrderController->__invoke($this->indexOrderRequestMock);
 
         $this->assertEqualsCanonicalizing($expectedData, $response->getData());
+    }
+
+    /**
+     * @dataProvider getDataProvider
+     */
+    public function testFailedIndexOrderUseCaseCall(
+        IndexOrderRequestDTO $indexOrderRequestDTO
+    ): void {
+        $this->indexOrderRequestMock
+            ->shouldReceive('getValidated')
+            ->once()
+            ->andReturn($indexOrderRequestDTO);
+
+        $this->indexOrderUseCaseMock
+            ->shouldReceive('execute')
+            ->once()
+            ->with($indexOrderRequestDTO)
+            ->andThrow(new Exception());
+
+        $this->indexOrderPresenterMock
+            ->shouldReceive('present')
+            ->never();
+
+        $this->expectException(Exception::class);
+
+        $this->indexOrderController->__invoke($this->indexOrderRequestMock);
+    }
+
+    /**
+     * @dataProvider getDataProvider
+     */
+    public function testFailedIndexOrderPresenterCall(
+        IndexOrderRequestDTO  $indexOrderRequestDTO,
+        IndexOrderResponseDTO $indexOrderResponseDTO
+    ): void {
+        $this->indexOrderRequestMock
+            ->shouldReceive('validated')
+            ->once()
+            ->andReturn($indexOrderRequestDTO);
+
+        $this->indexOrderUseCaseMock
+            ->shouldReceive('execute')
+            ->once()
+            ->with($indexOrderRequestDTO)
+            ->andReturn($indexOrderResponseDTO);
+
+        $this->indexOrderPresenterMock
+            ->shouldReceive('present')
+            ->once()
+            ->with($indexOrderResponseDTO)
+            ->andThrow(new Exception());
+
+        $this->expectException(Exception::class);
+
+        $this->indexOrderController->__invoke($this->indexOrderRequestMock);
     }
 }
