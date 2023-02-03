@@ -49,7 +49,7 @@ class IndexOrderControllerTest extends TestCase
     public function getDataProviderSuccessful(): array
     {
         return [
-            'successful' => [
+            'single' => [
                 'request' => fn(Order $order, Carbon $rentalDate) => [
                     PaginationEnum::Start->value => 0,
                     PaginationEnum::End->value => 1,
@@ -100,7 +100,7 @@ class IndexOrderControllerTest extends TestCase
     public function getDataProviderError(): array
     {
         return [
-            'error' => [
+            'single' => [
                 'request' => [
                     PaginationEnum::Start->value => -1,
                     PaginationEnum::End->value => 0,

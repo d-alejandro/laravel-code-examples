@@ -20,7 +20,7 @@ class EnumHelperTest extends TestCase
     public function getDataProvider(): array
     {
         return [
-            'successful' => [
+            'single' => [
                 'input' => TestRequestParamEnum::class,
                 'expectedResult' => [
                     TestRequestParamEnum::TestKey->value,
@@ -51,7 +51,7 @@ class EnumHelperTest extends TestCase
     public function getDataProviderSerialize(): array
     {
         return [
-            'successful' => [
+            'single' => [
                 'input' => TestRequestParamEnum::class,
                 'expectedResult' => TestRequestParamEnum::TestKey->value
                     . EnumHelper::SERIALIZE_SEPARATOR
