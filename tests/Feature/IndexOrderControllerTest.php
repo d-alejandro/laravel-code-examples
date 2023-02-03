@@ -11,6 +11,7 @@ use App\Models\Agency;
 use App\Models\Enums\AgencyColumn;
 use App\Models\Enums\OrderColumn;
 use App\Models\Order;
+use App\Presenters\IndexOrderPresenter;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -90,6 +91,7 @@ class IndexOrderControllerTest extends TestCase
                     IndexOrderResourceEnum::GuestsCount->value => $this->guestCount,
                     IndexOrderResourceEnum::AdminNote->value => $this->adminNote,
                 ],
+                'expectedRowCount' => 1,
             ],
         ];
     }
@@ -111,16 +113,12 @@ class IndexOrderControllerTest extends TestCase
     /**
      * @dataProvider getDataProviderSuccessful
      */
-    public function testSuccessfulExecution(Closure $request, Closure $expectedResponse): void
+    public function testSuccessfulExecution(Closure $request, Closure $expectedResponse, int $expectedRowCount): void
     {
-        $response = $this->json(
-            'GET',
-            route('adminPanel.order.index'),
-            $request($this->order, $this->rentalDate)
-        );
+        $response = $this->json('GET', route('order.index'), $request($this->order, $this->rentalDate));
 
         $response->assertStatus(Response::HTTP_OK)
-            ->assertHeader('X-Total-Count', 1)
+            ->assertHeader(IndexOrderPresenter::HEADER_X_TOTAL_COUNT, $expectedRowCount)
             ->assertExactJson([
                 'data' => [$expectedResponse($this->order, $this->rentalDate)],
             ]);
@@ -131,7 +129,7 @@ class IndexOrderControllerTest extends TestCase
      */
     public function testValidationError(array $request): void
     {
-        $response = $this->json('GET', route('adminPanel.order.index'), $request);
+        $response = $this->json('GET', route('order.index'), $request);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
             ->assertJsonValidationErrors([
