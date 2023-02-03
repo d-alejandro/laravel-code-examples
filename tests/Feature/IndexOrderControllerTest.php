@@ -63,8 +63,8 @@ class IndexOrderControllerTest extends TestCase
                     IndexOrderRequestParamEnum::UserName->value => $this->userName,
                     IndexOrderRequestParamEnum::AgencyName->value => $this->agencyName,
                     IndexOrderRequestParamEnum::AdminNote->value => 'true',
-                    IndexOrderRequestParamEnum::StartDate->value => $rentalDate->format('Y-m-d'),
-                    IndexOrderRequestParamEnum::EndDate->value => $rentalDate->format('Y-m-d'),
+                    IndexOrderRequestParamEnum::StartDate->value => $rentalDate->copy()->subDay()->format('Y-m-d'),
+                    IndexOrderRequestParamEnum::EndDate->value => $rentalDate->copy()->addDay()->format('Y-m-d'),
                 ],
                 'expectedResponse' => fn(Order $order, Carbon $rentalDate) => [
                     IndexOrderResourceEnum::Id->value => $order->getKey(),
