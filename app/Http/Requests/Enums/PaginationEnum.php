@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Enums;
 
-use App\Enums\Interfaces\RequestParamEnumInterface;
+use App\Http\Requests\Enums\Interfaces\RequestParamEnumInterface;
 
 enum PaginationEnum: string implements RequestParamEnumInterface
 {

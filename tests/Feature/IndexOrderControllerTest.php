@@ -11,6 +11,7 @@ use App\Models\Agency;
 use App\Models\Enums\AgencyColumn;
 use App\Models\Enums\OrderColumn;
 use App\Models\Order;
+use App\Presenters\IndexOrderPresenter;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -21,8 +22,11 @@ class IndexOrderControllerTest extends TestCase
 {
     use DatabaseTransactions;
 
+    private const METHOD_GET = 'get';
+
     private const DAY_COUNT = 7;
 
+    private string $route;
     private Order $order;
     private string $agencyName = 'Test Agency';
     private OrderStatusEnum $status = OrderStatusEnum::Paid;
@@ -36,8 +40,100 @@ class IndexOrderControllerTest extends TestCase
     {
         parent::setUp();
 
-        Order::query()->delete();
+        $this->route = route('order.index');
 
+        $this->deleteDatabaseData();
+        $this->generateTestData();
+    }
+
+    public function getDataProviderSuccessful(): array
+    {
+        return [
+            'single' => [
+                'request' => fn(Order $order, Carbon $rentalDate) => [
+                    PaginationEnum::Start->value => 0,
+                    PaginationEnum::End->value => 1,
+                    PaginationEnum::SortColumn->value => OrderColumn::Id,
+                    PaginationEnum::SortType->value => SortTypeEnum::Desc,
+                    PaginationEnum::Ids->value => [$order->getKey()],
+                    IndexOrderRequestParamEnum::RentalDate->value => $rentalDate->format('Y-m-d'),
+                    IndexOrderRequestParamEnum::IsConfirmed->value => 'true',
+                    IndexOrderRequestParamEnum::IsChecked->value => 'true',
+                    IndexOrderRequestParamEnum::Status->value => $this->status->value,
+                    IndexOrderRequestParamEnum::UserName->value => $this->userName,
+                    IndexOrderRequestParamEnum::AgencyName->value => $this->agencyName,
+                    IndexOrderRequestParamEnum::AdminNote->value => 'true',
+                    IndexOrderRequestParamEnum::StartDate->value => $rentalDate->copy()->subDay()->format('Y-m-d'),
+                    IndexOrderRequestParamEnum::EndDate->value => $rentalDate->copy()->addDay()->format('Y-m-d'),
+                ],
+                'expectedResponse' => fn(Order $order, Carbon $rentalDate) => [
+                    IndexOrderResourceEnum::Id->value => $order->getKey(),
+                    IndexOrderResourceEnum::AgencyName->value => $this->agencyName,
+                    IndexOrderResourceEnum::Status->value => $this->status->value,
+                    IndexOrderResourceEnum::IsConfirmed->value => true,
+                    IndexOrderResourceEnum::IsChecked->value => true,
+                    IndexOrderResourceEnum::RentalDate->value => $rentalDate->format('d-m-Y'),
+                    IndexOrderResourceEnum::UserName->value => $this->userName,
+                    IndexOrderResourceEnum::TransportCount->value => $this->transportCount,
+                    IndexOrderResourceEnum::GuestsCount->value => $this->guestCount,
+                    IndexOrderResourceEnum::AdminNote->value => $this->adminNote,
+                ],
+                'expectedRowCount' => 1,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataProviderSuccessful
+     */
+    public function testSuccessfulExecution(Closure $request, Closure $expectedResponse, int $expectedRowCount): void
+    {
+        $response = $this->json(self::METHOD_GET, $this->route, $request($this->order, $this->rentalDate));
+
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertHeader(IndexOrderPresenter::HEADER_X_TOTAL_COUNT, $expectedRowCount)
+            ->assertExactJson([
+                'data' => [$expectedResponse($this->order, $this->rentalDate)],
+            ]);
+    }
+
+    public function getDataProviderError(): array
+    {
+        return [
+            'single' => [
+                'request' => [
+                    PaginationEnum::Start->value => -1,
+                    PaginationEnum::End->value => 0,
+                    PaginationEnum::SortColumn->value => 'test',
+                    PaginationEnum::SortType->value => 'test',
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataProviderError
+     */
+    public function testValidationError(array $request): void
+    {
+        $response = $this->json(self::METHOD_GET, $this->route, $request);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJsonValidationErrors([
+                PaginationEnum::Start->value,
+                PaginationEnum::End->value,
+                PaginationEnum::SortColumn->value,
+                PaginationEnum::SortType->value,
+            ]);
+    }
+
+    private function deleteDatabaseData(): void
+    {
+        Order::query()->delete();
+    }
+
+    private function generateTestData(): void
+    {
         $agency = Agency::factory()->create([
             AgencyColumn::Name->value => $this->agencyName,
         ]);
@@ -56,89 +152,5 @@ class IndexOrderControllerTest extends TestCase
             OrderColumn::AdminNote->value => $this->adminNote,
             OrderColumn::ConfirmedAt->value => now(),
         ]);
-    }
-
-    public function getDataProviderSuccessful(): array
-    {
-        return [
-            'successful' => [
-                'request' => fn(Order $order, Carbon $rentalDate) => [
-                    PaginationEnum::Start->value => 0,
-                    PaginationEnum::End->value => 1,
-                    PaginationEnum::SortColumn->value => OrderColumn::Id,
-                    PaginationEnum::SortType->value => SortTypeEnum::Desc,
-                    PaginationEnum::Ids->value => [$order->getKey()],
-                    IndexOrderRequestParamEnum::RentalDate->value => $rentalDate->format('Y-m-d'),
-                    IndexOrderRequestParamEnum::IsConfirmed->value => 'true',
-                    IndexOrderRequestParamEnum::IsChecked->value => 'true',
-                    IndexOrderRequestParamEnum::Status->value => $this->status->value,
-                    IndexOrderRequestParamEnum::UserName->value => $this->userName,
-                    IndexOrderRequestParamEnum::AgencyName->value => $this->agencyName,
-                    IndexOrderRequestParamEnum::AdminNote->value => 'true',
-                    IndexOrderRequestParamEnum::StartDate->value => $rentalDate->format('Y-m-d'),
-                    IndexOrderRequestParamEnum::EndDate->value => $rentalDate->format('Y-m-d'),
-                ],
-                'expectedResponse' => fn(Order $order, Carbon $rentalDate) => [
-                    IndexOrderResourceEnum::Id->value => $order->getKey(),
-                    IndexOrderResourceEnum::AgencyName->value => $this->agencyName,
-                    IndexOrderResourceEnum::Status->value => $this->status->value,
-                    IndexOrderResourceEnum::IsConfirmed->value => true,
-                    IndexOrderResourceEnum::IsChecked->value => true,
-                    IndexOrderResourceEnum::RentalDate->value => $rentalDate->format('d-m-Y'),
-                    IndexOrderResourceEnum::UserName->value => $this->userName,
-                    IndexOrderResourceEnum::TransportCount->value => $this->transportCount,
-                    IndexOrderResourceEnum::GuestsCount->value => $this->guestCount,
-                    IndexOrderResourceEnum::AdminNote->value => $this->adminNote,
-                ],
-            ],
-        ];
-    }
-
-    public function getDataProviderError(): array
-    {
-        return [
-            'error' => [
-                'request' => [
-                    PaginationEnum::Start->value => -1,
-                    PaginationEnum::End->value => 0,
-                    PaginationEnum::SortColumn->value => 'test',
-                    PaginationEnum::SortType->value => 'test',
-                ]
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider getDataProviderSuccessful
-     */
-    public function testSuccessfulExecution(Closure $request, Closure $expectedResponse): void
-    {
-        $response = $this->json(
-            'GET',
-            route('adminPanel.order.index'),
-            $request($this->order, $this->rentalDate)
-        );
-
-        $response->assertStatus(Response::HTTP_OK)
-            ->assertHeader('X-Total-Count', 1)
-            ->assertExactJson([
-                'data' => [$expectedResponse($this->order, $this->rentalDate)],
-            ]);
-    }
-
-    /**
-     * @dataProvider getDataProviderError
-     */
-    public function testValidationError(array $request): void
-    {
-        $response = $this->json('GET', route('adminPanel.order.index'), $request);
-
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonValidationErrors([
-                PaginationEnum::Start->value,
-                PaginationEnum::End->value,
-                PaginationEnum::SortColumn->value,
-                PaginationEnum::SortType->value,
-            ]);
     }
 }

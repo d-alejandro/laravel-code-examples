@@ -16,6 +16,7 @@ use App\Repositories\Criteria\SelectCriterion;
 use App\Repositories\Criteria\WhenCriterion;
 use App\Repositories\Criteria\WhereDateEqualCriterion;
 use App\Repositories\Criteria\WhereDateGreaterThanOrEqualCriterion;
+use App\Repositories\Criteria\WhereDateLessThanOrEqualCriterion;
 use App\Repositories\Criteria\WhereEqualCriterion;
 use App\Repositories\Criteria\WhereInIdsCriterion;
 use App\Repositories\Criteria\WhereLikeCenterCriterion;
@@ -184,7 +185,7 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
         $this->criteriaApplier->addCriterion(
             new WhenCriterion(
                 $this->requestDTO->endRentalDate,
-                new WhereDateGreaterThanOrEqualCriterion(
+                new WhereDateLessThanOrEqualCriterion(
                     Order::TABLE_NAME,
                     OrderColumn::RentalDate,
                     $this->requestDTO->endRentalDate
