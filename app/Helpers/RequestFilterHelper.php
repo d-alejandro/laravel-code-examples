@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-use App\Enums\Interfaces\RequestParamEnumInterface;
 use App\Helpers\Exceptions\BooleanFilterHelperException;
 use App\Helpers\Interfaces\RequestFilterHelperInterface;
+use App\Http\Requests\Enums\Interfaces\RequestParamEnumInterface;
 
 class RequestFilterHelper implements RequestFilterHelperInterface
 {

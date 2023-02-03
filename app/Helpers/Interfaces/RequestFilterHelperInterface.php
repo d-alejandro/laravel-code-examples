@@ -2,7 +2,7 @@
 
 namespace App\Helpers\Interfaces;
 
-use App\Enums\Interfaces\RequestParamEnumInterface;
+use App\Http\Requests\Enums\Interfaces\RequestParamEnumInterface;
 
 interface RequestFilterHelperInterface
 {

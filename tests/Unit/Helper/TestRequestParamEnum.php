@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Helper;
 
-use App\Enums\Interfaces\RequestParamEnumInterface;
+use App\Http\Requests\Enums\Interfaces\RequestParamEnumInterface;
 
 enum TestRequestParamEnum: string implements RequestParamEnumInterface
 {
