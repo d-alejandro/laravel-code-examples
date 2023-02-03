@@ -26,7 +26,7 @@ class IndexOrderControllerTest extends TestCase
 
     private const DAY_COUNT = 7;
 
-    private string $uri;
+    private string $route;
     private Order $order;
     private string $agencyName = 'Test Agency';
     private OrderStatusEnum $status = OrderStatusEnum::Paid;
@@ -40,7 +40,7 @@ class IndexOrderControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->uri = route('order.index');
+        $this->route = route('order.index');
 
         $this->deleteDatabaseData();
         $this->generateTestData();
@@ -88,7 +88,7 @@ class IndexOrderControllerTest extends TestCase
      */
     public function testSuccessfulExecution(Closure $request, Closure $expectedResponse, int $expectedRowCount): void
     {
-        $response = $this->json(self::METHOD_GET, $this->uri, $request($this->order, $this->rentalDate));
+        $response = $this->json(self::METHOD_GET, $this->route, $request($this->order, $this->rentalDate));
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertHeader(IndexOrderPresenter::HEADER_X_TOTAL_COUNT, $expectedRowCount)
@@ -116,7 +116,7 @@ class IndexOrderControllerTest extends TestCase
      */
     public function testValidationError(array $request): void
     {
-        $response = $this->json(self::METHOD_GET, $this->uri, $request);
+        $response = $this->json(self::METHOD_GET, $this->route, $request);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
             ->assertJsonValidationErrors([

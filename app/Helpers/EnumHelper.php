@@ -7,8 +7,8 @@ use App\Helpers\Interfaces\EnumHelperInterface;
 
 class EnumHelper implements EnumHelperInterface
 {
+    public const SERIALIZE_SEPARATOR = ',';
     private const COLUMN_KEY_VALUE = 'value';
-    private const SERIALIZE_SEPARATOR = ',';
 
     /**
      * @throws EnumHelperException
