@@ -5,6 +5,7 @@ namespace Tests\Unit\Helper;
 use App\Helpers\EnumHelper;
 use App\Helpers\Exceptions\EnumHelperException;
 use PHPUnit\Framework\TestCase;
+use Tests\Unit\Helper\Preconditions\TestRequestParamEnum;
 
 class EnumHelperTest extends TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Helper;
+namespace Tests\Unit\Helper\Preconditions;
 
 use App\Http\Requests\Enums\Interfaces\RequestParamEnumInterface;
 
