@@ -42,26 +42,8 @@ class IndexOrderControllerTest extends TestCase
 
         $this->uri = route('order.index');
 
-        Order::query()->delete();
-
-        $agency = Agency::factory()->create([
-            AgencyColumn::Name->value => $this->agencyName,
-        ]);
-
-        $this->rentalDate = now()->addDays(self::DAY_COUNT);
-
-        $this->order = Order::factory()->create([
-            OrderColumn::AgencyId->value => $agency->getKey(),
-            OrderColumn::Status->value => $this->status,
-            OrderColumn::IsChecked->value => true,
-            OrderColumn::IsConfirmed->value => true,
-            OrderColumn::RentalDate->value => $this->rentalDate,
-            OrderColumn::GuestsCount->value => $this->guestCount,
-            OrderColumn::TransportCount->value => $this->transportCount,
-            OrderColumn::UserName->value => $this->userName,
-            OrderColumn::AdminNote->value => $this->adminNote,
-            OrderColumn::ConfirmedAt->value => now(),
-        ]);
+        $this->deleteDatabaseData();
+        $this->generateTestData();
     }
 
     public function getDataProviderSuccessful(): array
@@ -101,20 +83,6 @@ class IndexOrderControllerTest extends TestCase
         ];
     }
 
-    public function getDataProviderError(): array
-    {
-        return [
-            'error' => [
-                'request' => [
-                    PaginationEnum::Start->value => -1,
-                    PaginationEnum::End->value => 0,
-                    PaginationEnum::SortColumn->value => 'test',
-                    PaginationEnum::SortType->value => 'test',
-                ]
-            ],
-        ];
-    }
-
     /**
      * @dataProvider getDataProviderSuccessful
      */
@@ -127,6 +95,20 @@ class IndexOrderControllerTest extends TestCase
             ->assertExactJson([
                 'data' => [$expectedResponse($this->order, $this->rentalDate)],
             ]);
+    }
+
+    public function getDataProviderError(): array
+    {
+        return [
+            'error' => [
+                'request' => [
+                    PaginationEnum::Start->value => -1,
+                    PaginationEnum::End->value => 0,
+                    PaginationEnum::SortColumn->value => 'test',
+                    PaginationEnum::SortType->value => 'test',
+                ]
+            ],
+        ];
     }
 
     /**
@@ -143,5 +125,32 @@ class IndexOrderControllerTest extends TestCase
                 PaginationEnum::SortColumn->value,
                 PaginationEnum::SortType->value,
             ]);
+    }
+
+    private function deleteDatabaseData(): void
+    {
+        Order::query()->delete();
+    }
+
+    private function generateTestData(): void
+    {
+        $agency = Agency::factory()->create([
+            AgencyColumn::Name->value => $this->agencyName,
+        ]);
+
+        $this->rentalDate = now()->addDays(self::DAY_COUNT);
+
+        $this->order = Order::factory()->create([
+            OrderColumn::AgencyId->value => $agency->getKey(),
+            OrderColumn::Status->value => $this->status,
+            OrderColumn::IsChecked->value => true,
+            OrderColumn::IsConfirmed->value => true,
+            OrderColumn::RentalDate->value => $this->rentalDate,
+            OrderColumn::GuestsCount->value => $this->guestCount,
+            OrderColumn::TransportCount->value => $this->transportCount,
+            OrderColumn::UserName->value => $this->userName,
+            OrderColumn::AdminNote->value => $this->adminNote,
+            OrderColumn::ConfirmedAt->value => now(),
+        ]);
     }
 }
