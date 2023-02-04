@@ -2,13 +2,13 @@
 
 namespace App\DTO;
 
-use App\DTO\Interfaces\IndexOrderRequestDTOInterface;
+use App\DTO\Interfaces\OrderIndexRequestDTOInterface;
 use App\Enums\OrderStatusEnum;
 
-readonly class IndexOrderRequestDTO implements IndexOrderRequestDTOInterface
+readonly class OrderIndexRequestDTO implements OrderIndexRequestDTOInterface
 {
     public function __construct(
-        public IndexPaginationDTO   $paginationDTO,
+        public PaginationDTO        $paginationDTO,
         public string|null          $rentalDate = null,
         public string|null          $userName = null,
         public string|null          $agencyName = null,

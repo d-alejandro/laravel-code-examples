@@ -4,21 +4,21 @@ namespace Tests\Feature;
 
 use App\Enums\OrderStatusEnum;
 use App\Enums\SortTypeEnum;
-use App\Http\Requests\Enums\IndexOrderRequestParamEnum;
+use App\Http\Requests\Enums\OrderIndexRequestParamEnum;
 use App\Http\Requests\Enums\PaginationEnum;
-use App\Http\Resources\Enums\IndexOrderResourceEnum;
+use App\Http\Resources\Enums\OrderIndexResourceEnum;
 use App\Models\Agency;
 use App\Models\Enums\AgencyColumn;
 use App\Models\Enums\OrderColumn;
 use App\Models\Order;
-use App\Presenters\IndexOrderPresenter;
+use App\Presenters\OrderIndexPresenter;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class IndexOrderControllerTest extends TestCase
+class OrderIndexControllerTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -56,27 +56,27 @@ class IndexOrderControllerTest extends TestCase
                     PaginationEnum::SortColumn->value => OrderColumn::Id,
                     PaginationEnum::SortType->value => SortTypeEnum::Desc,
                     PaginationEnum::Ids->value => [$order->getKey()],
-                    IndexOrderRequestParamEnum::RentalDate->value => $rentalDate->format('Y-m-d'),
-                    IndexOrderRequestParamEnum::IsConfirmed->value => 'true',
-                    IndexOrderRequestParamEnum::IsChecked->value => 'true',
-                    IndexOrderRequestParamEnum::Status->value => $this->status->value,
-                    IndexOrderRequestParamEnum::UserName->value => $this->userName,
-                    IndexOrderRequestParamEnum::AgencyName->value => $this->agencyName,
-                    IndexOrderRequestParamEnum::AdminNote->value => 'true',
-                    IndexOrderRequestParamEnum::StartDate->value => $rentalDate->copy()->subDay()->format('Y-m-d'),
-                    IndexOrderRequestParamEnum::EndDate->value => $rentalDate->copy()->addDay()->format('Y-m-d'),
+                    OrderIndexRequestParamEnum::RentalDate->value => $rentalDate->format('Y-m-d'),
+                    OrderIndexRequestParamEnum::IsConfirmed->value => 'true',
+                    OrderIndexRequestParamEnum::IsChecked->value => 'true',
+                    OrderIndexRequestParamEnum::Status->value => $this->status->value,
+                    OrderIndexRequestParamEnum::UserName->value => $this->userName,
+                    OrderIndexRequestParamEnum::AgencyName->value => $this->agencyName,
+                    OrderIndexRequestParamEnum::AdminNote->value => 'true',
+                    OrderIndexRequestParamEnum::StartDate->value => $rentalDate->copy()->subDay()->format('Y-m-d'),
+                    OrderIndexRequestParamEnum::EndDate->value => $rentalDate->copy()->addDay()->format('Y-m-d'),
                 ],
                 'expectedResponse' => fn(Order $order, Carbon $rentalDate) => [
-                    IndexOrderResourceEnum::Id->value => $order->getKey(),
-                    IndexOrderResourceEnum::AgencyName->value => $this->agencyName,
-                    IndexOrderResourceEnum::Status->value => $this->status->value,
-                    IndexOrderResourceEnum::IsConfirmed->value => true,
-                    IndexOrderResourceEnum::IsChecked->value => true,
-                    IndexOrderResourceEnum::RentalDate->value => $rentalDate->format('d-m-Y'),
-                    IndexOrderResourceEnum::UserName->value => $this->userName,
-                    IndexOrderResourceEnum::TransportCount->value => $this->transportCount,
-                    IndexOrderResourceEnum::GuestsCount->value => $this->guestCount,
-                    IndexOrderResourceEnum::AdminNote->value => $this->adminNote,
+                    OrderIndexResourceEnum::Id->value => $order->getKey(),
+                    OrderIndexResourceEnum::AgencyName->value => $this->agencyName,
+                    OrderIndexResourceEnum::Status->value => $this->status->value,
+                    OrderIndexResourceEnum::IsConfirmed->value => true,
+                    OrderIndexResourceEnum::IsChecked->value => true,
+                    OrderIndexResourceEnum::RentalDate->value => $rentalDate->format('d-m-Y'),
+                    OrderIndexResourceEnum::UserName->value => $this->userName,
+                    OrderIndexResourceEnum::TransportCount->value => $this->transportCount,
+                    OrderIndexResourceEnum::GuestsCount->value => $this->guestCount,
+                    OrderIndexResourceEnum::AdminNote->value => $this->adminNote,
                 ],
                 'expectedRowCount' => 1,
             ],
@@ -91,7 +91,7 @@ class IndexOrderControllerTest extends TestCase
         $response = $this->json(self::METHOD_GET, $this->route, $request($this->order, $this->rentalDate));
 
         $response->assertStatus(Response::HTTP_OK)
-            ->assertHeader(IndexOrderPresenter::HEADER_X_TOTAL_COUNT, $expectedRowCount)
+            ->assertHeader(OrderIndexPresenter::HEADER_X_TOTAL_COUNT, $expectedRowCount)
             ->assertExactJson([
                 'data' => [$expectedResponse($this->order, $this->rentalDate)],
             ]);

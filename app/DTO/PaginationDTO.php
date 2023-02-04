@@ -5,7 +5,7 @@ namespace App\DTO;
 use App\Enums\SortTypeEnum;
 use App\Models\Enums\Interfaces\ModelColumnInterface;
 
-readonly class IndexPaginationDTO
+readonly class PaginationDTO
 {
     public function __construct(
         public int                  $start,

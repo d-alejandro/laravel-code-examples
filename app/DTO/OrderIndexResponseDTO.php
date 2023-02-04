@@ -2,10 +2,10 @@
 
 namespace App\DTO;
 
-use App\DTO\Interfaces\IndexOrderResponseDTOInterface;
+use App\DTO\Interfaces\OrderIndexResponseDTOInterface;
 use Illuminate\Database\Eloquent\Collection;
 
-readonly class IndexOrderResponseDTO implements IndexOrderResponseDTOInterface
+readonly class OrderIndexResponseDTO implements OrderIndexResponseDTOInterface
 {
     public function __construct(
         public Collection $collection,

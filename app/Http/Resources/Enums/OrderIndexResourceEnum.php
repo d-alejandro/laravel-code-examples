@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\Enums;
 
-enum IndexOrderResourceEnum: string
+enum OrderIndexResourceEnum: string
 {
     case Id = 'id';
     case AgencyName = 'agency_name';

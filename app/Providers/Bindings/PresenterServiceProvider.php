@@ -2,14 +2,14 @@
 
 namespace App\Providers\Bindings;
 
-use App\Presenters\IndexOrderPresenter;
-use App\Presenters\Interfaces\IndexOrderPresenterInterface;
+use App\Presenters\OrderIndexPresenter;
+use App\Presenters\Interfaces\OrderIndexPresenterInterface;
 use Illuminate\Support\ServiceProvider;
 
 class PresenterServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->bind(IndexOrderPresenterInterface::class, IndexOrderPresenter::class);
+        $this->app->bind(OrderIndexPresenterInterface::class, OrderIndexPresenter::class);
     }
 }

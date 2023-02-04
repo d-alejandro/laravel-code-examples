@@ -4,7 +4,7 @@ namespace App\Http\Requests\Enums;
 
 use App\Http\Requests\Enums\Interfaces\RequestParamEnumInterface;
 
-enum IndexOrderRequestParamEnum: string implements RequestParamEnumInterface
+enum OrderIndexRequestParamEnum: string implements RequestParamEnumInterface
 {
     case RentalDate = 'rental_date';
     case IsConfirmed = 'is_confirmed';

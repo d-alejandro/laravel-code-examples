@@ -2,6 +2,6 @@
 
 namespace App\DTO\Interfaces;
 
-interface IndexOrderRequestDTOInterface
+interface OrderIndexRequestDTOInterface
 {
 }
