@@ -2,9 +2,13 @@
 
 namespace Tests\Unit\UseCase;
 
-use App\Enums\OrderStatusEnum;
-use App\Models\Enums\OrderColumn;
+use App\DTO\OrderStoreRequestDTO;
+use App\DTO\OrderStoreResponseDTO;
+use App\Helpers\Interfaces\EventDispatcherInterface;
 use App\Models\Order;
+use App\Repositories\Interfaces\OrderStoreRepositoryInterface;
+use App\UseCases\Exceptions\OrderStoreException;
+use App\UseCases\OrderStoreUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -32,12 +36,9 @@ class OrderStoreUseCaseTest extends TestCase
 
     public function getDataProvider(): array
     {
-        $rentalDate = now()->toString();
-
-        $storeOrderRequestDTO = new OrderStoreRequestDTO(
+        $requestDTO = new OrderStoreRequestDTO(
             'testAgencyName',
-            OrderStatusEnum::Waiting,
-            $rentalDate,
+            now(),
             1,
             1,
             'testUserName',
@@ -45,34 +46,34 @@ class OrderStoreUseCaseTest extends TestCase
             'testPhone'
         );
 
-        $order = new Order();
-        $order->setColumn(OrderColumn::RentalDate, $rentalDate);
-
         return [
             'single' => [
-                'requestDTO' => $storeOrderRequestDTO,
-                'expectedOrder' => $order,
+                'requestDTO' => $requestDTO,
+                'responseDTO' => new OrderStoreResponseDTO(new Order()),
             ],
         ];
     }
 
     /**
      * @dataProvider getDataProvider
+     * @throws OrderStoreException
      */
-    public function testSuccessfulOrderStoreUseCaseExecution($requestDTO, Order $expectedOrder): void
-    {
+    public function testSuccessfulOrderStoreUseCaseExecution(
+        OrderStoreRequestDTO  $requestDTO,
+        OrderStoreResponseDTO $responseDTO
+    ): void {
         $this->repositoryMock
             ->shouldReceive('make')
             ->once()
             ->with($requestDTO)
-            ->andReturn($expectedOrder);
+            ->andReturn($responseDTO);
 
         $this->eventDispatcherMock
             ->shouldReceive('dispatch')
             ->once();
 
-        $order = $this->orderStoreUseCase->execute($requestDTO);
+        $response = $this->orderStoreUseCase->execute($requestDTO);
 
-        $this->assertEquals($expectedOrder->toArray(), $order->toArray());
+        $this->assertEqualsCanonicalizing($responseDTO->order->toArray(), $response->order->toArray());
     }
 }
