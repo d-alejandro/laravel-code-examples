@@ -12,7 +12,7 @@ enum OrderColumn: string implements ModelColumnInterface
     case IsChecked = 'is_checked';
     case IsConfirmed = 'is_confirmed';
     case RentalDate = 'rental_date';
-    case GuestsCount = 'guests_count';
+    case GuestCount = 'guest_count';
     case TransportCount = 'transport_count';
     case UserName = 'user_name';
     case Email = 'email';

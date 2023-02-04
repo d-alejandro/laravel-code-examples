@@ -86,9 +86,9 @@ final class Order extends Model
                 get: fn(): Carbon => $this->getAttribute(OrderColumn::RentalDate->value),
                 set: fn(Carbon $value) => $this->setAttribute(OrderColumn::RentalDate->value, $value)
             ),
-            OrderColumn::GuestsCount->value => new Attribute(
-                get: fn(): int => $this->getAttribute(OrderColumn::GuestsCount->value),
-                set: fn(int $value) => $this->setAttribute(OrderColumn::GuestsCount->value, $value)
+            OrderColumn::GuestCount->value => new Attribute(
+                get: fn(): int => $this->getAttribute(OrderColumn::GuestCount->value),
+                set: fn(int $value) => $this->setAttribute(OrderColumn::GuestCount->value, $value)
             ),
             OrderColumn::TransportCount->value => new Attribute(
                 get: fn(): int => $this->getAttribute(OrderColumn::TransportCount->value),
