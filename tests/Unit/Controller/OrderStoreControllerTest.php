@@ -6,6 +6,7 @@ use App\DTO\OrderStoreRequestDTO;
 use App\DTO\OrderStoreResponseDTO;
 use App\Http\Controllers\Api\OrderStoreController;
 use App\Http\Requests\Interfaces\OrderStoreRequestInterface;
+use App\Models\Order;
 use App\Presenters\Interfaces\OrderStorePresenterInterface;
 use App\UseCases\Interfaces\OrderStoreUseCaseInterface;
 use Illuminate\Http\JsonResponse;
@@ -40,10 +41,19 @@ class OrderStoreControllerTest extends TestCase
 
     public function getDataProvider(): array
     {
+        $rentalDate = now()->toString();
         return [
             'single' => [
-                'requestDTO' => new OrderStoreRequestDTO(),
-                'responseDTO' => new OrderStoreResponseDTO(),
+                'requestDTO' => new OrderStoreRequestDTO(
+                    'TestAgencyName',
+                    $rentalDate,
+                    1,
+                    1,
+                    'TestUserName',
+                    'test@test.com',
+                    '+7 (777) 1111 111'
+                ),
+                'responseDTO' => new OrderStoreResponseDTO(new Order()),
                 'expectedData' => [
                     (object)['testColumn' => 'testValue'],
                 ],
