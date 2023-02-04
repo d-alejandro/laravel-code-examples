@@ -12,6 +12,6 @@ enum OrderIndexResourceEnum: string
     case RentalDate = 'rental_date';
     case UserName = 'user_name';
     case TransportCount = 'transport_count';
-    case GuestsCount = 'guests_count';
+    case GuestCount = 'guest_count';
     case AdminNote = 'admin_note';
 }
