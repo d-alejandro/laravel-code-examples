@@ -2,7 +2,12 @@
 
 namespace Tests\Unit\Controller;
 
-use App\Models\Order;
+use App\DTO\OrderStoreRequestDTO;
+use App\DTO\OrderStoreResponseDTO;
+use App\Http\Controllers\Api\OrderStoreController;
+use App\Http\Requests\Interfaces\OrderStoreRequestInterface;
+use App\Presenters\Interfaces\OrderStorePresenterInterface;
+use App\UseCases\Interfaces\OrderStoreUseCaseInterface;
 use Illuminate\Http\JsonResponse;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +43,7 @@ class OrderStoreControllerTest extends TestCase
         return [
             'single' => [
                 'requestDTO' => new OrderStoreRequestDTO(),
-                'order' => new Order(),
+                'responseDTO' => new OrderStoreResponseDTO(),
                 'expectedData' => [
                     (object)['testColumn' => 'testValue'],
                 ],
@@ -50,9 +55,9 @@ class OrderStoreControllerTest extends TestCase
      * @dataProvider getDataProvider
      */
     public function testSuccessfulOrderStoreControllerExecution(
-        OrderStoreRequestDTO $requestDTO,
-        Order                $order,
-        array                $expectedData
+        OrderStoreRequestDTO  $requestDTO,
+        OrderStoreResponseDTO $responseDTO,
+        array                 $expectedData
     ): void {
         $this->requestMock
             ->shouldReceive('getValidated')
@@ -63,12 +68,12 @@ class OrderStoreControllerTest extends TestCase
             ->shouldReceive('execute')
             ->once()
             ->with($requestDTO)
-            ->andReturn($order);
+            ->andReturn($responseDTO);
 
         $this->presenterMock
             ->shouldReceive('present')
             ->once()
-            ->with($order)
+            ->with($responseDTO)
             ->andReturn(new JsonResponse($expectedData));
 
         $response = $this->orderStoreController->__invoke($this->requestMock);
