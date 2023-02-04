@@ -24,7 +24,7 @@ class OrderIndexResource extends JsonResource
             OrderIndexResourceEnum::RentalDate->value => $this->getColumn(OrderColumn::RentalDate)->format('d-m-Y'),
             OrderIndexResourceEnum::UserName->value => $this->getColumn(OrderColumn::UserName),
             OrderIndexResourceEnum::TransportCount->value => (int)$this->getColumn(OrderColumn::TransportCount),
-            OrderIndexResourceEnum::GuestsCount->value => (int)$this->getColumn(OrderColumn::GuestsCount),
+            OrderIndexResourceEnum::GuestCount->value => (int)$this->getColumn(OrderColumn::GuestCount),
             OrderIndexResourceEnum::AdminNote->value => $this->getColumn(OrderColumn::AdminNote),
         ];
     }
