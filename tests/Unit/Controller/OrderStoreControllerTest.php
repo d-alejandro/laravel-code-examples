@@ -9,6 +9,7 @@ use App\Http\Requests\Interfaces\OrderStoreRequestInterface;
 use App\Models\Order;
 use App\Presenters\Interfaces\OrderStorePresenterInterface;
 use App\UseCases\Interfaces\OrderStoreUseCaseInterface;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -89,5 +90,56 @@ class OrderStoreControllerTest extends TestCase
         $response = $this->orderStoreController->__invoke($this->requestMock);
 
         $this->assertEqualsCanonicalizing($expectedData, $response->getData());
+    }
+
+    /**
+     * @dataProvider getDataProvider
+     */
+    public function testFailedOrderStoreUseCaseCall(OrderStoreRequestDTO $requestDTO): void
+    {
+        $this->requestMock
+            ->shouldReceive('getValidated')
+            ->once()
+            ->andReturn($requestDTO);
+
+        $this->useCaseMock
+            ->shouldReceive('execute')
+            ->once()
+            ->andThrow(new Exception());
+
+        $this->presenterMock
+            ->shouldReceive('present')
+            ->never();
+
+        $this->expectException(Exception::class);
+
+        $this->orderStoreController->__invoke($this->requestMock);
+    }
+
+    /**
+     * @dataProvider getDataProvider
+     */
+    public function testFailedOrderPresenterCall(
+        OrderStoreRequestDTO  $requestDTO,
+        OrderStoreResponseDTO $responseDTO,
+    ): void {
+        $this->requestMock
+            ->shouldReceive('getValidated')
+            ->once()
+            ->andReturn($requestDTO);
+
+        $this->useCaseMock
+            ->shouldReceive('execute')
+            ->once()
+            ->andReturn($responseDTO);
+
+        $this->presenterMock
+            ->shouldReceive('present')
+            ->once()
+            ->andThrow(new Exception());
+
+        $this->expectException(Exception::class);
+
+        $this->orderStoreController->__invoke($this->requestMock);
     }
 }
