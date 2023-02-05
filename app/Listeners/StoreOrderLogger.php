@@ -4,12 +4,12 @@ namespace App\Listeners;
 
 use App\Events\Interfaces\EventInterface;
 use App\Listeners\Interfaces\ListenerInterface;
-use App\Services\Interfaces\OrderStoreLoggerServiceInterface;
+use App\Services\Interfaces\LoggerServiceInterface;
 
 class StoreOrderLogger implements ListenerInterface
 {
     public function __construct(
-        private OrderStoreLoggerServiceInterface $service
+        private LoggerServiceInterface $service
     ) {
     }
 
