@@ -8,6 +8,7 @@ use App\Models\Enums\OrderColumn;
 use App\Models\Order;
 use App\Repositories\Interfaces\AgencyByNameCreatorRepositoryInterface;
 use App\Repositories\Interfaces\OrderStoreRepositoryInterface;
+use Carbon\Carbon;
 
 class OrderStoreRepository implements OrderStoreRepositoryInterface
 {
@@ -22,7 +23,9 @@ class OrderStoreRepository implements OrderStoreRepositoryInterface
         $agency = $this->agencyCreatorRepository->make($requestDTO->agencyName);
         $this->order->setAgency($agency);
 
-        $this->order->setColumn(OrderColumn::RentalDate, $requestDTO->rentalDate);
+        $rentalDate = Carbon::parse($requestDTO->rentalDate);
+
+        $this->order->setColumn(OrderColumn::RentalDate, $rentalDate);
         $this->order->setColumn(OrderColumn::GuestCount, $requestDTO->guestCount);
         $this->order->setColumn(OrderColumn::TransportCount, $requestDTO->transportCount);
         $this->order->setColumn(OrderColumn::UserName, $requestDTO->userName);

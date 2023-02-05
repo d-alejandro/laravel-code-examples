@@ -26,11 +26,11 @@ class OrderResource extends JsonResource
             OrderResourceEnum::TransportCount->value => (int)$this->getColumn(OrderColumn::TransportCount),
             OrderResourceEnum::GuestCount->value => (int)$this->getColumn(OrderColumn::GuestCount),
             OrderResourceEnum::AdminNote->value => $this->getColumn(OrderColumn::AdminNote),
-            OrderResourceEnum::Note->value => $this->getColumn(OrderColumn::AdminNote),
+            OrderResourceEnum::Note->value => $this->getColumn(OrderColumn::Note),
             OrderResourceEnum::Email->value => $this->getColumn(OrderColumn::Email),
             OrderResourceEnum::Phone->value => $this->getColumn(OrderColumn::Phone),
-            OrderResourceEnum::CreatedAt->value => $this->getColumn(OrderColumn::CreatedAt)->format('d-m-Y'),
-            OrderResourceEnum::UpdatedAt->value => $this->getColumn(OrderColumn::UpdatedAt)->format('d-m-Y'),
+            OrderResourceEnum::CreatedAt->value => $this->getColumn(OrderColumn::CreatedAt)->format('d-m-Y H:i:s'),
+            OrderResourceEnum::UpdatedAt->value => $this->getColumn(OrderColumn::UpdatedAt)->format('d-m-Y H:i:s'),
         ];
     }
 }

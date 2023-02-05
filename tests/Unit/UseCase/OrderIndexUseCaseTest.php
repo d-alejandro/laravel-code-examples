@@ -18,14 +18,14 @@ use PHPUnit\Framework\TestCase;
 class OrderIndexUseCaseTest extends TestCase
 {
     private OrderIndexUseCase $orderIndexUseCase;
-    private OrderSearchRepositoryInterface $repository;
+    private OrderSearchRepositoryInterface $repositoryMock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->repository = Mockery::mock(OrderSearchRepositoryInterface::class);
-        $this->orderIndexUseCase = new OrderIndexUseCase($this->repository);
+        $this->repositoryMock = Mockery::mock(OrderSearchRepositoryInterface::class);
+        $this->orderIndexUseCase = new OrderIndexUseCase($this->repositoryMock);
     }
 
     protected function tearDown(): void
@@ -60,7 +60,7 @@ class OrderIndexUseCaseTest extends TestCase
         OrderIndexRequestDTO  $requestDTO,
         OrderIndexResponseDTO $responseDTO
     ): void {
-        $this->repository
+        $this->repositoryMock
             ->shouldReceive('make')
             ->once()
             ->with($requestDTO)
@@ -76,7 +76,7 @@ class OrderIndexUseCaseTest extends TestCase
      */
     public function testFailedOrderSearchRepositoryCall(OrderIndexRequestDTO $requestDTO): void
     {
-        $this->repository
+        $this->repositoryMock
             ->shouldReceive('make')
             ->once()
             ->andThrow(new Exception());

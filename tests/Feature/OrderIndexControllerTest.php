@@ -24,8 +24,6 @@ class OrderIndexControllerTest extends TestCase
 
     private const METHOD_GET = 'get';
 
-    private const DAY_COUNT = 7;
-
     private string $route;
     private Order $order;
     private string $agencyName = 'Test Agency';
@@ -138,7 +136,7 @@ class OrderIndexControllerTest extends TestCase
             AgencyColumn::Name->value => $this->agencyName,
         ]);
 
-        $this->rentalDate = now()->addDays(self::DAY_COUNT);
+        $this->rentalDate = now()->addWeek();
 
         $this->order = Order::factory()->create([
             OrderColumn::AgencyId->value => $agency->getKey(),
