@@ -66,5 +66,8 @@ docker-compose exec php-fpm php artisan test --testsuite=Feature
 
 To run the test coverage:
 ```
+docker-compose exec php-fpm php artisan test --coverage
+```
+```
 docker-compose exec php-fpm ./vendor/bin/phpunit --coverage-html ./storage/reports/coverage
 ```
