@@ -11,6 +11,8 @@ use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
 use App\Repositories\Interfaces\OrderStoreRepositoryInterface;
 use App\Repositories\OrderSearchRepository;
 use App\Repositories\OrderStoreRepository;
+use App\Repositories\OrderStoreRepositoryDecorator;
+use App\UseCases\OrderStoreUseCase;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -23,7 +25,14 @@ class RepositoryServiceProvider extends ServiceProvider
             ->needs(CriteriaApplierInterface::class)
             ->give(fn() => new CriteriaApplier(Order::class));
 
-        $this->app->bind(OrderStoreRepositoryInterface::class, OrderStoreRepository::class);
+        $this->app->when(OrderStoreUseCase::class)
+            ->needs(OrderStoreRepositoryInterface::class)
+            ->give(OrderStoreRepositoryDecorator::class);
+
+        $this->app->when(OrderStoreRepositoryDecorator::class)
+            ->needs(OrderStoreRepositoryInterface::class)
+            ->give(OrderStoreRepository::class);
+
         $this->app->bind(AgencyByNameCreatorRepositoryInterface::class, AgencyByNameCreatorRepository::class);
     }
 }
