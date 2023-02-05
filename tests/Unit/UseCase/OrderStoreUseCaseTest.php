@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Repositories\Interfaces\OrderStoreRepositoryInterface;
 use App\UseCases\Exceptions\OrderStoreException;
 use App\UseCases\OrderStoreUseCase;
+use Exception;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -75,5 +76,24 @@ class OrderStoreUseCaseTest extends TestCase
         $response = $this->orderStoreUseCase->execute($requestDTO);
 
         $this->assertEqualsCanonicalizing($responseDTO->order->toArray(), $response->order->toArray());
+    }
+
+    /**
+     * @dataProvider getDataProvider
+     */
+    public function testFailedStoreOrderServiceCall(OrderStoreRequestDTO $requestDTO): void
+    {
+        $this->repositoryMock
+            ->shouldReceive('make')
+            ->once()
+            ->andThrow(new Exception());
+
+        $this->eventDispatcherMock
+            ->shouldReceive('dispatch')
+            ->never();
+
+        $this->expectException(OrderStoreException::class);
+
+        $this->orderStoreUseCase->execute($requestDTO);
     }
 }
