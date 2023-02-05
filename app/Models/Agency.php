@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @mixin \Illuminate\Database\Eloquent\Builder
+ */
 final class Agency extends Model
 {
     use HasFactory, SoftDeletes;

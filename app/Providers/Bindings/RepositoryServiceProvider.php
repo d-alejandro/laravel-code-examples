@@ -3,8 +3,10 @@
 namespace App\Providers\Bindings;
 
 use App\Models\Order;
+use App\Repositories\AgencyByNameCreatorRepository;
 use App\Repositories\Criteria\CriteriaApplier;
 use App\Repositories\Criteria\Interfaces\CriteriaApplierInterface;
+use App\Repositories\Interfaces\AgencyByNameCreatorRepositoryInterface;
 use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
 use App\Repositories\Interfaces\OrderStoreRepositoryInterface;
 use App\Repositories\OrderSearchRepository;
@@ -22,5 +24,6 @@ class RepositoryServiceProvider extends ServiceProvider
             ->give(fn() => new CriteriaApplier(Order::class));
 
         $this->app->bind(OrderStoreRepositoryInterface::class, OrderStoreRepository::class);
+        $this->app->bind(AgencyByNameCreatorRepositoryInterface::class, AgencyByNameCreatorRepository::class);
     }
 }
