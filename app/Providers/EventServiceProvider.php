@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Events\OrderStored;
-use App\Listeners\StoreOrderLogger;
+use App\Listeners\OrderStoreLogger;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -15,7 +15,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         OrderStored::class => [
-            StoreOrderLogger::class,
+            OrderStoreLogger::class,
         ]
     ];
 

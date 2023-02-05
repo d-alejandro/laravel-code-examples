@@ -10,7 +10,7 @@ class LoggerService implements LoggerServiceInterface
 {
     public function make(Model $model): void
     {
-        $className = get_class($model);
+        $className = class_basename($model);
         $classNameLower = strtolower($className);
 
         Log::info("$className added. \n", [

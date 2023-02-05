@@ -6,7 +6,7 @@ use App\Events\Interfaces\EventInterface;
 use App\Listeners\Interfaces\ListenerInterface;
 use App\Services\Interfaces\LoggerServiceInterface;
 
-class StoreOrderLogger implements ListenerInterface
+class OrderStoreLogger implements ListenerInterface
 {
     public function __construct(
         private LoggerServiceInterface $service

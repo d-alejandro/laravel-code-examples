@@ -3,7 +3,9 @@
 namespace App\Providers\Bindings;
 
 use App\Helpers\EnumHelper;
+use App\Helpers\EventDispatcher;
 use App\Helpers\Interfaces\EnumHelperInterface;
+use App\Helpers\Interfaces\EventDispatcherInterface;
 use App\Helpers\Interfaces\RequestFilterHelperInterface;
 use App\Helpers\RequestFilterHelper;
 use Illuminate\Foundation\Application;
@@ -21,5 +23,7 @@ class HelperServiceProvider extends ServiceProvider
             RequestFilterHelperInterface::class,
             fn(Application $app, array $params) => new RequestFilterHelper($params[self::PARAM_REQUEST_PARAMS])
         );
+
+        $this->app->bind(EventDispatcherInterface::class, EventDispatcher::class);
     }
 }
