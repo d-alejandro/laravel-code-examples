@@ -5,6 +5,7 @@ namespace Tests\Unit\Helper;
 use App\Helpers\Exceptions\BooleanFilterHelperException;
 use App\Helpers\RequestFilterHelper;
 use PHPUnit\Framework\TestCase;
+use Tests\Unit\Helper\Preconditions\TestRequestParamEnum;
 
 class RequestFilterHelperTest extends TestCase
 {

@@ -32,7 +32,7 @@ return new class extends Migration
             $table->boolean(OrderColumn::IsChecked->value)->default(false);
             $table->boolean(OrderColumn::IsConfirmed->value)->default(false);
             $table->timestamp(OrderColumn::RentalDate->value)->nullable();
-            $table->integer(OrderColumn::GuestsCount->value);
+            $table->integer(OrderColumn::GuestCount->value);
             $table->integer(OrderColumn::TransportCount->value);
             $table->string(OrderColumn::UserName->value)->nullable();
             $table->string(OrderColumn::Email->value);

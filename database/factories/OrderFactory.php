@@ -30,7 +30,7 @@ class OrderFactory extends Factory
             OrderColumn::IsChecked->value => $flag,
             OrderColumn::IsConfirmed->value => $flag,
             OrderColumn::RentalDate->value => now()->addDays(mt_rand(1, 7)),
-            OrderColumn::GuestsCount->value => 3,
+            OrderColumn::GuestCount->value => 3,
             OrderColumn::TransportCount->value => 3,
             OrderColumn::UserName->value => $this->faker->unique()->name,
             OrderColumn::Email->value => $this->faker->unique()->safeEmail,

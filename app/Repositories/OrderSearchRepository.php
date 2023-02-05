@@ -2,9 +2,8 @@
 
 namespace App\Repositories;
 
-use App\DTO\IndexOrderResponseDTO;
-use App\DTO\IndexPaginationDTO;
-use App\DTO\Interfaces\IndexOrderRequestDTOInterface;
+use App\DTO\OrderIndexResponseDTO;
+use App\DTO\Interfaces\OrderIndexRequestDTOInterface;
 use App\Models\Agency;
 use App\Models\Enums\AgencyColumn;
 use App\Models\Enums\OrderColumn;
@@ -26,18 +25,16 @@ use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
 
 class OrderSearchRepository implements OrderSearchRepositoryInterface
 {
-    private IndexOrderRequestDTOInterface $requestDTO;
-    private IndexPaginationDTO $paginationDTO;
+    private OrderIndexRequestDTOInterface $requestDTO;
 
     public function __construct(
         private CriteriaApplierInterface $criteriaApplier
     ) {
     }
 
-    public function make(IndexOrderRequestDTOInterface $indexOrderRequestDTO): IndexOrderResponseDTO
+    public function make(OrderIndexRequestDTOInterface $requestDTO): OrderIndexResponseDTO
     {
-        $this->requestDTO = $indexOrderRequestDTO;
-        $this->paginationDTO = $indexOrderRequestDTO->paginationDTO;
+        $this->requestDTO = $requestDTO;
 
         $this->addWhereDateEqualRentalDateCriterion();
         $this->addWhereEqualIsConfirmedCriterion();
@@ -58,7 +55,7 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
 
         $collection = $this->criteriaApplier->get();
 
-        return new IndexOrderResponseDTO($collection, $count);
+        return new OrderIndexResponseDTO($collection, $count);
     }
 
     private function addWhereDateEqualRentalDateCriterion(): void
@@ -213,10 +210,10 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
         $this->criteriaApplier->addCriterion(
             new PaginationCriterion(
                 Order::TABLE_NAME,
-                $this->paginationDTO->sortColumn,
-                $this->paginationDTO->sortType,
-                $this->paginationDTO->start,
-                $this->paginationDTO->end
+                $this->requestDTO->paginationDTO->sortColumn,
+                $this->requestDTO->paginationDTO->sortType,
+                $this->requestDTO->paginationDTO->start,
+                $this->requestDTO->paginationDTO->end
             )
         );
     }
@@ -225,10 +222,10 @@ class OrderSearchRepository implements OrderSearchRepositoryInterface
     {
         $this->criteriaApplier->addCriterion(
             new WhenCriterion(
-                $this->paginationDTO->ids,
+                $this->requestDTO->paginationDTO->ids,
                 new WhereInIdsCriterion(
                     Order::TABLE_NAME,
-                    $this->paginationDTO->ids,
+                    $this->requestDTO->paginationDTO->ids,
                 )
             )
         );

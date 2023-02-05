@@ -1,16 +1,12 @@
 <?php
 
-namespace App\Models\Enums;
+namespace App\Http\Resources\Enums;
 
-use App\Models\Enums\Interfaces\ModelColumnInterface;
-
-enum OrderColumn: string implements ModelColumnInterface
+enum OrderResourceEnum: string
 {
     case Id = 'id';
-    case AgencyId = 'agency_id';
+    case AgencyName = 'agency_name';
     case Status = 'status';
-    case IsChecked = 'is_checked';
-    case IsConfirmed = 'is_confirmed';
     case RentalDate = 'rental_date';
     case GuestCount = 'guest_count';
     case TransportCount = 'transport_count';
@@ -19,8 +15,8 @@ enum OrderColumn: string implements ModelColumnInterface
     case Phone = 'phone';
     case Note = 'note';
     case AdminNote = 'admin_note';
-    case ConfirmedAt = 'confirmed_at';
+    case IsConfirmed = 'is_confirmed';
+    case IsChecked = 'is_checked';
     case CreatedAt = 'created_at';
     case UpdatedAt = 'updated_at';
-    case DeletedAt = 'deleted_at';
 }
