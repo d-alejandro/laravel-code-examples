@@ -77,6 +77,7 @@ class OrderStoreControllerTest extends TestCase
                     OrderResourceEnum::Note->value => $note,
                     OrderResourceEnum::Email->value => $email,
                     OrderResourceEnum::Phone->value => $phone,
+                    OrderResourceEnum::ConfirmedAt->value => null,
                     OrderResourceEnum::CreatedAt->value =>
                         $order->getColumn(OrderColumn::CreatedAt)->format('d-m-Y H:i:s'),
                     OrderResourceEnum::UpdatedAt->value =>
