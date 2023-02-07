@@ -3,11 +3,11 @@
 namespace Tests\Unit\Controller;
 
 use App\DTO\OrderStoreRequestDTO;
-use App\DTO\OrderStoreResponseDTO;
+use App\DTO\OrderResponseDTO;
 use App\Http\Controllers\Api\OrderStoreController;
 use App\Http\Requests\Interfaces\OrderStoreRequestInterface;
 use App\Models\Order;
-use App\Presenters\Interfaces\OrderStorePresenterInterface;
+use App\Presenters\Interfaces\OrderPresenterInterface;
 use App\UseCases\Interfaces\OrderStoreUseCaseInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 class OrderStoreControllerTest extends TestCase
 {
     private OrderStoreUseCaseInterface $useCaseMock;
-    private OrderStorePresenterInterface $presenterMock;
+    private OrderPresenterInterface $presenterMock;
     private OrderStoreController $orderStoreController;
     private OrderStoreRequestInterface $requestMock;
 
@@ -26,7 +26,7 @@ class OrderStoreControllerTest extends TestCase
         parent::setUp();
 
         $this->useCaseMock = Mockery::mock(OrderStoreUseCaseInterface::class);
-        $this->presenterMock = Mockery::mock(OrderStorePresenterInterface::class);
+        $this->presenterMock = Mockery::mock(OrderPresenterInterface::class);
 
         $this->orderStoreController = new OrderStoreController($this->useCaseMock, $this->presenterMock);
 
@@ -54,7 +54,7 @@ class OrderStoreControllerTest extends TestCase
                     'test@test.com',
                     '+7 (777) 1111 111'
                 ),
-                'responseDTO' => new OrderStoreResponseDTO(new Order()),
+                'responseDTO' => new OrderResponseDTO(new Order()),
                 'expectedData' => [
                     (object)['testColumn' => 'testValue'],
                 ],
@@ -66,9 +66,9 @@ class OrderStoreControllerTest extends TestCase
      * @dataProvider getDataProvider
      */
     public function testSuccessfulOrderStoreControllerExecution(
-        OrderStoreRequestDTO  $requestDTO,
-        OrderStoreResponseDTO $responseDTO,
-        array                 $expectedData
+        OrderStoreRequestDTO $requestDTO,
+        OrderResponseDTO     $responseDTO,
+        array                $expectedData
     ): void {
         $this->requestMock
             ->shouldReceive('getValidated')
@@ -120,8 +120,8 @@ class OrderStoreControllerTest extends TestCase
      * @dataProvider getDataProvider
      */
     public function testFailedOrderPresenterCall(
-        OrderStoreRequestDTO  $requestDTO,
-        OrderStoreResponseDTO $responseDTO,
+        OrderStoreRequestDTO $requestDTO,
+        OrderResponseDTO     $responseDTO,
     ): void {
         $this->requestMock
             ->shouldReceive('getValidated')

@@ -9,7 +9,7 @@ use App\Enums\SortTypeEnum;
 use App\Http\Controllers\Api\OrderIndexController;
 use App\Http\Requests\Interfaces\OrderIndexRequestInterface;
 use App\Models\Enums\OrderColumn;
-use App\Presenters\Interfaces\OrderIndexPresenterInterface;
+use App\Presenters\Interfaces\OrderListPresenterInterface;
 use App\UseCases\Interfaces\OrderIndexUseCaseInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 class OrderIndexControllerTest extends TestCase
 {
     private OrderIndexUseCaseInterface $useCaseMock;
-    private OrderIndexPresenterInterface $presenterMock;
+    private OrderListPresenterInterface $presenterMock;
     private OrderIndexController $orderIndexController;
     private OrderIndexRequestInterface $requestMock;
 
@@ -29,7 +29,7 @@ class OrderIndexControllerTest extends TestCase
         parent::setUp();
 
         $this->useCaseMock = Mockery::mock(OrderIndexUseCaseInterface::class);
-        $this->presenterMock = Mockery::mock(OrderIndexPresenterInterface::class);
+        $this->presenterMock = Mockery::mock(OrderListPresenterInterface::class);
 
         $this->orderIndexController = new OrderIndexController($this->useCaseMock, $this->presenterMock);
 

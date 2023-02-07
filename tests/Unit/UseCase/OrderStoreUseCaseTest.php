@@ -3,7 +3,7 @@
 namespace Tests\Unit\UseCase;
 
 use App\DTO\OrderStoreRequestDTO;
-use App\DTO\OrderStoreResponseDTO;
+use App\DTO\OrderResponseDTO;
 use App\Helpers\Interfaces\EventDispatcherInterface;
 use App\Models\Order;
 use App\Repositories\Interfaces\OrderStoreRepositoryInterface;
@@ -50,7 +50,7 @@ class OrderStoreUseCaseTest extends TestCase
         return [
             'single' => [
                 'requestDTO' => $requestDTO,
-                'responseDTO' => new OrderStoreResponseDTO(new Order()),
+                'responseDTO' => new OrderResponseDTO(new Order()),
             ],
         ];
     }
@@ -60,8 +60,8 @@ class OrderStoreUseCaseTest extends TestCase
      * @throws OrderStoreException
      */
     public function testSuccessfulOrderStoreUseCaseExecution(
-        OrderStoreRequestDTO  $requestDTO,
-        OrderStoreResponseDTO $responseDTO
+        OrderStoreRequestDTO $requestDTO,
+        OrderResponseDTO     $responseDTO
     ): void {
         $this->repositoryMock
             ->shouldReceive('make')

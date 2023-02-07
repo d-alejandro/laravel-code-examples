@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\DTO\Interfaces\OrderShowResponseDTOInterface;
+use App\DTO\Interfaces\OrderResponseDTOInterface;
 
 interface OrderShowRepositoryInterface
 {
-    public function make(int $id): OrderShowResponseDTOInterface;
+    public function make(int $id): OrderResponseDTOInterface;
 }

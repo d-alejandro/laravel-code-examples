@@ -2,9 +2,9 @@
 
 namespace App\UseCases\Interfaces;
 
-use App\DTO\Interfaces\OrderShowResponseDTOInterface;
+use App\DTO\Interfaces\OrderResponseDTOInterface;
 
 interface OrderShowUseCaseInterface
 {
-    public function execute(int $id): OrderShowResponseDTOInterface;
+    public function execute(int $id): OrderResponseDTOInterface;
 }

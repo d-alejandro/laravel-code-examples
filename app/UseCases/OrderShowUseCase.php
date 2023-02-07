@@ -2,7 +2,7 @@
 
 namespace App\UseCases;
 
-use App\DTO\Interfaces\OrderShowResponseDTOInterface;
+use App\DTO\Interfaces\OrderResponseDTOInterface;
 use App\Repositories\Interfaces\OrderShowRepositoryInterface;
 use App\UseCases\Exceptions\OrderNotFoundException;
 use App\UseCases\Interfaces\OrderShowUseCaseInterface;
@@ -18,7 +18,7 @@ class OrderShowUseCase implements OrderShowUseCaseInterface
     /**
      * @throws OrderNotFoundException
      */
-    public function execute(int $id): OrderShowResponseDTOInterface
+    public function execute(int $id): OrderResponseDTOInterface
     {
         try {
             return $this->repository->make($id);

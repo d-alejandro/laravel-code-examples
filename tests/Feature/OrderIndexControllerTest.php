@@ -11,7 +11,7 @@ use App\Models\Agency;
 use App\Models\Enums\AgencyColumn;
 use App\Models\Enums\OrderColumn;
 use App\Models\Order;
-use App\Presenters\OrderIndexPresenter;
+use App\Presenters\OrderListPresenter;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -89,7 +89,7 @@ class OrderIndexControllerTest extends TestCase
         $response = $this->json(self::METHOD_GET, $this->route, $request($this->order, $this->rentalDate));
 
         $response->assertStatus(Response::HTTP_OK)
-            ->assertHeader(OrderIndexPresenter::HEADER_X_TOTAL_COUNT, $expectedRowCount)
+            ->assertHeader(OrderListPresenter::HEADER_X_TOTAL_COUNT, $expectedRowCount)
             ->assertExactJson([
                 'data' => [$expectedResponse($this->order, $this->rentalDate)],
             ]);

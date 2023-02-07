@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\DTO\Interfaces\OrderStoreRequestDTOInterface;
-use App\DTO\OrderStoreResponseDTO;
+use App\DTO\OrderResponseDTO;
 use App\Models\Enums\OrderColumn;
 use App\Models\Order;
 use App\Repositories\Interfaces\AgencyByNameCreatorRepositoryInterface;
@@ -18,7 +18,7 @@ class OrderStoreRepository implements OrderStoreRepositoryInterface
     ) {
     }
 
-    public function make(OrderStoreRequestDTOInterface $requestDTO): OrderStoreResponseDTO
+    public function make(OrderStoreRequestDTOInterface $requestDTO): OrderResponseDTO
     {
         $agency = $this->agencyCreatorRepository->make($requestDTO->agencyName);
         $this->order->setAgency($agency);
@@ -36,6 +36,6 @@ class OrderStoreRepository implements OrderStoreRepositoryInterface
 
         $this->order->save();
 
-        return new OrderStoreResponseDTO($this->order);
+        return new OrderResponseDTO($this->order);
     }
 }
