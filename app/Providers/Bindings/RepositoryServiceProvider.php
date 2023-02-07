@@ -7,9 +7,9 @@ use App\Repositories\AgencyByNameCreatorRepository;
 use App\Repositories\Criteria\CriteriaApplier;
 use App\Repositories\Criteria\Interfaces\CriteriaApplierInterface;
 use App\Repositories\Interfaces\AgencyByNameCreatorRepositoryInterface;
-use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
+use App\Repositories\Interfaces\OrderIndexRepositoryInterface;
 use App\Repositories\Interfaces\OrderStoreRepositoryInterface;
-use App\Repositories\OrderSearchRepository;
+use App\Repositories\OrderIndexRepository;
 use App\Repositories\OrderStoreRepository;
 use App\Repositories\OrderStoreRepositoryDecorator;
 use App\UseCases\OrderStoreUseCase;
@@ -19,9 +19,9 @@ class RepositoryServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->bind(OrderSearchRepositoryInterface::class, OrderSearchRepository::class);
+        $this->app->bind(OrderIndexRepositoryInterface::class, OrderIndexRepository::class);
 
-        $this->app->when(OrderSearchRepository::class)
+        $this->app->when(OrderIndexRepository::class)
             ->needs(CriteriaApplierInterface::class)
             ->give(fn() => new CriteriaApplier(Order::class));
 

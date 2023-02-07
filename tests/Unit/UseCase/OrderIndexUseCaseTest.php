@@ -7,8 +7,8 @@ use App\DTO\OrderIndexRequestDTO;
 use App\DTO\OrderIndexResponseDTO;
 use App\Enums\SortTypeEnum;
 use App\Models\Enums\OrderColumn;
-use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
-use App\UseCases\Exceptions\OrderSearchUseCasesException;
+use App\Repositories\Interfaces\OrderIndexRepositoryInterface;
+use App\UseCases\Exceptions\OrderIndexUseCasesException;
 use App\UseCases\OrderIndexUseCase;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -18,13 +18,13 @@ use PHPUnit\Framework\TestCase;
 class OrderIndexUseCaseTest extends TestCase
 {
     private OrderIndexUseCase $orderIndexUseCase;
-    private OrderSearchRepositoryInterface $repositoryMock;
+    private OrderIndexRepositoryInterface $repositoryMock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->repositoryMock = Mockery::mock(OrderSearchRepositoryInterface::class);
+        $this->repositoryMock = Mockery::mock(OrderIndexRepositoryInterface::class);
         $this->orderIndexUseCase = new OrderIndexUseCase($this->repositoryMock);
     }
 
@@ -54,7 +54,7 @@ class OrderIndexUseCaseTest extends TestCase
 
     /**
      * @dataProvider getDataProvider
-     * @throws OrderSearchUseCasesException
+     * @throws OrderIndexUseCasesException
      */
     public function testSuccessfulOrderIndexUseCaseExecution(
         OrderIndexRequestDTO  $requestDTO,
@@ -81,7 +81,7 @@ class OrderIndexUseCaseTest extends TestCase
             ->once()
             ->andThrow(new Exception());
 
-        $this->expectException(OrderSearchUseCasesException::class);
+        $this->expectException(OrderIndexUseCasesException::class);
         $this->expectExceptionMessage('An error occurred while loading orders.');
 
         $this->orderIndexUseCase->execute($requestDTO);
