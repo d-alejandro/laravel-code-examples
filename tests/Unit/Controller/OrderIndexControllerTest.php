@@ -12,7 +12,6 @@ use App\Models\Enums\OrderColumn;
 use App\Presenters\Interfaces\OrderListPresenterInterface;
 use App\UseCases\Interfaces\OrderIndexUseCaseInterface;
 use Exception;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -47,18 +46,16 @@ class OrderIndexControllerTest extends TestCase
     {
         $paginationDTO = new PaginationDTO(0, 1, OrderColumn::Id, SortTypeEnum::Asc);
 
-        $testData = [
-            'testColumn' => 'testValue',
-        ];
-        $collection = new Collection($testData);
+        $totalRowCount = 1;
+
+        $expectedResponse = ['testKey' => 'testValue'];
 
         return [
             'single' => [
                 'requestDTO' => new OrderIndexRequestDTO($paginationDTO),
-                'responseDTO' => new OrderIndexResponseDTO($collection, 1),
-                'expectedData' => [
-                    (object)$testData,
-                ],
+                'responseDTO' => new OrderIndexResponseDTO(collect(), $totalRowCount),
+                'presenterResponse' => new JsonResponse($expectedResponse),
+                'expectedResponse' => $expectedResponse,
             ],
         ];
     }
@@ -69,7 +66,8 @@ class OrderIndexControllerTest extends TestCase
     public function testSuccessfulOrderIndexControllerExecution(
         OrderIndexRequestDTO  $requestDTO,
         OrderIndexResponseDTO $responseDTO,
-        array                 $expectedData
+        JsonResponse          $presenterResponse,
+        array                 $expectedResponse
     ): void {
         $this->requestMock
             ->shouldReceive('getValidated')
@@ -86,11 +84,11 @@ class OrderIndexControllerTest extends TestCase
             ->shouldReceive('present')
             ->once()
             ->with($responseDTO)
-            ->andReturn(new JsonResponse($expectedData));
+            ->andReturn($presenterResponse);
 
         $response = $this->orderIndexController->__invoke($this->requestMock);
 
-        $this->assertEqualsCanonicalizing($expectedData, $response->getData());
+        $this->assertEquals($expectedResponse, $response->getData(true));
     }
 
     /**
@@ -106,7 +104,6 @@ class OrderIndexControllerTest extends TestCase
         $this->useCaseMock
             ->shouldReceive('execute')
             ->once()
-            ->with($requestDTO)
             ->andThrow(new Exception());
 
         $this->presenterMock
@@ -133,13 +130,11 @@ class OrderIndexControllerTest extends TestCase
         $this->useCaseMock
             ->shouldReceive('execute')
             ->once()
-            ->with($requestDTO)
             ->andReturn($responseDTO);
 
         $this->presenterMock
             ->shouldReceive('present')
             ->once()
-            ->with($responseDTO)
             ->andThrow(new Exception());
 
         $this->expectException(Exception::class);

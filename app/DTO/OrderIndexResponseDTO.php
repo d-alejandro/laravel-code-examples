@@ -3,7 +3,7 @@
 namespace App\DTO;
 
 use App\DTO\Interfaces\OrderIndexResponseDTOInterface;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 readonly class OrderIndexResponseDTO implements OrderIndexResponseDTOInterface
 {

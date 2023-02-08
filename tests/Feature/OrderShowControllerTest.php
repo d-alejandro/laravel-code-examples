@@ -84,7 +84,7 @@ class OrderShowControllerTest extends TestCase
             ]);
     }
 
-    public function testError(): void
+    public function testErrorExecution(): void
     {
         Log::shouldReceive('error');
 
