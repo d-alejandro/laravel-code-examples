@@ -4,14 +4,15 @@ namespace App\Presenters;
 
 use App\DTO\Interfaces\OrderIndexResponseDTOInterface;
 use App\Http\Resources\OrderIndexResource;
-use App\Presenters\Interfaces\OrderIndexPresenterInterface;
+use App\Presenters\Interfaces\OrderListPresenterInterface;
+use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class OrderIndexPresenter implements OrderIndexPresenterInterface
+class OrderListPresenter implements OrderListPresenterInterface
 {
     public const HEADER_X_TOTAL_COUNT = 'X-Total-Count';
 
-    public function present(OrderIndexResponseDTOInterface $responseDTO): mixed
+    public function present(OrderIndexResponseDTOInterface $responseDTO): JsonResponse
     {
         return OrderIndexResource::collection($responseDTO->collection)
             ->response()

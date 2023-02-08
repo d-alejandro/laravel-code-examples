@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * @method \Illuminate\Database\Eloquent\Collection get(array|string $columns = ['*'])
  * @method int count(string $columns = '*')
+ * @method \Illuminate\Database\Eloquent\Model findOrFail(int $id, array $columns = ['*'])
  */
 class CriteriaApplier implements CriteriaApplierInterface
 {

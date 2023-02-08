@@ -4,6 +4,6 @@ namespace App\UseCases\Exceptions;
 
 use App\Exceptions\BaseException;
 
-class OrderSearchUseCasesException extends BaseException
+class OrderIndexUseCasesException extends BaseException
 {
 }

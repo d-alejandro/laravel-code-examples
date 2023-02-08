@@ -2,6 +2,6 @@
 
 namespace App\DTO\Interfaces;
 
-interface OrderStoreResponseDTOInterface
+interface OrderResponseDTOInterface
 {
 }

@@ -29,6 +29,7 @@ class OrderResource extends JsonResource
             OrderResourceEnum::Note->value => $this->getColumn(OrderColumn::Note),
             OrderResourceEnum::Email->value => $this->getColumn(OrderColumn::Email),
             OrderResourceEnum::Phone->value => $this->getColumn(OrderColumn::Phone),
+            OrderResourceEnum::ConfirmedAt->value => $this->getColumn(OrderColumn::ConfirmedAt)?->format('d-m-Y H:i:s'),
             OrderResourceEnum::CreatedAt->value => $this->getColumn(OrderColumn::CreatedAt)->format('d-m-Y H:i:s'),
             OrderResourceEnum::UpdatedAt->value => $this->getColumn(OrderColumn::UpdatedAt)->format('d-m-Y H:i:s'),
         ];

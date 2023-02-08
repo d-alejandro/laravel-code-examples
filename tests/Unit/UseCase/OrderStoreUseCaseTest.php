@@ -3,8 +3,10 @@
 namespace Tests\Unit\UseCase;
 
 use App\DTO\OrderStoreRequestDTO;
-use App\DTO\OrderStoreResponseDTO;
+use App\DTO\OrderResponseDTO;
+use App\Enums\OrderStatusEnum;
 use App\Helpers\Interfaces\EventDispatcherInterface;
+use App\Models\Enums\OrderColumn;
 use App\Models\Order;
 use App\Repositories\Interfaces\OrderStoreRepositoryInterface;
 use App\UseCases\Exceptions\OrderStoreException;
@@ -50,7 +52,12 @@ class OrderStoreUseCaseTest extends TestCase
         return [
             'single' => [
                 'requestDTO' => $requestDTO,
-                'responseDTO' => new OrderStoreResponseDTO(new Order()),
+                'responseDTO' => new OrderResponseDTO(new Order()),
+                'expectedResponse' => [
+                    OrderColumn::Status->value => OrderStatusEnum::Waiting->value,
+                    OrderColumn::IsChecked->value => false,
+                    OrderColumn::IsConfirmed->value => false,
+                ],
             ],
         ];
     }
@@ -60,8 +67,9 @@ class OrderStoreUseCaseTest extends TestCase
      * @throws OrderStoreException
      */
     public function testSuccessfulOrderStoreUseCaseExecution(
-        OrderStoreRequestDTO  $requestDTO,
-        OrderStoreResponseDTO $responseDTO
+        OrderStoreRequestDTO $requestDTO,
+        OrderResponseDTO     $responseDTO,
+        array                $expectedResponse
     ): void {
         $this->repositoryMock
             ->shouldReceive('make')
@@ -75,7 +83,7 @@ class OrderStoreUseCaseTest extends TestCase
 
         $response = $this->orderStoreUseCase->execute($requestDTO);
 
-        $this->assertEqualsCanonicalizing($responseDTO->order->toArray(), $response->order->toArray());
+        $this->assertEqualsCanonicalizing($expectedResponse, $response->order->toArray());
     }
 
     /**

@@ -21,9 +21,9 @@ use App\Repositories\Criteria\WhereInIdsCriterion;
 use App\Repositories\Criteria\WhereLikeCenterCriterion;
 use App\Repositories\Criteria\WhereNullOrNotCriterion;
 use App\Repositories\Criteria\WithCriterion;
-use App\Repositories\Interfaces\OrderSearchRepositoryInterface;
+use App\Repositories\Interfaces\OrderIndexRepositoryInterface;
 
-class OrderSearchRepository implements OrderSearchRepositoryInterface
+class OrderIndexRepository implements OrderIndexRepositoryInterface
 {
     private OrderIndexRequestDTOInterface $requestDTO;
 

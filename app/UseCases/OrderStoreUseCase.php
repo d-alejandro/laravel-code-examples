@@ -3,7 +3,7 @@
 namespace App\UseCases;
 
 use App\DTO\Interfaces\OrderStoreRequestDTOInterface;
-use App\DTO\Interfaces\OrderStoreResponseDTOInterface;
+use App\DTO\Interfaces\OrderResponseDTOInterface;
 use App\Events\OrderStored;
 use App\Helpers\Interfaces\EventDispatcherInterface;
 use App\Repositories\Interfaces\OrderStoreRepositoryInterface;
@@ -22,7 +22,7 @@ class OrderStoreUseCase implements OrderStoreUseCaseInterface
     /**
      * @throws OrderStoreException
      */
-    public function execute(OrderStoreRequestDTOInterface $requestDTO): OrderStoreResponseDTOInterface
+    public function execute(OrderStoreRequestDTOInterface $requestDTO): OrderResponseDTOInterface
     {
         try {
             $response = $this->repository->make($requestDTO);

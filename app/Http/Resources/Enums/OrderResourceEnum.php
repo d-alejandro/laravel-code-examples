@@ -17,6 +17,7 @@ enum OrderResourceEnum: string
     case AdminNote = 'admin_note';
     case IsConfirmed = 'is_confirmed';
     case IsChecked = 'is_checked';
+    case ConfirmedAt = 'confirmed_at';
     case CreatedAt = 'created_at';
     case UpdatedAt = 'updated_at';
 }

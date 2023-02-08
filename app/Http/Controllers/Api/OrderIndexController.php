@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Interfaces\OrderIndexRequestInterface;
-use App\Presenters\Interfaces\OrderIndexPresenterInterface;
+use App\Presenters\Interfaces\OrderListPresenterInterface;
 use App\UseCases\Interfaces\OrderIndexUseCaseInterface;
 
 final class OrderIndexController extends Controller
 {
     public function __construct(
-        private OrderIndexUseCaseInterface   $useCase,
-        private OrderIndexPresenterInterface $presenter
+        private OrderIndexUseCaseInterface  $useCase,
+        private OrderListPresenterInterface $presenter
     ) {
     }
 
