@@ -42,7 +42,5 @@ class Handler extends ExceptionHandler
         $this->renderable(fn(BaseException $e) => response([
             'message' => $e->getMessage(),
         ], Response::HTTP_BAD_REQUEST));
-
-        $this->reportable(fn(BaseException $e) => false);
     }
 }
