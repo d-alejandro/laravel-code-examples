@@ -95,7 +95,7 @@ class OrderIndexControllerTest extends TestCase
             ]);
     }
 
-    public function getDataProviderError(): array
+    public function getDataProviderValidationError(): array
     {
         return [
             'single' => [
@@ -110,7 +110,7 @@ class OrderIndexControllerTest extends TestCase
     }
 
     /**
-     * @dataProvider getDataProviderError
+     * @dataProvider getDataProviderValidationError
      */
     public function testValidationError(array $request): void
     {
