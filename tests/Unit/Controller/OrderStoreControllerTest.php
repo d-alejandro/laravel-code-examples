@@ -43,21 +43,24 @@ class OrderStoreControllerTest extends TestCase
     public function getDataProvider(): array
     {
         $rentalDate = now()->toString();
+        $requestDTO = new OrderStoreRequestDTO(
+            'TestAgencyName',
+            $rentalDate,
+            1,
+            1,
+            'TestUserName',
+            'test@test.com',
+            '+7 (777) 1111 111'
+        );
+
+        $expectedResponse = ['testKey' => 'testValue'];
+
         return [
             'single' => [
-                'requestDTO' => new OrderStoreRequestDTO(
-                    'TestAgencyName',
-                    $rentalDate,
-                    1,
-                    1,
-                    'TestUserName',
-                    'test@test.com',
-                    '+7 (777) 1111 111'
-                ),
+                'requestDTO' => $requestDTO,
                 'responseDTO' => new OrderResponseDTO(new Order()),
-                'expectedData' => [
-                    (object)['testColumn' => 'testValue'],
-                ],
+                'presenterResponse' => new JsonResponse($expectedResponse),
+                'expectedResponse' => $expectedResponse,
             ],
         ];
     }
@@ -68,7 +71,8 @@ class OrderStoreControllerTest extends TestCase
     public function testSuccessfulOrderStoreControllerExecution(
         OrderStoreRequestDTO $requestDTO,
         OrderResponseDTO     $responseDTO,
-        array                $expectedData
+        JsonResponse         $presenterResponse,
+        array                $expectedResponse
     ): void {
         $this->requestMock
             ->shouldReceive('getValidated')
@@ -85,11 +89,11 @@ class OrderStoreControllerTest extends TestCase
             ->shouldReceive('present')
             ->once()
             ->with($responseDTO)
-            ->andReturn(new JsonResponse($expectedData));
+            ->andReturn($presenterResponse);
 
         $response = $this->orderStoreController->__invoke($this->requestMock);
 
-        $this->assertEqualsCanonicalizing($expectedData, $response->getData());
+        $this->assertEqualsCanonicalizing($expectedResponse, $response->getData(true));
     }
 
     /**

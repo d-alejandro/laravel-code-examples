@@ -37,13 +37,13 @@ class OrderShowControllerTest extends TestCase
 
     public function getDataProvider(): array
     {
+        $expectedResponse = ['testKey' => 'testValue'];
         return [
             'single' => [
                 'orderId' => 1,
                 'responseDTO' => new OrderResponseDTO(new Order()),
-                'expectedData' => [
-                    (object)['testColumn' => 'testValue'],
-                ],
+                'presenterResponse' => new JsonResponse($expectedResponse),
+                'expectedResponse' => $expectedResponse,
             ],
         ];
     }
@@ -54,7 +54,8 @@ class OrderShowControllerTest extends TestCase
     public function testSuccessfulOrderShowControllerExecution(
         int              $orderId,
         OrderResponseDTO $responseDTO,
-        array            $expectedData
+        JsonResponse     $presenterResponse,
+        array            $expectedResponse
     ): void {
         $this->useCaseMock
             ->shouldReceive('execute')
@@ -66,11 +67,11 @@ class OrderShowControllerTest extends TestCase
             ->shouldReceive('present')
             ->once()
             ->with($responseDTO)
-            ->andReturn(new JsonResponse($expectedData));
+            ->andReturn($presenterResponse);
 
         $response = $this->orderShowController->__invoke($orderId);
 
-        $this->assertEqualsCanonicalizing($expectedData, $response->getData());
+        $this->assertEquals($expectedResponse, $response->getData(true));
     }
 
     /**
