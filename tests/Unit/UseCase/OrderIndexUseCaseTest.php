@@ -5,8 +5,10 @@ namespace Tests\Unit\UseCase;
 use App\DTO\PaginationDTO;
 use App\DTO\OrderIndexRequestDTO;
 use App\DTO\OrderIndexResponseDTO;
+use App\Enums\OrderStatusEnum;
 use App\Enums\SortTypeEnum;
 use App\Models\Enums\OrderColumn;
+use App\Models\Order;
 use App\Repositories\Interfaces\OrderIndexRepositoryInterface;
 use App\UseCases\Exceptions\OrderIndexUseCasesException;
 use App\UseCases\OrderIndexUseCase;
@@ -39,15 +41,18 @@ class OrderIndexUseCaseTest extends TestCase
     {
         $paginationDTO = new PaginationDTO(0, 1, OrderColumn::Id, SortTypeEnum::Asc);
 
-        $testData = ['testColumn' => 'testValue'];
-        $collection = new Collection($testData);
-
+        $collection = new Collection(new Order());
         $totalRowCount = 1;
 
         return [
             'single' => [
                 'requestDTO' => new OrderIndexRequestDTO($paginationDTO),
-                'expectedResponseDTO' => new OrderIndexResponseDTO($collection, $totalRowCount),
+                'responseDTO' => new OrderIndexResponseDTO($collection, $totalRowCount),
+                'expectedResponse' => [
+                    OrderColumn::Status->value => OrderStatusEnum::Waiting->value,
+                    OrderColumn::IsChecked->value => false,
+                    OrderColumn::IsConfirmed->value => false,
+                ],
             ],
         ];
     }
@@ -58,7 +63,8 @@ class OrderIndexUseCaseTest extends TestCase
      */
     public function testSuccessfulOrderIndexUseCaseExecution(
         OrderIndexRequestDTO  $requestDTO,
-        OrderIndexResponseDTO $responseDTO
+        OrderIndexResponseDTO $responseDTO,
+        array                 $expectedResponse
     ): void {
         $this->repositoryMock
             ->shouldReceive('make')
@@ -68,7 +74,7 @@ class OrderIndexUseCaseTest extends TestCase
 
         $response = $this->orderIndexUseCase->execute($requestDTO);
 
-        $this->assertEquals($responseDTO, $response);
+        $this->assertEquals($expectedResponse, $response->collection->toArray());
     }
 
     /**

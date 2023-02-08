@@ -27,6 +27,13 @@ class OrderShowUseCaseTest extends TestCase
         $this->orderShowUseCase = new OrderShowUseCase($this->repositoryMock);
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        Mockery::close();
+    }
+
     public function getDataProvider(): array
     {
         return [
