@@ -10,6 +10,7 @@ use App\Repositories\Interfaces\OrderDestroyRepositoryInterface;
 use App\UseCases\Exceptions\OrderDestroyException;
 use App\UseCases\Interfaces\OrderShowUseCaseInterface;
 use App\UseCases\OrderDestroyUseCase;
+use Exception;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -74,5 +75,44 @@ class OrderDestroyUseCaseTest extends TestCase
         $response = $this->orderDestroyUseCase->execute($orderId);
 
         $this->assertEqualsCanonicalizing($expectedResponse, $response->order->toArray());
+    }
+
+    /**
+     * @dataProvider getDataProvider
+     */
+    public function testFailedOrderShowUseCaseCall(int $id): void
+    {
+        $this->showUseCaseMock
+            ->shouldReceive('execute')
+            ->once()
+            ->andThrow(new Exception());
+
+        $this->repositoryMock
+            ->shouldReceive('make')
+            ->never();
+
+        $this->expectException(OrderDestroyException::class);
+
+        $this->orderDestroyUseCase->execute($id);
+    }
+
+    /**
+     * @dataProvider getDataProvider
+     */
+    public function testFailedOrderDestroyRepositoryCall(int $id, OrderResponseDTO $responseDTO): void
+    {
+        $this->showUseCaseMock
+            ->shouldReceive('execute')
+            ->once()
+            ->andReturn($responseDTO);
+
+        $this->repositoryMock
+            ->shouldReceive('make')
+            ->once()
+            ->andThrow(new Exception());
+
+        $this->expectException(OrderDestroyException::class);
+
+        $this->orderDestroyUseCase->execute($id);
     }
 }

@@ -80,7 +80,7 @@ class OrderIndexUseCaseTest extends TestCase
     /**
      * @dataProvider getDataProvider
      */
-    public function testFailedOrderSearchRepositoryCall(OrderIndexRequestDTO $requestDTO): void
+    public function testFailedOrderIndexRepositoryCall(OrderIndexRequestDTO $requestDTO): void
     {
         $this->repositoryMock
             ->shouldReceive('make')

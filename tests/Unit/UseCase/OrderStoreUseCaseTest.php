@@ -89,7 +89,7 @@ class OrderStoreUseCaseTest extends TestCase
     /**
      * @dataProvider getDataProvider
      */
-    public function testFailedStoreOrderServiceCall(OrderStoreRequestDTO $requestDTO): void
+    public function testFailedOrderStoreServiceCall(OrderStoreRequestDTO $requestDTO): void
     {
         $this->repositoryMock
             ->shouldReceive('make')
