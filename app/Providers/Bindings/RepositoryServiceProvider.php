@@ -7,9 +7,11 @@ use App\Repositories\AgencyByNameCreatorRepository;
 use App\Repositories\Criteria\CriteriaApplier;
 use App\Repositories\Criteria\Interfaces\CriteriaApplierInterface;
 use App\Repositories\Interfaces\AgencyByNameCreatorRepositoryInterface;
+use App\Repositories\Interfaces\OrderDestroyRepositoryInterface;
 use App\Repositories\Interfaces\OrderIndexRepositoryInterface;
 use App\Repositories\Interfaces\OrderShowRepositoryInterface;
 use App\Repositories\Interfaces\OrderStoreRepositoryInterface;
+use App\Repositories\OrderDestroyRepository;
 use App\Repositories\OrderIndexRepository;
 use App\Repositories\OrderShowRepository;
 use App\Repositories\OrderStoreRepository;
@@ -42,5 +44,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->when(OrderShowRepository::class)
             ->needs(CriteriaApplierInterface::class)
             ->give(fn() => new CriteriaApplier(Order::class));
+
+        $this->app->bind(OrderDestroyRepositoryInterface::class, OrderDestroyRepository::class);
     }
 }

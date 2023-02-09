@@ -2,8 +2,10 @@
 
 namespace App\Providers\Bindings;
 
+use App\UseCases\Interfaces\OrderDestroyUseCaseInterface;
 use App\UseCases\Interfaces\OrderShowUseCaseInterface;
 use App\UseCases\Interfaces\OrderStoreUseCaseInterface;
+use App\UseCases\OrderDestroyUseCase;
 use App\UseCases\OrderIndexUseCase;
 use App\UseCases\Interfaces\OrderIndexUseCaseInterface;
 use App\UseCases\OrderShowUseCase;
@@ -17,5 +19,6 @@ class UseCaseServiceProvider extends ServiceProvider
         $this->app->bind(OrderIndexUseCaseInterface::class, OrderIndexUseCase::class);
         $this->app->bind(OrderStoreUseCaseInterface::class, OrderStoreUseCase::class);
         $this->app->bind(OrderShowUseCaseInterface::class, OrderShowUseCase::class);
+        $this->app->bind(OrderDestroyUseCaseInterface::class, OrderDestroyUseCase::class);
     }
 }
