@@ -6,7 +6,10 @@ use App\DTO\OrderResponseDTO;
 use App\Enums\OrderStatusEnum;
 use App\Models\Enums\OrderColumn;
 use App\Models\Order;
+use App\Repositories\Interfaces\OrderDestroyRepositoryInterface;
+use App\UseCases\Exceptions\OrderDestroyException;
 use App\UseCases\Interfaces\OrderShowUseCaseInterface;
+use App\UseCases\OrderDestroyUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -50,6 +53,7 @@ class OrderDestroyUseCaseTest extends TestCase
 
     /**
      * @dataProvider getDataProvider
+     * @throws OrderDestroyException
      */
     public function testSuccessfulDestroyOrderUseCaseExecution(
         int              $orderId,
@@ -67,7 +71,7 @@ class OrderDestroyUseCaseTest extends TestCase
             ->once()
             ->with($responseDTO);
 
-        $response = $this->orderDestroyUseCase->execute($responseDTO);
+        $response = $this->orderDestroyUseCase->execute($orderId);
 
         $this->assertEqualsCanonicalizing($expectedResponse, $response->order->toArray());
     }
