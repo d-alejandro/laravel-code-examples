@@ -23,10 +23,7 @@ class OrderDestroyUseCaseTest extends TestCase
         $this->showUseCaseMock = Mockery::mock(OrderShowUseCaseInterface::class);
         $this->repositoryMock = Mockery::mock(OrderDestroyRepositoryInterface::class);
 
-        $this->orderDestroyUseCase = new OrderDestroyUseCase(
-            $this->showUseCaseMock,
-            $this->repositoryMock
-        );
+        $this->orderDestroyUseCase = new OrderDestroyUseCase($this->showUseCaseMock, $this->repositoryMock);
     }
 
     protected function tearDown(): void
