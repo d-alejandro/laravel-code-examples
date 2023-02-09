@@ -56,7 +56,7 @@ class OrderDestroyUseCaseTest extends TestCase
      * @dataProvider getDataProvider
      * @throws OrderDestroyException
      */
-    public function testSuccessfulDestroyOrderUseCaseExecution(
+    public function testSuccessfulOrderDestroyUseCaseExecution(
         int              $orderId,
         OrderResponseDTO $responseDTO,
         array            $expectedResponse
