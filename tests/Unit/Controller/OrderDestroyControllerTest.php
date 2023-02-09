@@ -3,8 +3,10 @@
 namespace Tests\Unit\Controller;
 
 use App\DTO\OrderResponseDTO;
+use App\Http\Controllers\Api\OrderDestroyController;
 use App\Models\Order;
 use App\Presenters\Interfaces\OrderPresenterInterface;
+use App\UseCases\Interfaces\OrderDestroyUseCaseInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Mockery;
