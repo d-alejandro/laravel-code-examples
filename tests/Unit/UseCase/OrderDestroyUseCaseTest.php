@@ -74,7 +74,7 @@ class OrderDestroyUseCaseTest extends TestCase
 
         $response = $this->orderDestroyUseCase->execute($orderId);
 
-        $this->assertEqualsCanonicalizing($expectedResponse, $response->order->toArray());
+        $this->assertEquals($expectedResponse, $response->order->toArray());
     }
 
     /**

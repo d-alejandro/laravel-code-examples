@@ -93,7 +93,7 @@ class OrderStoreControllerTest extends TestCase
 
         $response = $this->orderStoreController->__invoke($this->requestMock);
 
-        $this->assertEqualsCanonicalizing($expectedResponse, $response->getData(true));
+        $this->assertEquals($expectedResponse, $response->getData(true));
     }
 
     /**

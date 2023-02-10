@@ -83,13 +83,13 @@ class OrderStoreUseCaseTest extends TestCase
 
         $response = $this->orderStoreUseCase->execute($requestDTO);
 
-        $this->assertEqualsCanonicalizing($expectedResponse, $response->order->toArray());
+        $this->assertEquals($expectedResponse, $response->order->toArray());
     }
 
     /**
      * @dataProvider getDataProvider
      */
-    public function testFailedOrderStoreServiceCall(OrderStoreRequestDTO $requestDTO): void
+    public function testFailedOrderStoreRepositoryCall(OrderStoreRequestDTO $requestDTO): void
     {
         $this->repositoryMock
             ->shouldReceive('make')
