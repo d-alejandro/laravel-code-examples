@@ -3,10 +3,14 @@
 namespace Tests\Unit\UseCase;
 
 use App\DTO\OrderResponseDTO;
+use App\DTO\OrderUpdateRequestDTO;
 use App\Enums\OrderStatusEnum;
 use App\Models\Enums\OrderColumn;
 use App\Models\Order;
+use App\Repositories\Interfaces\OrderUpdateRepositoryInterface;
+use App\UseCases\Exceptions\OrderUpdateException;
 use App\UseCases\Interfaces\OrderShowUseCaseInterface;
+use App\UseCases\OrderUpdateUseCase;
 use Exception;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -34,7 +38,6 @@ class OrderUpdateUseCaseTest extends TestCase
         Mockery::close();
     }
 
-
     public function getDataProvider(): array
     {
         $requestDTO = new OrderUpdateRequestDTO();
@@ -55,6 +58,7 @@ class OrderUpdateUseCaseTest extends TestCase
 
     /**
      * @dataProvider getDataProvider
+     * @throws OrderUpdateException
      */
     public function testSuccessfulOrderUpdateUseCaseExecution(
         OrderUpdateRequestDTO $requestDTO,
