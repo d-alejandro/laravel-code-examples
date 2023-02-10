@@ -49,19 +49,27 @@ class OrderStoreControllerTest extends TestCase
 
     public function getDataProvider(): array
     {
+        $agencyName = 'AgencyNameTest';
         $rentalDate = now()->addWeek();
+        $guestCount = 1;
+        $transportCount = 1;
+        $userName = 'UserNameTest';
+        $email = 'test@test.test';
+        $phone = '7000000000';
+        $note = 'NoteTest';
+        $adminNote = 'AdminNoteTest';
         return [
             'single' => [
                 'request' => [
-                    OrderStoreRequestParamEnum::AgencyName->value => $agencyName = 'AgencyNameTest',
+                    OrderStoreRequestParamEnum::AgencyName->value => $agencyName,
                     OrderStoreRequestParamEnum::RentalDate->value => $rentalDate,
-                    OrderStoreRequestParamEnum::GuestCount->value => $guestCount = 1,
-                    OrderStoreRequestParamEnum::TransportCount->value => $transportCount = 1,
-                    OrderStoreRequestParamEnum::UserName->value => $userName = 'UserNameTest',
-                    OrderStoreRequestParamEnum::Email->value => $email = 'test@test.test',
-                    OrderStoreRequestParamEnum::Phone->value => $phone = '7000000000',
-                    OrderStoreRequestParamEnum::Note->value => $note = 'NoteTest',
-                    OrderStoreRequestParamEnum::AdminNote->value => $adminNote = 'AdminNoteTest',
+                    OrderStoreRequestParamEnum::GuestCount->value => $guestCount,
+                    OrderStoreRequestParamEnum::TransportCount->value => $transportCount,
+                    OrderStoreRequestParamEnum::UserName->value => $userName,
+                    OrderStoreRequestParamEnum::Email->value => $email,
+                    OrderStoreRequestParamEnum::Phone->value => $phone,
+                    OrderStoreRequestParamEnum::Note->value => $note,
+                    OrderStoreRequestParamEnum::AdminNote->value => $adminNote,
                 ],
                 'expectedResponse' => fn(Order $order) => [
                     OrderResourceEnum::Id->value => $order->getKey(),
