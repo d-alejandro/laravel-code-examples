@@ -40,13 +40,13 @@ class OrderStoreUseCaseTest extends TestCase
     public function getDataProvider(): array
     {
         $requestDTO = new OrderStoreRequestDTO(
-            'testAgencyName',
-            now(),
-            1,
-            1,
-            'testUserName',
-            'testEmail',
-            'testPhone'
+            agencyName: 'TestAgencyName',
+            rentalDate: now(),
+            guestCount: 1,
+            transportCount: 1,
+            userName: 'TestUserName',
+            email: 'test@test.com',
+            phone: '+7 (777) 1111 111'
         );
 
         return [

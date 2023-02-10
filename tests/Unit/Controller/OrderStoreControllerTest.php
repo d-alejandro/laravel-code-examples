@@ -42,15 +42,14 @@ class OrderStoreControllerTest extends TestCase
 
     public function getDataProvider(): array
     {
-        $rentalDate = now()->toString();
         $requestDTO = new OrderStoreRequestDTO(
-            'TestAgencyName',
-            $rentalDate,
-            1,
-            1,
-            'TestUserName',
-            'test@test.com',
-            '+7 (777) 1111 111'
+            agencyName: 'TestAgencyName',
+            rentalDate: now(),
+            guestCount: 1,
+            transportCount: 1,
+            userName: 'TestUserName',
+            email: 'test@test.com',
+            phone: '+7 (777) 1111 111'
         );
 
         $expectedResponse = ['testKey' => 'testValue'];
