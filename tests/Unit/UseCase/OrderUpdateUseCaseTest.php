@@ -3,31 +3,32 @@
 namespace Tests\Unit\UseCase;
 
 use App\DTO\OrderResponseDTO;
+use App\DTO\OrderUpdateRequestDTO;
 use App\Enums\OrderStatusEnum;
 use App\Models\Enums\OrderColumn;
 use App\Models\Order;
-use App\Repositories\Interfaces\OrderDestroyRepositoryInterface;
-use App\UseCases\Exceptions\OrderDestroyException;
+use App\Repositories\Interfaces\OrderUpdateRepositoryInterface;
+use App\UseCases\Exceptions\OrderUpdateException;
 use App\UseCases\Interfaces\OrderShowUseCaseInterface;
-use App\UseCases\OrderDestroyUseCase;
+use App\UseCases\OrderUpdateUseCase;
 use Exception;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class OrderDestroyUseCaseTest extends TestCase
+class OrderUpdateUseCaseTest extends TestCase
 {
     private OrderShowUseCaseInterface $showUseCaseMock;
-    private OrderDestroyRepositoryInterface $repositoryMock;
-    private OrderDestroyUseCase $orderDestroyUseCase;
+    private OrderUpdateRepositoryInterface $repositoryMock;
+    private OrderUpdateUseCase $orderUpdateUseCase;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->showUseCaseMock = Mockery::mock(OrderShowUseCaseInterface::class);
-        $this->repositoryMock = Mockery::mock(OrderDestroyRepositoryInterface::class);
+        $this->repositoryMock = Mockery::mock(OrderUpdateRepositoryInterface::class);
 
-        $this->orderDestroyUseCase = new OrderDestroyUseCase($this->showUseCaseMock, $this->repositoryMock);
+        $this->orderUpdateUseCase = new OrderUpdateUseCase($this->showUseCaseMock, $this->repositoryMock);
     }
 
     protected function tearDown(): void
@@ -39,8 +40,17 @@ class OrderDestroyUseCaseTest extends TestCase
 
     public function getDataProvider(): array
     {
+        $requestDTO = new OrderUpdateRequestDTO(
+            guestCount: 1,
+            transportCount: 1,
+            userName: 'TestUserName',
+            email: 'test@test.com',
+            phone: '+7 (777) 1111 111'
+        );
+
         return [
             'single' => [
+                'requestDTO' => $requestDTO,
                 'orderId' => 1,
                 'responseDTO' => new OrderResponseDTO(new Order()),
                 'expectedResponse' => [
@@ -54,12 +64,13 @@ class OrderDestroyUseCaseTest extends TestCase
 
     /**
      * @dataProvider getDataProvider
-     * @throws OrderDestroyException
+     * @throws OrderUpdateException
      */
-    public function testSuccessfulOrderDestroyUseCaseExecution(
-        int              $orderId,
-        OrderResponseDTO $responseDTO,
-        array            $expectedResponse
+    public function testSuccessfulOrderUpdateUseCaseExecution(
+        OrderUpdateRequestDTO $requestDTO,
+        int                   $orderId,
+        OrderResponseDTO      $responseDTO,
+        array                 $expectedResponse
     ): void {
         $this->showUseCaseMock
             ->shouldReceive('execute')
@@ -70,9 +81,9 @@ class OrderDestroyUseCaseTest extends TestCase
         $this->repositoryMock
             ->shouldReceive('make')
             ->once()
-            ->with($responseDTO);
+            ->with($responseDTO, $requestDTO);
 
-        $response = $this->orderDestroyUseCase->execute($orderId);
+        $response = $this->orderUpdateUseCase->execute($requestDTO, $orderId);
 
         $this->assertEquals($expectedResponse, $response->order->toArray());
     }
@@ -80,7 +91,7 @@ class OrderDestroyUseCaseTest extends TestCase
     /**
      * @dataProvider getDataProvider
      */
-    public function testFailedOrderShowUseCaseCall(int $id): void
+    public function testFailedOrderShowUseCaseCall(OrderUpdateRequestDTO $requestDTO, int $orderId): void
     {
         $this->showUseCaseMock
             ->shouldReceive('execute')
@@ -91,16 +102,19 @@ class OrderDestroyUseCaseTest extends TestCase
             ->shouldReceive('make')
             ->never();
 
-        $this->expectException(OrderDestroyException::class);
+        $this->expectException(OrderUpdateException::class);
 
-        $this->orderDestroyUseCase->execute($id);
+        $this->orderUpdateUseCase->execute($requestDTO, $orderId);
     }
 
     /**
      * @dataProvider getDataProvider
      */
-    public function testFailedOrderDestroyRepositoryCall(int $id, OrderResponseDTO $responseDTO): void
-    {
+    public function testFailedOrderUpdateRepositoryCall(
+        OrderUpdateRequestDTO $requestDTO,
+        int                   $orderId,
+        OrderResponseDTO      $responseDTO
+    ): void {
         $this->showUseCaseMock
             ->shouldReceive('execute')
             ->once()
@@ -111,8 +125,8 @@ class OrderDestroyUseCaseTest extends TestCase
             ->once()
             ->andThrow(new Exception());
 
-        $this->expectException(OrderDestroyException::class);
+        $this->expectException(OrderUpdateException::class);
 
-        $this->orderDestroyUseCase->execute($id);
+        $this->orderUpdateUseCase->execute($requestDTO, $orderId);
     }
 }

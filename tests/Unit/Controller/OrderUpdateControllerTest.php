@@ -2,37 +2,35 @@
 
 namespace Tests\Unit\Controller;
 
-use App\DTO\PaginationDTO;
-use App\DTO\OrderIndexRequestDTO;
-use App\DTO\OrderIndexResponseDTO;
-use App\Enums\SortTypeEnum;
-use App\Http\Controllers\Api\OrderIndexController;
-use App\Http\Requests\Interfaces\OrderIndexRequestInterface;
-use App\Models\Enums\OrderColumn;
-use App\Presenters\Interfaces\OrderListPresenterInterface;
-use App\UseCases\Interfaces\OrderIndexUseCaseInterface;
+use App\DTO\OrderResponseDTO;
+use App\DTO\OrderUpdateRequestDTO;
+use App\Http\Controllers\Api\OrderUpdateController;
+use App\Http\Requests\Interfaces\OrderUpdateRequestInterface;
+use App\Models\Order;
+use App\Presenters\Interfaces\OrderPresenterInterface;
+use App\UseCases\Interfaces\OrderUpdateUseCaseInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class OrderIndexControllerTest extends TestCase
+class OrderUpdateControllerTest extends TestCase
 {
-    private OrderIndexUseCaseInterface $useCaseMock;
-    private OrderListPresenterInterface $presenterMock;
-    private OrderIndexController $orderIndexController;
-    private OrderIndexRequestInterface $requestMock;
+    private OrderUpdateUseCaseInterface $useCaseMock;
+    private OrderPresenterInterface $presenterMock;
+    private OrderUpdateController $orderUpdateController;
+    private OrderUpdateRequestInterface $requestMock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->useCaseMock = Mockery::mock(OrderIndexUseCaseInterface::class);
-        $this->presenterMock = Mockery::mock(OrderListPresenterInterface::class);
+        $this->useCaseMock = Mockery::mock(OrderUpdateUseCaseInterface::class);
+        $this->presenterMock = Mockery::mock(OrderPresenterInterface::class);
 
-        $this->orderIndexController = new OrderIndexController($this->useCaseMock, $this->presenterMock);
+        $this->orderUpdateController = new OrderUpdateController($this->useCaseMock, $this->presenterMock);
 
-        $this->requestMock = Mockery::mock(OrderIndexRequestInterface::class);
+        $this->requestMock = Mockery::mock(OrderUpdateRequestInterface::class);
     }
 
     protected function tearDown(): void
@@ -44,21 +42,21 @@ class OrderIndexControllerTest extends TestCase
 
     public function getDataProvider(): array
     {
-        $paginationDTO = new PaginationDTO(
-            start: 0,
-            end: 1,
-            sortColumn: OrderColumn::Id,
-            sortType: SortTypeEnum::Asc
+        $requestDTO = new OrderUpdateRequestDTO(
+            guestCount: 1,
+            transportCount: 1,
+            userName: 'TestUserName',
+            email: 'test@test.com',
+            phone: '+7 (777) 1111 111'
         );
-
-        $totalRowCount = 1;
 
         $expectedResponse = ['testKey' => 'testValue'];
 
         return [
             'single' => [
-                'requestDTO' => new OrderIndexRequestDTO($paginationDTO),
-                'responseDTO' => new OrderIndexResponseDTO(collect(), $totalRowCount),
+                'requestDTO' => $requestDTO,
+                'orderId' => 1,
+                'responseDTO' => new OrderResponseDTO(new Order()),
                 'presenterResponse' => new JsonResponse($expectedResponse),
                 'expectedResponse' => $expectedResponse,
             ],
@@ -68,9 +66,10 @@ class OrderIndexControllerTest extends TestCase
     /**
      * @dataProvider getDataProvider
      */
-    public function testSuccessfulOrderIndexControllerExecution(
-        OrderIndexRequestDTO  $requestDTO,
-        OrderIndexResponseDTO $responseDTO,
+    public function testSuccessfulOrderUpdateControllerExecution(
+        OrderUpdateRequestDTO $requestDTO,
+        int                   $orderId,
+        OrderResponseDTO      $responseDTO,
         JsonResponse          $presenterResponse,
         array                 $expectedResponse
     ): void {
@@ -82,7 +81,7 @@ class OrderIndexControllerTest extends TestCase
         $this->useCaseMock
             ->shouldReceive('execute')
             ->once()
-            ->with($requestDTO)
+            ->with($requestDTO, $orderId)
             ->andReturn($responseDTO);
 
         $this->presenterMock
@@ -91,7 +90,7 @@ class OrderIndexControllerTest extends TestCase
             ->with($responseDTO)
             ->andReturn($presenterResponse);
 
-        $response = $this->orderIndexController->__invoke($this->requestMock);
+        $response = $this->orderUpdateController->__invoke($this->requestMock, $orderId);
 
         $this->assertEquals($expectedResponse, $response->getData(true));
     }
@@ -99,7 +98,7 @@ class OrderIndexControllerTest extends TestCase
     /**
      * @dataProvider getDataProvider
      */
-    public function testFailedOrderIndexUseCaseCall(OrderIndexRequestDTO $requestDTO): void
+    public function testFailedOrderUpdateUseCaseCall(OrderUpdateRequestDTO $requestDTO, int $orderId): void
     {
         $this->requestMock
             ->shouldReceive('getValidated')
@@ -117,15 +116,16 @@ class OrderIndexControllerTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $this->orderIndexController->__invoke($this->requestMock);
+        $this->orderUpdateController->__invoke($this->requestMock, $orderId);
     }
 
     /**
      * @dataProvider getDataProvider
      */
-    public function testFailedOrderIndexPresenterCall(
-        OrderIndexRequestDTO  $requestDTO,
-        OrderIndexResponseDTO $responseDTO
+    public function testFailedOrderPresenterCall(
+        OrderUpdateRequestDTO $requestDTO,
+        int                   $orderId,
+        OrderResponseDTO      $responseDTO
     ): void {
         $this->requestMock
             ->shouldReceive('getValidated')
@@ -144,6 +144,6 @@ class OrderIndexControllerTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $this->orderIndexController->__invoke($this->requestMock);
+        $this->orderUpdateController->__invoke($this->requestMock, $orderId);
     }
 }

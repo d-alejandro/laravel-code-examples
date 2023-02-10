@@ -39,7 +39,12 @@ class OrderIndexUseCaseTest extends TestCase
 
     public function getDataProvider(): array
     {
-        $paginationDTO = new PaginationDTO(0, 1, OrderColumn::Id, SortTypeEnum::Asc);
+        $paginationDTO = new PaginationDTO(
+            start: 0,
+            end: 1,
+            sortColumn: OrderColumn::Id,
+            sortType: SortTypeEnum::Asc
+        );
 
         $collection = new Collection(new Order());
         $totalRowCount = 1;

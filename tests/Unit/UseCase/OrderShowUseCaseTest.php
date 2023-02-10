@@ -66,7 +66,7 @@ class OrderShowUseCaseTest extends TestCase
 
         $response = $this->orderShowUseCase->execute($orderId);
 
-        $this->assertEqualsCanonicalizing($expectedResponse, $response->order->toArray());
+        $this->assertEquals($expectedResponse, $response->order->toArray());
     }
 
     /**

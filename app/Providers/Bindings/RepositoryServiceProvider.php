@@ -11,11 +11,13 @@ use App\Repositories\Interfaces\OrderDestroyRepositoryInterface;
 use App\Repositories\Interfaces\OrderIndexRepositoryInterface;
 use App\Repositories\Interfaces\OrderShowRepositoryInterface;
 use App\Repositories\Interfaces\OrderStoreRepositoryInterface;
+use App\Repositories\Interfaces\OrderUpdateRepositoryInterface;
 use App\Repositories\OrderDestroyRepository;
 use App\Repositories\OrderIndexRepository;
 use App\Repositories\OrderShowRepository;
 use App\Repositories\OrderStoreRepository;
 use App\Repositories\OrderStoreRepositoryDecorator;
+use App\Repositories\OrderUpdateRepository;
 use App\UseCases\OrderStoreUseCase;
 use Illuminate\Support\ServiceProvider;
 
@@ -46,5 +48,7 @@ class RepositoryServiceProvider extends ServiceProvider
             ->give(fn() => new CriteriaApplier(Order::class));
 
         $this->app->bind(OrderDestroyRepositoryInterface::class, OrderDestroyRepository::class);
+
+        $this->app->bind(OrderUpdateRepositoryInterface::class, OrderUpdateRepository::class);
     }
 }
