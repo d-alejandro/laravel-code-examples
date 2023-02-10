@@ -3,8 +3,12 @@
 namespace Tests\Unit\Controller;
 
 use App\DTO\OrderResponseDTO;
+use App\DTO\OrderUpdateRequestDTO;
+use App\Http\Controllers\Api\OrderUpdateController;
+use App\Http\Requests\Interfaces\OrderUpdateRequestInterface;
 use App\Models\Order;
 use App\Presenters\Interfaces\OrderPresenterInterface;
+use App\UseCases\Interfaces\OrderUpdateUseCaseInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Mockery;
