@@ -32,14 +32,26 @@ services:
       - db
 
   db:
-    image: mysql:8.0.32
-    restart: always
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - ./storage/docker/mysql:/var/lib/mysql
-    ports:
-      - "${IDE_DB_PORT}:3306"
+      image: postgres:16.1
+      restart: always
+      volumes:
+          - ./storage/docker/postgres/data:/var/lib/postgresql/data
+      environment:
+          POSTGRES_DB: ${DB_DATABASE}
+          POSTGRES_USER: ${DB_USERNAME}
+          POSTGRES_PASSWORD: ${DB_PASSWORD}
+      ports:
+          - ${DB_PORT_IDE}:5432
+
+#  db:
+#    image: mysql:8.0.32
+#    restart: always
+#    environment:
+#      MYSQL_DATABASE: ${DB_DATABASE}
+#      MYSQL_USER: ${DB_USERNAME}
+#      MYSQL_PASSWORD: ${DB_PASSWORD}
+#      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+#    volumes:
+#      - ./storage/docker/mysql:/var/lib/mysql
+#    ports:
+#      - "${DB_PORT_IDE}:3306"
