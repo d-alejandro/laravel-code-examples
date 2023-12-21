@@ -80,7 +80,8 @@ docker-compose exec php-fpm ./vendor/bin/phpunit --coverage-html ./storage/repor
 - Request URL: `http://localhost:8081/api/orders?start=0&end=2&sort_column=id&sort_type=asc`
 - Method: `GET`
 - Path: `/orders`
-- Request Parameters: `start, end, sort_column, sort_type`
+- Headers: `Accept:application/json, Content-Type:application/json`
+- Parameters: `start, end, sort_column, sort_type`
 - Status Code: `200`
 - Response:
 ```json
@@ -118,7 +119,8 @@ docker-compose exec php-fpm ./vendor/bin/phpunit --coverage-html ./storage/repor
 - Request URL: `http://localhost:8081/api/orders`
 - Method: `POST`
 - Path: `/orders`
-- Request Parameters: `agency_name, rental_date, guest_count, transport_count, user_name, email, phone`
+- Headers: `Accept:application/json, Content-Type:application/json`
+- Parameters: `agency_name, rental_date, guest_count, transport_count, user_name, email, phone`
 - Status Code: `201`
 - Response:
 ```json
@@ -140,6 +142,97 @@ docker-compose exec php-fpm ./vendor/bin/phpunit --coverage-html ./storage/repor
         "confirmed_at": null,
         "created_at": "21-12-2023 12:22:33",
         "updated_at": "21-12-2023 12:22:33"
+    }
+}
+```
+
+### Order Details
+- Request URL: `http://localhost:8081/api/orders/10000011`
+- Method: `GET`
+- Path: `/orders/{id}`
+- Headers: `Accept:application/json, Content-Type:application/json`
+- Status Code: `200`
+- Response:
+```json
+{
+    "data": {
+        "id": 10000011,
+        "agency_name": "Test Agency Name",
+        "status": "waiting",
+        "is_confirmed": false,
+        "is_checked": false,
+        "rental_date": "22-12-2023",
+        "user_name": "Test User Name",
+        "transport_count": 1,
+        "guest_count": 1,
+        "admin_note": null,
+        "note": null,
+        "email": "test@test.ru",
+        "phone": "71437854547",
+        "confirmed_at": null,
+        "created_at": "21-12-2023 12:22:33",
+        "updated_at": "21-12-2023 12:22:33"
+    }
+}
+```
+
+### Update Order
+- Request URL: `http://localhost:8081/api/orders/10000011`
+- Method: `PUT`
+- Path: `/orders/{id}`
+- Headers: `Accept:application/json, Content-Type:application/json`
+- Parameters: `guest_count, transport_count, user_name, email, phone`
+- Status Code: `200`
+- Response:
+```json
+{
+    "data": {
+        "id": 10000011,
+        "agency_name": "Test Agency Name",
+        "status": "waiting",
+        "is_confirmed": false,
+        "is_checked": false,
+        "rental_date": "22-12-2023",
+        "user_name": "Test User Name",
+        "transport_count": 1,
+        "guest_count": 1,
+        "admin_note": null,
+        "note": null,
+        "email": "test@test.ru",
+        "phone": "70000000001",
+        "confirmed_at": null,
+        "created_at": "21-12-2023 12:22:33",
+        "updated_at": "21-12-2023 15:03:33"
+    }
+}
+```
+
+### Delete Order
+- Request URL: `http://localhost:8081/api/orders/10000011`
+- Method: `DELETE`
+- Path: `/orders/{id}`
+- Headers: `Accept:application/json, Content-Type:application/json`
+- Status Code: `200`
+- Response:
+```json
+{
+    "data": {
+        "id": 10000011,
+        "agency_name": "Test Agency Name",
+        "status": "waiting",
+        "is_confirmed": false,
+        "is_checked": false,
+        "rental_date": "22-12-2023",
+        "user_name": "Test User Name",
+        "transport_count": 1,
+        "guest_count": 1,
+        "admin_note": null,
+        "note": null,
+        "email": "test@test.ru",
+        "phone": "70000000001",
+        "confirmed_at": null,
+        "created_at": "21-12-2023 12:22:33",
+        "updated_at": "21-12-2023 15:13:30"
     }
 }
 ```
