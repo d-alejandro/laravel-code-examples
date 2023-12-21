@@ -3,6 +3,8 @@ FROM php:8.2.1-fpm
 ARG user
 ARG uid
 
+#RUN echo "user=$user uid=$uid"
+
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \

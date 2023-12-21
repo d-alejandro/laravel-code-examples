@@ -14,8 +14,8 @@ services:
   php-fpm:
     build:
       args:
-        user: user
-        uid: 1000
+        user: ${HOST_USER}
+        uid: ${HOST_UID}
       context: ./docker
       dockerfile: ./Dockerfile
     restart: unless-stopped
