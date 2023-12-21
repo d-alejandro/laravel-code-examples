@@ -104,7 +104,7 @@ class OrderStoreControllerTest extends TestCase
 
         $order = Order::query()->firstOrFail();
 
-        $response->assertStatus(Response::HTTP_OK)
+        $response->assertStatus(Response::HTTP_CREATED)
             ->assertExactJson([
                 'data' => $expectedResponse($order),
             ]);
