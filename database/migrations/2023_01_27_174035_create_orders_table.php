@@ -15,12 +15,13 @@ return new class extends Migration
 
     public function up(): void
     {
-        /* @var $helper \App\Helpers\EnumHelper */
+        /* @var $helper EnumHelperInterface */
         $helper = resolve(EnumHelperInterface::class);
 
         Schema::create(Order::TABLE_NAME, function (Blueprint $table) use ($helper) {
             $table->id()->from(self::AUTO_INCREMENT_ID_START);
             $table->foreignId(OrderColumn::AgencyId->value)
+                ->index('orders_agency_id_foreign')
                 ->constrained(Agency::TABLE_NAME)
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
