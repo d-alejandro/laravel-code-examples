@@ -21,7 +21,7 @@ return new class extends Migration
         Schema::create(Order::TABLE_NAME, function (Blueprint $table) use ($helper) {
             $table->id()->from(self::AUTO_INCREMENT_ID_START);
             $table->foreignId(OrderColumn::AgencyId->value)
-                ->index('orders_agency_id_foreign')
+                ->index(Order::TABLE_NAME . '_' . OrderColumn::AgencyId->value . '_foreign')
                 ->constrained(Agency::TABLE_NAME)
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
