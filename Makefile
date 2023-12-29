@@ -20,3 +20,6 @@ run:
 
 db:
 	docker-compose exec php-fpm php artisan migrate --seed
+
+refresh:
+	docker-compose exec php-fpm php artisan migrate:refresh --seed
